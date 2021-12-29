@@ -1,0 +1,58 @@
+<!-- @Wahsun -->
+<html>
+  <head>
+    <title>Welcome</title>
+  </head>
+  <body style="background-color:black;font-family:courier;color:#05fa0d;">
+    <span id="content"></span><span style="height:30px;width:30px;background-color:#05fa0d;">&nbsp;</span>
+    <script>
+      var menu = [
+          " ",
+          " ",
+          " ",
+          "TO LIVE IS TO FUNCTION,THAT IS ALL THERE IS IN LIVING.",
+          " ",
+          " ",
+          "HELLO' WORLD",
+          "I'M A GEEK WHO LOVES LIFE",
+          "I LIVE IN SHENZHEN CHINA",
+          "THANK YOU FOR COMING",
+          "THIS DOMAIN IS ONLY USED TO BUILD WE SERVICES",
+          "THIS SITE CAN BE REVISED FOR VALUABLE DEVELOPMENT",
+          "I LOOK FORWARD TO YOUR SUGGESTIONS",
+          " ",
+          " ",
+          "OTHER SITES",
+          "HTTPS://FILE.WAHSUN.ORG",
+          " ",
+          " ",
+          " ",
+          "CONTACT",
+          "E-MAIL:noreply@wahsun.org",
+          
+          
+          
+        ],
+        i = 1, j, item, html,
+        e = document.getElementById("content"),
+        doChar = function() {
+          e.innerHTML += item[j++];
+          if (j < item.length) {
+            setTimeout(doChar, 35);
+          }
+          else {
+            e.innerHTML += "<br/>";
+            doItem();
+          }
+        },
+        doItem = function() {
+          if (i < menu.length) {
+            item = menu[i++];
+            j = 0;
+            doChar();
+          }
+        };
+      doItem();
+    </script>
+  </body>
+</html>
