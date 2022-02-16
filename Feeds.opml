@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+<head>
+<title>Feeds</title>
+</head>
+<body>
+<outline title="Design &amp; Inspiration" text="Design &amp; Inspiration">
+<outline xmlUrl="http://www.shejipi.com/feed/" type="rss" htmlUrl="https://www.shejipi.com" title="设计癖" text="设计癖" />
+<outline htmlUrl="https://www.thisiscolossal.com" type="rss" text="Colossal" xmlUrl="http://feeds.feedburner.com/colossal" title="Colossal" />
+<outline xmlUrl="http://feeds.feedburner.com/DigitalPhotographySchool" htmlUrl="http://digital-photography-school.com/blog/wp-content/uploads/2006/12/images/digital-photography-school-1.jpg" type="rss" title="Digital Photography School" text="Digital Photography School" />
+<outline type="rss" text="优设网 " htmlUrl="https://www.uisdc.com" title="优设网 " xmlUrl="http://www.uisdc.com/feed" />
+<outline type="rss" text="Yanko Design" xmlUrl="http://www.yankodesign.com/feed/" title="Yanko Design" htmlUrl="https://www.yankodesign.com" />
+<outline htmlUrl="https://www.adsoftheworld.com" xmlUrl="http://www.adsoftheworld.com/node/feed" type="rss" text="Ads of the World™" title="Ads of the World™" />
+<outline xmlUrl="https://minimalissimo.com/feed" title="Minimalissimo Feed" type="rss" text="Minimalissimo Feed" htmlUrl="https://minimalissimo.com" />
+<outline type="rss" title="00's Adventure" text="00's Adventure" htmlUrl="/atom.xml" xmlUrl="http://www.uegeek.com/atom.xml" />
+<outline type="rss" text="My Modern Met" title="My Modern Met" htmlUrl="https://mymodernmet.com" xmlUrl="https://mymodernmet.com/feed" />
+<outline xmlUrl="https://abduzeedo.com/rss.xml" title="abdz" text="abdz" htmlUrl="https://abduzeedo.com/" type="rss" />
+<outline htmlUrl="https://creativerly.com/" type="rss" xmlUrl="https://creativerly.com/rss/" text="Creativerly" title="Creativerly" />
+</outline>
+<outline text="Internet" title="Internet">
+<outline type="rss" text="Linux 中国" htmlUrl="https://linux.cn/" xmlUrl="https://linux.cn/rss.xml" title="Linux 中国" />
+<outline type="rss" xmlUrl="https://www.zaodula.com/feed" htmlUrl="https://www.zaodula.com" text="互联网早读课" title="互联网早读课" />
+<outline htmlUrl="https://www.ifanr.com?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=" title="爱范儿" text="爱范儿" type="rss" xmlUrl="http://ifanr.com/feed" />
+<outline title="少数派" htmlUrl="https://sspai.com" type="rss" text="少数派" xmlUrl="https://sspai.com/feed" />
+<outline text="爱运营" title="爱运营" htmlUrl="https://www.iyunying.org" xmlUrl="https://www.iyunying.org/feed" type="rss" />
+<outline text="钛媒体" title="钛媒体" xmlUrl="http://tmtpost.com/feed" type="rss" htmlUrl="http://www.tmtpost.com" />
+<outline title="Product Hunt " htmlUrl="https://www.producthunt.com" type="rss" xmlUrl="https://www.producthunt.com/feed" text="Product Hunt " />
+<outline htmlUrl="https://www.ithome.com/" xmlUrl="http://www.ithome.com/rss/" title="IT之家" type="rss" text="IT之家" />
+<outline type="rss" xmlUrl="https://reread.typlog.io/episodes/feed.xml" title="一派·再读" htmlUrl="https://reread.typlog.io/" text="一派·再读" />
+<outline xmlUrl="http://feed.evolife.cn/" type="rss" title="爱活网" text="爱活网" htmlUrl="http://www.evolife.cn" />
+<outline htmlUrl="http://www.lieyunwang.com" title="猎云网" xmlUrl="http://www.lieyunwang.com/feed" type="rss" text="猎云网" />
+</outline>
+<outline title="Other" text="Other">
+<outline text="雨林的Blog" type="rss" title="雨林的Blog" xmlUrl="http://tok9.com/feed" htmlUrl="https://www.tok9.com/" />
+<outline title="101 Cookbooks" htmlUrl="https://www.101cookbooks.com" text="101 Cookbooks" type="rss" xmlUrl="http://feeds.101cookbooks.com/101cookbooks" />
+<outline title="小众软件" text="小众软件" type="rss" xmlUrl="https://www.appinn.com/feed" htmlUrl="https://www.appinn.com" />
+<outline htmlUrl="http://free.apprcn.com" xmlUrl="http://free.apprcn.com/category/ios/feed/" type="rss" title="iOS | 反斗限免" text="iOS | 反斗限免" />
+<outline title="SunPma'Blog" text="SunPma'Blog" htmlUrl="https://sunpma.com/" xmlUrl="http://sunpma.com/feed" type="rss" />
+<outline htmlUrl="http://www.zhihu.com" xmlUrl="http://www.zhihu.com/rss" title="知乎每日精选" type="rss" text="知乎每日精选" />
+<outline title="HΛИG ♥ WRITING" text="HΛИG ♥ WRITING" htmlUrl="http://huhuhang.com/" type="rss" xmlUrl="http://huhuhang.com/feed" />
+<outline title="月光博客" xmlUrl="http://feed.williamlong.info/" text="月光博客" type="rss" htmlUrl="https://www.williamlong.info/" />
+<outline title="iKxin小站" type="rss" text="iKxin小站" htmlUrl="https://www.ikxin.com/" xmlUrl="http://ikxin.com/feed" />
+</outline>
+<outline text="Videos" title="Videos">
+<outline title="巫师后期" text="巫师后期" htmlUrl="https://www.youtube.com/channel/UCl8H2rDqKFlisPC37gVX9mg" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCl8H2rDqKFlisPC37gVX9mg" type="rss" />
+<outline htmlUrl="https://www.youtube.com/channel/UCdEpz2A4DzV__4C1x2quKLw" type="rss" text="PAPAYA 電腦教室" title="PAPAYA 電腦教室" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCdEpz2A4DzV__4C1x2quKLw" />
+<outline htmlUrl="https://www.youtube.com/channel/UCAHK74SppWwI-my4xBuh2LA" type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCAHK74SppWwI-my4xBuh2LA" text="阿斗归来了" title="阿斗归来了" />
+<outline type="rss" text="墨澜时光" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UC7xpARN69bnSsJTv3wbtwOg" title="墨澜时光" htmlUrl="https://www.youtube.com/channel/UC7xpARN69bnSsJTv3wbtwOg" />
+<outline type="rss" text="莊師傅的廚房" title="莊師傅的廚房" htmlUrl="https://www.youtube.com/channel/UCTBy4o4SK7T4HQWmTBuaZzA" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCTBy4o4SK7T4HQWmTBuaZzA" />
+<outline xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCv2xqb_Q3sNJIyYiyCUzkCw" htmlUrl="https://www.youtube.com/channel/UCv2xqb_Q3sNJIyYiyCUzkCw" type="rss" title="即凉Lion" text="即凉Lion" />
+<outline htmlUrl="https://www.youtube.com/channel/UCFjqAKR9UVS28ucTNuVTexA" text="ElenaLin_青青" title="ElenaLin_青青" type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCFjqAKR9UVS28ucTNuVTexA" />
+<outline htmlUrl="https://www.youtube.com/channel/UCilwQlk62k1z7aUEZPOB6yw" type="rss" text="小Lin说" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCilwQlk62k1z7aUEZPOB6yw" title="小Lin说" />
+<outline htmlUrl="https://www.youtube.com/channel/UCJwSRMwI2PPCWd6vBeF9Igw" text="Jazz Coffee Shop" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCJwSRMwI2PPCWd6vBeF9Igw" type="rss" title="Jazz Coffee Shop" />
+<outline text="萨姐的南腔北调" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCAVMrN8WuO16YI5U2slqcTA" htmlUrl="https://www.youtube.com/channel/UCAVMrN8WuO16YI5U2slqcTA" title="萨姐的南腔北调" type="rss" />
+<outline type="rss" htmlUrl="https://www.youtube.com/channel/UCisCgODN_XZUC-s6Y9iwm7w" title="日食记官方频道" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCisCgODN_XZUC-s6Y9iwm7w" text="日食记官方频道" />
+<outline title="影视飓风" type="rss" text="影视飓风" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UC2cRwTuSWxxEtrRnT4lrlQA" htmlUrl="https://www.youtube.com/channel/UC2cRwTuSWxxEtrRnT4lrlQA" />
+<outline text="路边小吃" type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCQZj9a65q-XDFxSfPKTCc1A" htmlUrl="https://www.youtube.com/channel/UCQZj9a65q-XDFxSfPKTCc1A" title="路边小吃" />
+<outline type="rss" text="马蹄厨房" title="马蹄厨房" htmlUrl="https://www.youtube.com/channel/UCRIGdUaQnVSIcIGP5w8N8SA" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCRIGdUaQnVSIcIGP5w8N8SA" />
+<outline htmlUrl="https://www.youtube.com/channel/UCR2LHLiQmL_zEJnlCiyyxAA" type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCR2LHLiQmL_zEJnlCiyyxAA" text="索菲亚一斤半" title="索菲亚一斤半" />
+<outline xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCyyZmjaoQtONBvxlyb-TJOw" htmlUrl="https://www.youtube.com/channel/UCyyZmjaoQtONBvxlyb-TJOw" title="汤质看本质" text="汤质看本质" type="rss" />
+<outline type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCmXkJ9ReY5hjvYPcnmBwing" title="曼食慢语" htmlUrl="https://www.youtube.com/channel/UCmXkJ9ReY5hjvYPcnmBwing" text="曼食慢语" />
+</outline>
+</body>
+</opml>
