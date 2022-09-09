@@ -1,0 +1,61 @@
+<!-- x@Wahsun.org -->
+<html>
+  <head>
+    <title>INFO</title>
+  </head>
+    
+  <body style="background-color:black;font-family:courier;color:#05fa0d;">
+    <span id="content"></span><span style="height:30px;width:30px;background-color:#05fa0d;">&nbsp;</span>
+    <script>
+      var menu = [
+          ".......................",
+          " ................",
+          " ................................................",
+          " ...........................",
+          " .................................................................",
+          " ",
+          " ",
+          "SEEK TRUTH AND VALUE",
+
+          "____________________WAHSUN",
+          " ",
+          "  ",
+          "THIS DOMAIN NAME IS IDLE, NO PLANS TO TRANSFER IT!",
+          " ",
+          "THIS PAGE IS ONLY FOR DISPLAY PURPOSES, NOT FOR BUILDING PERSONAL WEBSITES!",
+          " ",
+          "I PREFER EMAIL COMMUNICATION,SO YOU CAN CONTACT ME BY EMAIL FIRST! ",
+          " ",
+          " ",
+          "EMAIL/IMESSAGE:noreply@wahsun.org", 
+           " TELEGRAM:HTTPS://T.ME/WAHSUN",                                        
+           " ",
+           " ................................................",
+           " .........................................",
+           "............................ ",
+           "................................................ ",          
+        ],
+        i = 1, j, item, html,
+        e = document.getElementById("content"),
+        doChar = function() {
+          e.innerHTML += item[j++];
+          if (j < item.length) {
+            setTimeout(doChar, 55);
+          }
+          else {
+            e.innerHTML += "<br/>";
+            doItem();
+          }
+        },
+        doItem = function() {
+          if (i < menu.length) {
+            item = menu[i++];
+            j = 0;
+            doChar();
+          }
+        };
+      doItem();
+</script>
+
+  </body>
+</html>
