@@ -1,5 +1,3 @@
 # File
 This is a temporary folder, and I will also store some other attachments here
-
-Contact ME : X@WAHSUN.ORG    
-
+PS:The important thing is that I have stored an index file here, which is connected to my display page!
