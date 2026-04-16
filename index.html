@@ -1,84 +1,169 @@
 <!-- x@Wahsun.org -->
-<html>
-  <head>
-    <title>▫️NOT TOO MUCH</title>
-  </head>
-    
-  <body style="background-color:black;font-family:courier;color:#05fa0d;">
-    <span id="content"></span><span style="height:30px;width:30px;background-color:#05fa0d;">&nbsp;</span>
+<html lang="zh-TW">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MWVF02CTCP"></script>
     <script>
-      var menu = [
-          " ",
-          " ",
-          " ",
-          "TOO MUCH IS YOUR WORST ENEMY",
-          " ",
-          "TOO MUCH STRUCTURE → LIFE FEELS MUNDANE",
-          "TOO MUCH SPONTANEITY → LIFE FEELS CHAOTIC",
-          "TOO MUCH WORK → BURNOUT",
-          "TOO MUCH KINDNESS → NAIVETY",
-          "TOO MUCH TRUST → PAIN",
-          " ",
-          "STOP BEING TOO MUCH.",
-          "START FINDING YOUR BALANCE — YOUR WAY.",
-          " ",
-          "MOST PEOPLE THINK IN EXTREMES.",
-          "LIFE ISN'T BLACK OR WHITE — IT'S A SPECTRUM.",
-          "FIND YOUR SPOT.",
-          "DO WHAT ENERGIZES YOU.",
-          "LEARN BY DOING.",
-          " ",   
-          "P.S. A LITTLE RANDOMNESS KEEPS THE SAILS ROCKING.",
-          "DON'T BE RIGID — STAY IN BETWEEN.",
-          " ",
-          " ",
-          "....................SWITCHING LINE........",
-          " ",
-          " ",
-          "AN OBSERVER ROOTED IN MAINLAND CHINA, GROUNDED BY THE DEPTHS OF THE 1980S.",
-          " ",
-          "MY CORE: A POLYMATH WITH AN EXTREME CURIOSITY FOR THE UNKNOWN.",
-          " ",
-          "I LIKE IT/AI TECHNOLOGY RESEARCH, TRAVEL EXPERIENCES, DESIGN AESTHETICS.",
-          " ",
-          "I AM PASSIONATE ABOUT REFRAMING PERCEPTION THROUGH A TECHNICAL LENS; THE WIDTH AND DEPTH OF MY VIEW OF THE WORLD STEMS FROM THIS.",
-          " ",
-          "IF YOU ALSO PURSUE THE EXPANSION OF COGNITIVE BOUNDARIES, OUR EXCHANGE MAY REACH THE DEPTHS OF OUR SOULS.",
-          " ",
-          "FOR A GENUINE ENCOUNTER, PLEASE DIRECT YOUR MESSAGE TO MY INBOX (EMAIL).",
-          "↓",
-          "X@WAHSUN.ORG",
-          "↳COMMIT TO READING AND REPLYING WITHIN 12 HOURS.", 
-        ],
-        i = 1, j, item, html,
-        e = document.getElementById("content"),
-        doChar = function() {
-          e.innerHTML += item[j++];
-          if (j < item.length) {
-            setTimeout(doChar,30);
-          }
-          else {
-            e.innerHTML += "<br/>";
-            doItem();
-          }
-        },
-        doItem = function() {
-          if (i < menu.length) {
-            item = menu[i++];
-            j = 0;
-            doChar();
-          }
-        };
-      doItem();
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-MWVF02CTCP');
     </script>
-  </body>
-</html>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MWVF02CTCP"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-MWVF02CTCP');
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>▫️NOT TOO MUCH</title>
+    <style>
+        :root {
+            --primary-color: #05fa0d;
+            --bg-color: black;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--primary-color);
+            margin: 0;
+            padding: 20px 20px 20px 15px; 
+            /* 字體大小已調小：最小12px，隨屏幕縮放，最大15px */
+            font-size: clamp(12px, 1.2vw, 15px); 
+            line-height: 1.4;
+            cursor: text;
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        #content-container {
+            width: 100%;
+            max-width: 95vw;
+        }
+
+        .line {
+            min-height: 1.2em;
+            margin-bottom: 2px;
+            word-break: break-all;
+        }
+
+        .paragraph-break {
+            margin-bottom: 15px; 
+        }
+
+        .switch-line {
+            color: #333; 
+            margin: 15px 0;
+            letter-spacing: 1px;
+            font-size: 0.8em;
+        }
+
+        .email-link {
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #cursor {
+            display: inline-block;
+            width: 6px;
+            height: 1.1em;
+            background-color: var(--primary-color);
+            vertical-align: middle;
+            margin-left: 2px;
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px 10px;
+                line-height: 1.3;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="content-container">
+        <div id="content"></div><span id="cursor"></span>
+    </div>
+
+    <script>
+        const contentLines = [
+            { text: "TOO MUCH IS YOUR WORST ENEMY", style: "" },
+            { text: "", style: "paragraph-break" }, 
+            { text: "TOO MUCH STRUCTURE → LIFE FEELS MUNDANE", style: "" },
+            { text: "TOO MUCH SPONTANEITY → LIFE FEELS CHAOTIC", style: "" },
+            { text: "TOO MUCH WORK → BURNOUT", style: "" }, 
+            { text: "TOO MUCH KINDNESS → NAIVETY", style: "" }, 
+            { text: "TOO MUCH TRUST → PAIN", style: "paragraph-break" },  
+
+            { text: "STOP BEING 'TOO MUCH', START FINDING YOUR BALANCE — YOUR WAY.", style: "" },
+            { text: "MOST PEOPLE THINK IN EXTREMES", style: "" },
+            { text: "LIFE ISN'T BLACK OR WHITE — IT'S A SPECTRUM", style: "" },
+            { text: "FIND YOUR SPOT, DO WHAT ENERGIZES YOU, LEARN BY DOING.", style: "paragraph-break" },
+            { text: "P.S. A LITTLE RANDOMNESS KEEPS THE SAILS ROCKING, DON'T BE RIGID — STAY IN BETWEEN.", style: "paragraph-break" },
+
+            { text: "....................SWITCHING LINE........", style: "switch-line" },
+
+            { text: "AN OBSERVER ROOTED IN MAINLAND CHINA, GROUNDED BY THE DEPTHS OF THE 1980S.", style: "" },
+            { text: "MY CORE: A POLYMATH WITH AN EXTREME CURIOSITY FOR THE UNKNOWN.", style: "" },
+            { text: "I LIKE IT/AI TECHNOLOGY RESEARCH, TRAVEL EXPERIENCES, DESIGN AESTHETICS.", style: "" },
+            { text: "IF YOU ALSO PURSUE THE EXPANSION OF COGNITIVE BOUNDARIES, OUR EXCHANGE MAY REACH THE DEPTHS OF OUR SOULS.", style: "paragraph-break" },
+
+            { text: "FOR A GENUINE ENCOUNTER, PLEASE DIRECT YOUR MESSAGE TO MY INBOX (EMAIL).", style: "" },
+            { text: "↓", style: "" },
+            { text: "X@WAHSUN.ORG", style: "email-link", isEmail: true },
+            { text: "↳ COMMIT TO READING AND REPLYING WITHIN 12 HOURS", style: "paragraph-break" },
+ 
+        ];
+
+        const contentEl = document.getElementById('content');
+        const cursorEl = document.getElementById('cursor');
+        
+        let lineIndex = 0;
+        let charIndex = 0;
+
+        // --- 速度設置 ---
+        const displaySpeed = 50;  // 每個字符出現的時間（數值越大越慢，原為20）
+        const pauseSpeed = 400;   // 換行時的停頓時間（數值越大停頓越久，原為200）
+
+
+        function typeWriter() {
+            if (lineIndex >= contentLines.length) {
+                return;
+            }
+
+            const currentLineData = contentLines[lineIndex];
+            
+            if (charIndex === 0) {
+                const lineDiv = document.createElement('div');
+                lineDiv.className = 'line ' + currentLineData.style;
+                lineDiv.id = 'line-' + lineIndex;
+                if (currentLineData.isEmail) {
+                    lineDiv.onclick = () => window.open('mailto:' + currentLineData.text);
+                }
+                contentEl.appendChild(lineDiv);
+            }
+
+            const currentDiv = document.getElementById('line-' + lineIndex);
+
+            if (charIndex < currentLineData.text.length) {
+                currentDiv.textContent += currentLineData.text.charAt(charIndex);
+                charIndex++;
+                currentDiv.appendChild(cursorEl);
+                setTimeout(typeWriter, displaySpeed);
+            } else {
+                charIndex = 0;
+                lineIndex++;
+                setTimeout(typeWriter, pauseSpeed);
+            }
+        }
+
+        window.addEventListener('load', () => {
+            typeWriter();
+        });
+    </script>
+</body>
+</html>
