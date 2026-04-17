@@ -1,7 +1,8 @@
 <!-- x@Wahsun.org -->
-<html lang="zh-HK">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-    <!-- Google tag (gtag.js) -->
+    <!-- Google Analytics (分析) 代码 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-MWVF02CTCP"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -16,155 +17,183 @@
     <style>
         :root {
             --primary-color: #05fa0d;
-            --bg-color: black;
+            --bg-color: #000;
+            --text-muted: #666;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
             background-color: var(--bg-color);
-            font-family: "Courier New", Courier, monospace; font-weight: bold;
-            color: var(--primary-color);
+            font-family: "Inter", "Arial Black", "Impact", sans-serif;
+            color: #fff;
             margin: 0;
-            padding: 20px 20px 20px 15px; 
-            /* 字體大小已調小：最小12px，隨屏幕縮放，最大15px */
-            font-size: clamp(12px, 1.2vw, 14px); 
-            line-height: 1.4;
-            cursor: text;
-            user-select: none;
-            overflow-x: hidden;
+            padding: 6vh 9vw; /* 稍微缩小上下边距 */
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
         }
 
-        #content-container {
+        #main-container {
+            max-width: 800px;
             width: 100%;
-            max-width: 95vw;
         }
 
-        .line {
-            min-height: 1.2em;
-            margin-bottom: 2px;
-            word-break: break-all;
+        /* 顶部宣言部分 */
+        .manifesto-section {
+            margin-bottom: 60px;
         }
 
-        .paragraph-break {
-            margin-bottom: 15px; 
+        .highlight-title {
+            color: var(--primary-color);
+            font-size: clamp(20px, 4vw, 32px);
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
         }
 
-        .switch-line {
-            color: #333; 
-            margin: 15px 0;
-            letter-spacing: 1px;
-            font-size: 0.8em;
+        .list-item {
+            font-size: clamp(12px, 1.5vw, 16px);
+            font-weight: 700;
+            margin-bottom: 8px;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 15px;
+        }
+
+        .summary-text {
+            margin-top: 30px;
+            font-size: clamp(16px, 1.8vw, 22px);
+            color: #fff;
+            font-weight: 800;
+        }
+
+        /* 分割线 */
+        .divider {
+            color: var(--text-muted);
+            font-size: 12px;
+            letter-spacing: 5px;
+            margin: 60px 0;
+            display: flex;
+            align-items: center;
+        }
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #333;
+            margin-left: 20px;
+        }
+
+        /* 个人介绍部分 */
+        .bio-section {
+            color: #ccc;
+            font-size: clamp(13px, 1.3vw, 16px);
+            max-width: 600px;
+        }
+
+        .bio-line {
+            margin-bottom: 15px;
+        }
+
+        .core-identity {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* 联系方式 */
+        .contact-section {
+            margin-top: 50px;
+            padding: 30px;
+            border: 1px solid #333;
+            border-radius: 4px;
         }
 
         .email-link {
-            text-decoration: underline;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        #cursor {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: clamp(18px, 2.5vw, 28px);
+            font-weight: 900;
             display: inline-block;
-            width: 6px;
-            height: 1.1em;
-            background-color: var(--primary-color);
-            vertical-align: middle;
-            margin-left: 2px;
-            animation: blink 0.8s infinite;
+            margin: 10px 0;
+            transition: all 0.3s ease;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+        .email-link:hover {
+            transform: translateX(10px);
+            text-shadow: 0 0 15px var(--primary-color);
         }
 
-        @media (max-width: 480px) {
-            body {
-                padding: 15px 10px;
-                line-height: 1.3;
-            }
+        .footer-note {
+            color: var(--text-muted);
+            font-size: 11px;
+            margin-top: 10px;
+        }
+
+        /* 新增：服务器说明文字样式 */
+        .server-disclaimer {
+            margin-top: 80px;
+            padding-top: 20px;
+            border-top: 1px solid #1a1a1a;
+            color: #444; /* 颜色较暗，不喧宾夺主 */
+            font-size: 10px;
+            letter-spacing: 1px;
+            line-height: 1.4;
+            text-transform: uppercase;
+        }
+
+        /* 响应式微调 */
+        @media (max-width: 600px) {
+            body { padding: 40px 20px; }
+            .contact-section { padding: 20px; }
+            .server-disclaimer { margin-top: 50px; }
         }
     </style>
 </head>
 <body>
-    <div id="content-container">
-        <div id="content"></div><span id="cursor"></span>
-    </div>
-
-    <script>
-        const contentLines = [
-            { text: "TOO MUCH IS YOUR WORST ENEMY", style: "" },
-            { text: "", style: "paragraph-break" }, 
-            { text: "TOO MUCH STRUCTURE → LIFE FEELS MUNDANE", style: "" },
-            { text: "TOO MUCH SPONTANEITY → LIFE FEELS CHAOTIC", style: "" },
-            { text: "TOO MUCH WORK → BURNOUT", style: "" }, 
-            { text: "TOO MUCH KINDNESS → NAIVETY", style: "" }, 
-            { text: "TOO MUCH TRUST → PAIN", style: "paragraph-break" },  
-
-            { text: "STOP BEING 'TOO MUCH', START FINDING YOUR BALANCE — YOUR WAY.", style: "" },
-            { text: "MOST PEOPLE THINK IN EXTREMES", style: "" },
-            { text: "LIFE ISN'T BLACK OR WHITE — IT'S A SPECTRUM", style: "" },
-            { text: "FIND YOUR SPOT, DO WHAT ENERGIZES YOU, LEARN BY DOING.", style: "paragraph-break" },
-            { text: "P.S. A LITTLE RANDOMNESS KEEPS THE SAILS ROCKING, DON'T BE RIGID — STAY IN BETWEEN.", style: "paragraph-break" },
-
-            { text: "....................SWITCHING LINE........", style: "switch-line" },
-            { text: "SORRY,  IN ORDER TO PREVENT VISITORS FROM SEEING THE COLD SERVER ERROR MESSAGE,  I PLACED THIS PAGE ON MY DOMAIN NAME.", style: "" },
-            { text: "....................SWITCHING LINE........", style: "switch-line" },
-            { text: "AN OBSERVER ROOTED IN MAINLAND CHINA, GROUNDED BY THE DEPTHS OF THE 1980S.", style: "" },
-            { text: "MY CORE: A POLYMATH WITH AN EXTREME CURIOSITY FOR THE UNKNOWN.", style: "" },
-            { text: "I LIKE IT/AI TECHNOLOGY RESEARCH, TRAVEL EXPERIENCES, DESIGN AESTHETICS.", style: "" },
-            { text: "IF YOU ALSO PURSUE THE EXPANSION OF COGNITIVE BOUNDARIES, OUR EXCHANGE MAY REACH THE DEPTHS OF OUR SOULS.", style: "paragraph-break" },
-
-            { text: "FOR A GENUINE ENCOUNTER, PLEASE DIRECT YOUR MESSAGE TO MY INBOX (EMAIL).", style: "" },
-            { text: "↓", style: "" },
-            { text: "X@WAHSUN.ORG", style: "email-link", isEmail: true },
-            { text: "↳ COMMIT TO READING AND REPLYING WITHIN 12 HOURS", style: "paragraph-break" },
- 
-        ];
-
-        const contentEl = document.getElementById('content');
-        const cursorEl = document.getElementById('cursor');
-        
-        let lineIndex = 0;
-        let charIndex = 0;
-
-        // --- 速度設置 ---
-        const displaySpeed = 50;  // 每個字符出現的時間（數值越大越慢，原為20）
-        const pauseSpeed = 200;   // 換行時的停頓時間（數值越大停頓越久，原為200）
-
-
-        function typeWriter() {
-            if (lineIndex >= contentLines.length) {
-                return;
-            }
-
-            const currentLineData = contentLines[lineIndex];
+    <div id="main-container">
+        <!-- 第一部分：哲学宣言 -->
+        <section class="manifesto-section">
+            <div class="highlight-title">TOO MUCH IS YOUR WORST ENEMY</div>
             
-            if (charIndex === 0) {
-                const lineDiv = document.createElement('div');
-                lineDiv.className = 'line ' + currentLineData.style;
-                lineDiv.id = 'line-' + lineIndex;
-                if (currentLineData.isEmail) {
-                    lineDiv.onclick = () => window.open('mailto:' + currentLineData.text);
-                }
-                contentEl.appendChild(lineDiv);
-            }
+            <div class="list-item">TOO MUCH STRUCTURE → LIFE FEELS MUNDANE</div>
+            <div class="list-item">TOO MUCH SPONTANEITY → LIFE FEELS CHAOTIC</div>
+            <div class="list-item">TOO MUCH WORK → BURNOUT</div>
+            <div class="list-item">TOO MUCH KINDNESS → NAIVETY</div>
+            <div class="list-item">TOO MUCH TRUST → PAIN</div>
+            
+            <div class="summary-text">STOP BEING TOO MUCH.<br>START FINDING YOUR BALANCE.</div>
+        </section>
 
-            const currentDiv = document.getElementById('line-' + lineIndex);
+        <section class="manifesto-section" style="color: #888; font-weight: normal;">
+            <p>MOST PEOPLE THINK IN EXTREMES. LIFE ISN'T BLACK OR WHITE — IT'S A SPECTRUM.</p>
+            <p>FIND YOUR SPOT. DO WHAT ENERGIZES YOU. LEARN BY DOING.</p>
+            <p style="color: var(--primary-color);">P.S. A LITTLE RANDOMNESS KEEPS THE SAILS ROCKING.</p>
+        </section>
 
-            if (charIndex < currentLineData.text.length) {
-                currentDiv.textContent += currentLineData.text.charAt(charIndex);
-                charIndex++;
-                currentDiv.appendChild(cursorEl);
-                setTimeout(typeWriter, displaySpeed);
-            } else {
-                charIndex = 0;
-                lineIndex++;
-                setTimeout(typeWriter, pauseSpeed);
-            }
-        }
+        <div class="divider">SWITCHING LINE</div>
 
-        window.addEventListener('load', () => {
-            typeWriter();
-        });
-    </script>
+        <!-- 第二部分：关于我 -->
+        <section class="bio-section">
+            <div class="bio-line">AN OBSERVER ROOTED IN MAINLAND CHINA, GROUNDED BY THE DEPTHS OF THE 1980S.</div>
+            <div class="bio-line core-identity">MY CORE: A POLYMATH WITH AN EXTREME CURIOSITY FOR THE UNKNOWN.</div>
+            <div class="bio-line">I LIKE IT/AI TECHNOLOGY RESEARCH, TRAVEL EXPERIENCES, DESIGN AESTHETICS.</div>
+            <div class="bio-line">IF YOU ALSO PURSUE THE EXPANSION OF COGNITIVE BOUNDARIES, OUR EXCHANGE MAY REACH THE DEPTHS OF OUR SOULS.</div>
+        </section>
+
+        <!-- 第三部分：行动呼吁 -->
+        <section class="contact-section">
+            <div style="font-size: 14px; margin-bottom: 10px;">PURSUE THE EXPANSION OF COGNITIVE BOUNDARIES?</div>
+            <a href="mailto:X@WAHSUN.ORG" class="email-link">X@WAHSUN.ORG</a>
+            <div class="footer-note">↳ COMMIT TO READING AND REPLYING WITHIN 12 HOURS.</div>
+        </section>
+
+        <!-- 新增内容放置处 -->
+        <footer class="server-disclaimer">
+                THIS PAGE IS DEPLOYED TO SHIELD VISITORS FROM SERVER ERROR MESSAGES.
+        </footer>
+    </div>
 </body>
 </html>
