@@ -260,15 +260,15 @@ let dx=particles[i].x-particles[j].x;
 let dy=particles[i].y-particles[j].y;
 let dist=Math.sqrt(dx*dx+dy*dy);
 
-if(dist<110){
-let alpha=1-dist/110;
+if(dist<150){
+let alpha=1-dist/150;
 
 ctx.beginPath();
 ctx.moveTo(particles[i].x,particles[i].y);
 ctx.lineTo(particles[j].x,particles[j].y);
 
 ctx.strokeStyle=`rgba(5,250,13,${alpha*0.25})`;
-ctx.lineWidth=0.6;
+ctx.lineWidth=1;
 ctx.stroke();
 }
 }
@@ -287,7 +287,7 @@ particles.forEach(p=>{
 p.a+=Math.random()*0.02-0.01;
 
 ctx.beginPath();
-ctx.globalAlpha=0.2+Math.abs(p.a);
+ctx.globalAlpha=0.5+Math.abs(p.a);
 ctx.fillStyle="#05fa0d";
 
 ctx.arc(p.x,p.y,1.2,0,Math.PI*2);
