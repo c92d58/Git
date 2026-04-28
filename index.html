@@ -260,8 +260,8 @@ let dx=particles[i].x-particles[j].x;
 let dy=particles[i].y-particles[j].y;
 let dist=Math.sqrt(dx*dx+dy*dy);
 
-if(dist<250){
-let alpha=1-dist/150;
+if(dist<150){
+let alpha=1-dist/250;
 
 ctx.beginPath();
 ctx.moveTo(particles[i].x,particles[i].y);
