@@ -48,7 +48,7 @@ z-index:9999;
 .container{
 max-width:1000px;
 margin:auto;
-padding:120px 24px;
+padding:clamp(60px,10vw,120px) clamp(16px,4vw,48px);
 }
 
 .reveal{
@@ -59,7 +59,7 @@ transition:1s ease;
 .reveal.active{opacity:1;transform:translateY(0);}
 
 h1{
-font-size:30px;
+font-size:clamp(20px,4vw,30px);
 color:var(--g);
 letter-spacing:1px;
 }
@@ -85,8 +85,8 @@ letter-spacing:1px;
 }
 
 .divider{
-margin:90px 0;
-font-size:10px;
+margin:clamp(40px,8vw,90px) 0;
+font-size:clamp(8px,1.4vw,10px);
 letter-spacing:5px;
 color:#666;
 display:flex;
@@ -100,20 +100,20 @@ flex:1;height:1px;background:#222;margin-left:12px;
 .core{color:#fff;font-weight:600;}
 
 .contact{
-margin-top:60px;
+margin-top:clamp(30px,6vw,60px);
 border-top:1px solid #111;
-padding-top:30px;
+padding-top:clamp(16px,3vw,30px);
 }
 
 .email{
 color:var(--g);
 text-decoration:none;
-font-size:22px;
+font-size:clamp(16px,3vw,22px);
 }
 
 .footer{
-margin-top:80px;
-font-size:10px;
+margin-top:clamp(40px,8vw,80px);
+font-size:clamp(8px,1.4vw,10px);
 color:#333;
 }
 </style>
@@ -142,7 +142,7 @@ color:#333;
 </section>
 
 <section class="contact reveal">
-<p>CONNECT</p> 
+<p>CONNECT:</p> 
 <a class="email" href="mailto:noreply@wahsun.org">noreply@wahsun.org</a>
 </section>
 
@@ -236,37 +236,43 @@ if(e[0].isIntersecting) run();
 const canvas=document.getElementById("bg");
 const ctx=canvas.getContext("2d");
 
-canvas.width=innerWidth;
-canvas.height=innerHeight;
+let W,H,particles=[];
 
-let particles=[];
-
-for(let i=0;i<120;i++){
-particles.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-vx:(Math.random()-.5)*0.25,
-vy:(Math.random()-.5)*0.25,
-a:Math.random()
-});
+function createParticles(){
+const count=Math.max(60,Math.min(200,Math.floor(W*H/15000)));
+particles=Array.from({length:count},()=>({
+x:Math.random()*W,
+y:Math.random()*H,
+vx:(Math.random()-.5)*0.3,
+vy:(Math.random()-.5)*0.3,
+a:Math.random(),
+}));
 }
+
+function resize(){
+W=canvas.width=innerWidth;
+H=canvas.height=innerHeight;
+createParticles();
+}
+resize();
+addEventListener("resize",resize);
 
 /* TIE */
 function drawConnections(){
-for(let i=0;i<particles.length;i++){
-for(let j=i+1;j<particles.length;j++){
-
-let dx=particles[i].x-particles[j].x;
-let dy=particles[i].y-particles[j].y;
-let dist=Math.sqrt(dx*dx+dy*dy);
-
-if(dist<100){
-let alpha=1-dist/150;
-
+const maxDist=Math.min(W,H)*0.12;
+const maxDistSq=maxDist*maxDist;
+const n=particles.length;
+for(let i=0;i<n;i++){
+const pi=particles[i];
+for(let j=i+1;j<n;j++){
+const pj=particles[j];
+const dx=pi.x-pj.x,dy=pi.y-pj.y;
+const distSq=dx*dx+dy*dy;
+if(distSq<maxDistSq){
+const alpha=1-Math.sqrt(distSq)/maxDist;
 ctx.beginPath();
-ctx.moveTo(particles[i].x,particles[i].y);
-ctx.lineTo(particles[j].x,particles[j].y);
-
+ctx.moveTo(pi.x,pi.y);
+ctx.lineTo(pj.x,pj.y);
 ctx.strokeStyle=`rgba(5,250,13,${alpha*0.3})`;
 ctx.lineWidth=0.5;
 ctx.stroke();
@@ -276,35 +282,23 @@ ctx.stroke();
 }
 
 function draw(){
-
-ctx.clearRect(0, 0, canvas.width, canvas.height); 
-
-/* TIE */
+ctx.clearRect(0,0,W,H);
 drawConnections();
-
-particles.forEach(p=>{
-
+for(const p of particles){
 p.a+=Math.random()*0.02-0.01;
-
-ctx.beginPath();
 ctx.globalAlpha=Math.abs(p.a);
 ctx.fillStyle="#05fa0d";
-
+ctx.beginPath();
 ctx.arc(p.x,p.y,1.2,0,Math.PI*2);
 ctx.fill();
-
 p.x+=p.vx;
 p.y+=p.vy;
-
-if(p.x<0||p.x>canvas.width)p.vx*=-1;
-if(p.y<0||p.y>canvas.height)p.vy*=-1;
-
-});
-
+if(p.x<0||p.x>W)p.vx*=-1;
+if(p.y<0||p.y>H)p.vy*=-1;
+}
 ctx.globalAlpha=1;
 requestAnimationFrame(draw);
 }
-
 draw();
 
 </script>
