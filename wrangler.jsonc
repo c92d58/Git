@@ -1,5 +1,3 @@
-// wrangler.jsonc
-"name": "index",
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "git",
@@ -12,5 +10,6 @@
   },
   "compatibility_flags": [
     "nodejs_compat"
+  "name": "index",
   ]
 }
