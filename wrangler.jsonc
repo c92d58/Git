@@ -10,6 +10,6 @@
   },
   "compatibility_flags": [
     "nodejs_compat"
-  "name": "index",
-  ]
+  ],
+  "pages_build_output_dir": "."
 }
