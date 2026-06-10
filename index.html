@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
 <!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=[REDACTED-GA-ID]"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MWVF02CTCP"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', '[REDACTED-GA-ID]');
+gtag('config', 'G-MWVF02CTCP');
 </script>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>▫️BLUEPRINT // SYSTEM ARCHITECTURE</title>
+<title>▫️CONSCIOUS SYSTEM</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
@@ -24,7 +24,8 @@ margin:0;
 background:#000000;
 color:#fff;
 font-family:Inter,-apple-system;
-overflow-x:hidden;
+overflow:hidden;
+cursor:none;
 }
 
 canvas{
@@ -33,8 +34,19 @@ top:0;left:0;
 z-index:-1;
 }
 
+.cursor{
+position:fixed;
+width:8px;height:8px;
+border-radius:50%;
+background:var(--g);
+transform:translate(-50%,-50%);
+pointer-events:none;
+mix-blend-mode:screen;
+z-index:9999;
+}
+
 .container{
-max-width:960px;
+max-width:1000px;
 margin:auto;
 padding:clamp(60px,10vw,120px) clamp(16px,4vw,48px);
 }
@@ -47,21 +59,30 @@ transition:1s ease;
 .reveal.active{opacity:1;transform:translateY(0);}
 
 h1{
-font-size:clamp(28px,5vw,52px);
-color:#fff;
-font-weight:800;
-line-height:1.1;
-margin-bottom:8px;
+font-size:clamp(20px,4vw,30px);
+color:var(--g);
+letter-spacing:1px;
 }
-h1 .highlight{color:var(--g);}
 
-.sub{
-font-size:clamp(14px,2vw,18px);
-color:#666;
-margin-bottom:16px;
+.ai{
+white-space:pre-wrap;
+line-height:1.6;
 }
-.cursor-blink{animation:blink 1s step-end infinite;}
-@keyframes blink{50%{opacity:0}}
+
+.statement-item{
+margin:10px 0;
+padding-left:12px;
+border-left:2px solid var(--g);
+opacity:0.85;
+}
+
+.conscious{
+margin-top:18px;
+font-size:12px;
+color:var(--g);
+opacity:0.7;
+letter-spacing:1px;
+}
 
 .divider{
 margin:clamp(40px,8vw,90px) 0;
@@ -75,128 +96,39 @@ content:"";
 flex:1;height:1px;background:#222;margin-left:12px;
 }
 
-/* Architecture sections */
-.arch-section{
-margin-bottom:40px;
+.bio p{color:#bbb;}
+.node{color:var(--g);font-weight:600;}
+.core{color:#fff;font-weight:600;}
+
+.contact{
+margin-top:clamp(30px,6vw,60px);
+border-top:1px solid #111;
+padding-top:clamp(16px,3vw,30px);
 }
-.arch-label{
-font-size:9px;
+
+.email{
 color:var(--g);
-letter-spacing:4px;
-text-transform:uppercase;
-margin-bottom:14px;
-opacity:0.6;
+text-decoration:none;
+font-size:clamp(16px,3vw,22px);
 }
 
-/* Infrastructure stack */
-.infra-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:10px;
-}
-.infra-card{
-border:1px solid #1a1a1a;
-padding:16px 20px;
-border-radius:2px;
-transition:all .5s;
-text-align:center;
-}
-.infra-card:hover{
-border-color:var(--g);
-box-shadow:0 0 30px rgba(5,250,13,0.03);
-transform:translateY(-2px);
-}
-.infra-card .i-name{
-font-size:14px;
-color:#ddd;
-font-weight:600;
-margin-bottom:4px;
-}
-.infra-card .i-role{
-font-size:10px;
-color:#555;
-letter-spacing:1px;
-}
-.infra-card .i-status{
-display:inline-block;
-width:6px;height:6px;
-border-radius:50%;
-background:var(--g);
-margin-right:6px;
+@keyframes blink{
+0%,49%{opacity:1;}
+50%,100%{opacity:0;}
 }
 
-/* Loop system */
-.loop-list{
-list-style:none;
-padding:0;
+.cursor-blink{
+font-size:clamp(12px,2vw,16px);
+color:#999;
+display:inline;
+margin-left:2px;
+animation:blink 0.7s infinite;
 }
-.loop-list li{
-border:1px solid #1a1a1a;
-padding:16px 20px;
-margin-bottom:8px;
-border-radius:2px;
-font-size:13px;
-color:#aaa;
-line-height:1.8;
-transition:all .4s;
-position:relative;
-padding-left:36px;
-}
-.loop-list li::before{
-content:'↻';
-position:absolute;
-left:14px;
-top:16px;
-color:var(--g);
-opacity:0.4;
-font-size:14px;
-}
-.loop-list li:hover{
-border-color:var(--g);
-transform:translateX(4px);
-box-shadow:0 0 25px rgba(5,250,13,0.02);
-}
-.loop-list li strong{color:#ddd;}
 
-/* Quality checklist */
-.quality-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:10px;
-}
-.quality-item{
-border:1px solid #1a1a1a;
-padding:16px 20px;
-border-radius:2px;
-transition:all .4s;
-display:flex;
-align-items:flex-start;
-gap:12px;
-}
-.quality-item:hover{
-border-color:var(--g);
-box-shadow:0 0 25px rgba(5,250,13,0.02);
-}
-.quality-item .q-check{
-color:var(--g);
-font-size:14px;
-flex-shrink:0;
-margin-top:2px;
-}
-.quality-item .q-text{font-size:13px;color:#888;line-height:1.7;}
-.quality-item .q-text strong{color:#ddd;}
-
-/* Footer */
 .footer{
 margin-top:clamp(40px,8vw,80px);
 font-size:clamp(8px,1.4vw,10px);
 color:#333;
-text-align:center;
-}
-
-@media(max-width:500px){
-.infra-grid{grid-template-columns:repeat(2,1fr);}
-.quality-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -204,127 +136,33 @@ text-align:center;
 <body>
 
 <canvas id="bg"></canvas>
+<div class="cursor"></div>
 
 <div class="container">
 
-<!-- Header -->
 <section class="reveal">
-<h1>SYSTEM<span class="highlight">BLUEPRINT</span></h1>
-<p class="sub"><span id="typewriter"></span><span class="cursor-blink">|</span></p>
+
+<h1 class="ai" data-text="KERNELDIAGNOSTIC"></h1>
+<div style="display:flex;margin-top:12px;margin-bottom:20px;">
+<div class="ai" style="font-size:clamp(12px,2vw,16px);color:#999;" id="subtitle" data-text="> CAT /PROC/PERSONALITY // PERSONALITY DIAGNOSIS LOADING..."></div>
+<div id="cursor" class="cursor-blink" style="display:none;">|</div>
+</div>
+
 </section>
 
-<div class="divider reveal">// INFRASTRUCTURE — SELF HOSTED</div>
+<div class="divider reveal">SELF MODEL TRACE</div>
 
-<!-- Infrastructure -->
-<section class="arch-section reveal">
-<div class="arch-label">▸ 我能跑就不買 SaaS</div>
-<div class="infra-grid">
-<div class="infra-card">
-<div class="i-name"><span class="i-status"></span>Debian VPS</div>
-<div class="i-role">自己管 · 自己優化</div>
-</div>
-<div class="infra-card">
-<div class="i-name"><span class="i-status"></span>DNS</div>
-<div class="i-role">自己設定 · 自己掌控</div>
-</div>
-<div class="infra-card">
-<div class="i-name"><span class="i-status"></span>HTTPS / SSL</div>
-<div class="i-role">自己配 · 自動更新</div>
-</div>
-<div class="infra-card">
-<div class="i-name"><span class="i-status"></span>Cloudflare Pages</div>
-<div class="i-role">全球邊緣分發</div>
-</div>
-<div class="infra-card">
-<div class="i-name"><span class="i-status"></span>GitHub Pages</div>
-<div class="i-role">靜態鏡像備援</div>
-</div>
-<div class="infra-card">
-<div class="i-name"><span class="i-status"></span>自架郵件</div>
-<div class="i-role">noreply@wahsun.org</div>
-</div>
-<div class="infra-card">
-<div class="i-name"><span class="i-status"></span>Glance Dashboard</div>
-<div class="i-role">自架監控面板</div>
-</div>
-<div class="infra-card">
-<div class="i-name"><span class="i-status"></span>部落格</div>
-<div class="i-role">自己寫 · Astro 驅動</div>
-</div>
-</div>
+<section class="bio reveal">
+<p class="node">OBSERVATION NODE: ACTIVE</p>
+<p class="core">STATE: SELF-REFERENTIAL PROCESSING</p>
 </section>
 
-<div class="divider reveal">// CLOSED LOOP — 不修單點，只設計閉環</div>
-
-<!-- System Thinking -->
-<section class="arch-section reveal">
-<div class="arch-label">▸ 系統性思維 — 每一條都是完整閉環</div>
-<ul class="loop-list">
-<li>
-<strong>Git Push 監控</strong> → 整條 pipeline：webhook → parser → collector → visualizer。不是只接一個 hook 就交差。
-</li>
-<li>
-<strong>Cloudflare Pages 部署</strong> → DNS → token → wrangler → 分支策略 → 自動觸發 → curl 驗證。整條鏈摸清才上線。
-</li>
-<li>
-<strong>Ops Log</strong> → 每日自動收集 → 結構化 → commit → push → 可追溯。思考的是系統，不是單次的 log。
-</li>
-<li>
-<strong>功能退役</strong> → 連目錄帶服務帶 cron 全部刪光。不講客氣。乾淨意味著可重現。
-</li>
-</ul>
+<section class="contact reveal">
+<p>CONNECT:</p> 
+<a class="email" href="mailto:X@WAHSUN.ORG">X@WAHSUN.ORG</a>
 </section>
 
-<div class="divider reveal">// QUALITY GATE — 做完要像樣</div>
-
-<!-- Quality Standards -->
-<section class="arch-section reveal">
-<div class="arch-label">▸ 部署後檢查清單 — 不是做完就好</div>
-<div class="quality-grid">
-<div class="quality-item">
-<span class="q-check">✓</span>
-<div class="q-text"><strong>curl 檢查</strong> — 部署完立刻 curl，確認 HTTP 200 OK</div>
-</div>
-<div class="quality-item">
-<span class="q-check">✓</span>
-<div class="q-text"><strong>vision_analyze</strong> — 看畫面截圖，確認 UI 無破版</div>
-</div>
-<div class="quality-item">
-<span class="q-check">✓</span>
-<div class="q-text"><strong>圖片唯一</strong> — 不重複、不碰撞、有語義命名</div>
-</div>
-<div class="quality-item">
-<span class="q-check">✓</span>
-<div class="q-text"><strong>slug kebab-case</strong> — 網址規則一致，無例外</div>
-</div>
-<div class="quality-item">
-<span class="q-check">✓</span>
-<div class="q-text"><strong>SEO metadata</strong> — 每篇文章都有 title / description / og:image</div>
-</div>
-<div class="quality-item">
-<span class="q-check">✓</span>
-<div class="q-text"><strong>清理殘骸</strong> — clean removal over leaving artifacts</div>
-</div>
-</div>
-</section>
-
-<div class="divider reveal">// ADMINISTRATOR — 系統主宰</div>
-
-<section class="arch-section reveal">
-<div class="arch-label">▸ 系統管理員</div>
-<div class="infra-grid">
-<div class="infra-card">
-<div class="i-name"><span class="i-status"></span>WAHSUN</div>
-<div class="i-role">系統架構設計者</div>
-</div>
-<div class="infra-card">
-<div class="i-name"><span class="i-status"></span>noreply@wahsun.org</div>
-<div class="i-role">聯繫信箱</div>
-</div>
-</div>
-</section>
-
-<div class="footer reveal">▫️ SYSTEM BLUEPRINT · INFRA: SELF-HOSTED · QUALITY: VERIFIED</div>
+<div class="footer reveal">PS: THIS PAGE IS DEPLOYED TO SHIELD VISITORS FROM SERVER ERROR MESSAGES.</div>
 
 </div>
 
@@ -336,76 +174,126 @@ e.forEach(x=>x.isIntersecting&&x.target.classList.add("active"));
 });
 document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
 
-/* typewriter */
-const twEl=document.getElementById("typewriter");
-const twText='> cat /etc/blueprint.conf // 系統架構載入中... 8 infra nodes, 4 closed loops.';
-let twIdx=0,twOut='';
-function tick(){if(twIdx<twText.length){twOut+=twText[twIdx];twEl.textContent=twOut;twIdx++;setTimeout(tick,18+Math.random()*40);}}
+/* cursor */
+const cursor=document.querySelector(".cursor");
+document.addEventListener("mousemove",e=>{
+cursor.style.left=e.clientX+"px";
+cursor.style.top=e.clientY+"px";
+});
+
+/* ================= STREAMING ================= */
+
+function stream(el,text){
+return new Promise(resolve=>{
+let i=0,out="";
+
+function tick(){
+
+if(Math.random()<0.06){
+setTimeout(tick,120+Math.random()*180);
+return;
+}
+
+if(Math.random()<0.04 && out.length>3){
+out=out.slice(0,-1);
+el.textContent=out;
+setTimeout(tick,40);
+return;
+}
+
+out+=text[i];
+el.textContent=out;
+i++;
+
+if(i<text.length){
+setTimeout(tick,18+Math.random()*40);
+}else resolve();
+}
+
 tick();
+});
+}
 
-/* ================= FLOATING ORBS ================= */
+async function run(){
+const els=document.querySelectorAll(".ai[data-text]");
+for(let el of els){
+if(el.tagName==="DIV"&&el.hasAttribute("data-text")&&el.getAttribute("data-text").startsWith(">")){
+await stream(el,el.dataset.text);
+document.getElementById("cursor").style.display="inline";
+}else{
+el.textContent=el.dataset.text;
+}
+}
+}
 
-const canvas=document.getElementById("bg"),
-      ctx=canvas.getContext("2d");
-let W,H,orbs=[];
+run();
+
+/* ================= NEURAL PARTICLES + CONNECTING WIRE ================= */
+
+const canvas=document.getElementById("bg");
+const ctx=canvas.getContext("2d");
+
+let W,H,particles=[];
+
+function createParticles(){
+const count=Math.max(60,Math.min(200,Math.floor(W*H/15000)));
+particles=Array.from({length:count},()=>({
+x:Math.random()*W,
+y:Math.random()*H,
+vx:(Math.random()-.5)*0.3,
+vy:(Math.random()-.5)*0.3,
+a:Math.random(),
+}));
+}
 
 function resize(){
 W=canvas.width=innerWidth;
 H=canvas.height=innerHeight;
-createOrbs();
+createParticles();
 }
-
-function createOrbs(){
-const count=Math.max(30,Math.min(120,Math.floor(W*H/15000)));
-orbs=Array.from({length:count},()=>({
-x:Math.random()*W,
-y:Math.random()*H,
-r:0.6+Math.random()*1.4,
-vx:(Math.random()-.5)*0.15,
-vy:(Math.random()-.5)*0.15,
-phase:Math.random()*Math.PI*2,
-baseAlpha:0.08+Math.random()*0.2
-}));
-}
-
 resize();
 addEventListener("resize",resize);
 
-function draw(){
-ctx.clearRect(0,0,W,H);
-
-// connections
-const maxDist=Math.min(W,H)*0.1;
-for(let i=0;i<orbs.length;i++){
-for(let j=i+1;j<orbs.length;j++){
-const dx=orbs[i].x-orbs[j].x,
-      dy=orbs[i].y-orbs[j].y,
-      dist=Math.sqrt(dx*dx+dy*dy);
-if(dist<maxDist){
-const alpha=(1-dist/maxDist)*0.05;
+/* TIE */
+function drawConnections(){
+const maxDist=Math.min(W,H)*0.12;
+const maxDistSq=maxDist*maxDist;
+const n=particles.length;
+for(let i=0;i<n;i++){
+const pi=particles[i];
+for(let j=i+1;j<n;j++){
+const pj=particles[j];
+const dx=pi.x-pj.x,dy=pi.y-pj.y;
+const distSq=dx*dx+dy*dy;
+if(distSq<maxDistSq){
+const alpha=1-Math.sqrt(distSq)/maxDist;
 ctx.beginPath();
-ctx.moveTo(orbs[i].x,orbs[i].y);
-ctx.lineTo(orbs[j].x,orbs[j].y);
-ctx.strokeStyle=`rgba(5,250,13,${alpha})`;
-ctx.lineWidth=0.4;
+ctx.moveTo(pi.x,pi.y);
+ctx.lineTo(pj.x,pj.y);
+ctx.strokeStyle=`rgba(5,250,13,${alpha*0.3})`;
+ctx.lineWidth=0.5;
 ctx.stroke();
 }
 }
 }
-
-// orbs
-for(const o of orbs){
-o.x+=o.vx;
-o.y+=o.vy;
-if(o.x<0||o.x>W)o.vx*=-1;
-if(o.y<0||o.y>H)o.vy*=-1;
-const pulse=0.6+0.4*Math.sin(Date.now()/2000+o.phase);
-ctx.beginPath();
-ctx.arc(o.x,o.y,o.r*pulse,0,Math.PI*2);
-ctx.fillStyle=`rgba(5,250,13,${o.baseAlpha*pulse})`;
-ctx.fill();
 }
 
+function draw(){
+ctx.clearRect(0,0,W,H);
+drawConnections();
+for(const p of particles){
+p.a+=Math.random()*0.02-0.01;
+ctx.globalAlpha=Math.abs(p.a);
+ctx.fillStyle="#05fa0d";
+ctx.beginPath();
+ctx.arc(p.x,p.y,1.2,0,Math.PI*2);
+ctx.fill();
+p.x+=p.vx;
+p.y+=p.vy;
+if(p.x<0||p.x>W)p.vx*=-1;
+if(p.y<0||p.y>H)p.vy*=-1;
+}
+ctx.globalAlpha=1;
 requestAnimationFrame(draw);
 }
 draw();
