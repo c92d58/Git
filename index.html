@@ -1,489 +1,455 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=[REDACTED-GA-ID]"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '[REDACTED-GA-ID]');
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WAHSUN</title>
+<title>▫️BLUEPRINT // SYSTEM ARCHITECTURE</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+:root{--g:#05fa0d;}
 
 body{
-    background:#0a0a0a;
-    color:#fff;
-    font-family:Inter,sans-serif;
-    line-height:1.7;
+margin:0;
+background:#000000;
+color:#fff;
+font-family:Inter,-apple-system;
+overflow-x:hidden;
+cursor:none;
+}
+
+canvas{
+position:fixed;
+top:0;left:0;
+z-index:-1;
+}
+
+.cursor{
+position:fixed;
+width:8px;height:8px;
+border-radius:50%;
+background:var(--g);
+transform:translate(-50%,-50%);
+pointer-events:none;
+mix-blend-mode:screen;
+z-index:9999;
 }
 
 .container{
-    width:min(1100px,90%);
-    margin:auto;
+max-width:960px;
+margin:auto;
+padding:clamp(60px,10vw,120px) clamp(16px,4vw,48px);
 }
 
-nav{
-    position:fixed;
-    width:100%;
-    top:0;
-    backdrop-filter:blur(20px);
-    background:rgba(10,10,10,.65);
-    border-bottom:1px solid rgba(255,255,255,.05);
+.reveal{
+opacity:0;
+transform:translateY(30px);
+transition:1s ease;
+}
+.reveal.active{opacity:1;transform:translateY(0);}
+
+h1{
+font-size:clamp(28px,5vw,52px);
+color:#fff;
+font-weight:800;
+line-height:1.1;
+margin-bottom:8px;
+}
+h1 .highlight{color:var(--g);}
+
+.sub{
+font-size:clamp(14px,2vw,18px);
+color:#666;
+margin-bottom:16px;
+}
+.cursor-blink{animation:blink 1s step-end infinite;}
+@keyframes blink{50%{opacity:0}}
+
+.divider{
+margin:clamp(40px,8vw,90px) 0;
+font-size:clamp(8px,1.4vw,10px);
+letter-spacing:5px;
+color:#666;
+display:flex;
+}
+.divider::after{
+content:"";
+flex:1;height:1px;background:#222;margin-left:12px;
 }
 
-nav .container{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:18px 0;
+/* Architecture sections */
+.arch-section{
+margin-bottom:40px;
+}
+.arch-label{
+font-size:9px;
+color:var(--g);
+letter-spacing:4px;
+text-transform:uppercase;
+margin-bottom:14px;
+opacity:0.6;
 }
 
-.logo{
-    font-weight:600;
-    letter-spacing:2px;
+/* Infrastructure stack */
+.infra-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:10px;
+}
+.infra-card{
+border:1px solid #1a1a1a;
+padding:16px 20px;
+border-radius:2px;
+transition:all .5s;
+text-align:center;
+}
+.infra-card:hover{
+border-color:var(--g);
+box-shadow:0 0 30px rgba(5,250,13,0.03);
+transform:translateY(-2px);
+}
+.infra-card .i-name{
+font-size:14px;
+color:#ddd;
+font-weight:600;
+margin-bottom:4px;
+}
+.infra-card .i-role{
+font-size:10px;
+color:#555;
+letter-spacing:1px;
+}
+.infra-card .i-status{
+display:inline-block;
+width:6px;height:6px;
+border-radius:50%;
+background:var(--g);
+margin-right:6px;
 }
 
-.hero{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
+/* Loop system */
+.loop-list{
+list-style:none;
+padding:0;
+}
+.loop-list li{
+border:1px solid #1a1a1a;
+padding:16px 20px;
+margin-bottom:8px;
+border-radius:2px;
+font-size:13px;
+color:#aaa;
+line-height:1.8;
+transition:all .4s;
+position:relative;
+padding-left:36px;
+}
+.loop-list li::before{
+content:'↻';
+position:absolute;
+left:14px;
+top:16px;
+color:var(--g);
+opacity:0.4;
+font-size:14px;
+}
+.loop-list li:hover{
+border-color:var(--g);
+transform:translateX(4px);
+box-shadow:0 0 25px rgba(5,250,13,0.02);
+}
+.loop-list li strong{color:#ddd;}
+
+/* Quality checklist */
+.quality-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:10px;
+}
+.quality-item{
+border:1px solid #1a1a1a;
+padding:16px 20px;
+border-radius:2px;
+transition:all .4s;
+display:flex;
+align-items:flex-start;
+gap:12px;
+}
+.quality-item:hover{
+border-color:var(--g);
+box-shadow:0 0 25px rgba(5,250,13,0.02);
+}
+.quality-item .q-check{
+color:var(--g);
+font-size:14px;
+flex-shrink:0;
+margin-top:2px;
+}
+.quality-item .q-text{font-size:13px;color:#888;line-height:1.7;}
+.quality-item .q-text strong{color:#ddd;}
+
+/* Footer */
+.footer{
+margin-top:clamp(40px,8vw,80px);
+font-size:clamp(8px,1.4vw,10px);
+color:#333;
+text-align:center;
 }
 
-.hero h1{
-    font-size:clamp(4rem,8vw,8rem);
-    line-height:1;
-    margin-bottom:20px;
+@media(max-width:500px){
+.infra-grid{grid-template-columns:repeat(2,1fr);}
+.quality-grid{grid-template-columns:1fr;}
 }
-
-.hero p{
-    color:#888;
-    max-width:700px;
-    font-size:1.2rem;
-}
-
-.tag{
-    display:inline-block;
-    margin-top:40px;
-    border:1px solid rgba(255,255,255,.1);
-    padding:12px 22px;
-    border-radius:999px;
-    color:#aaa;
-}
-
-section{
-    padding:120px 0;
-}
-
-.section-title{
-    font-size:2rem;
-    margin-bottom:40px;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:20px;
-}
-
-.card{
-    background:#111;
-    border:1px solid rgba(255,255,255,.05);
-    padding:32px;
-    border-radius:20px;
-    transition:.3s;
-}
-
-.card:hover{
-    transform:translateY(-6px);
-    border-color:rgba(255,255,255,.15);
-}
-
-.card h3{
-    margin-bottom:15px;
-}
-
-.card p{
-    color:#888;
-}
-
-.quote{
-    text-align:center;
-    font-size:2rem;
-    color:#ddd;
-    max-width:900px;
-    margin:auto;
-}
-
-footer{
-    padding:60px 0;
-    border-top:1px solid rgba(255,255,255,.04);
-    color:#444;
-    text-align:center;
-    font-size:13px;
-}
-
-/* ── Contact Link ── */
-.contact-link {
-    display: inline-block;
-    font-family: 'JetBrains Mono', 'Courier New', monospace;
-    font-size: 20px;
-    color: #00ff88;
-    text-decoration: none;
-    letter-spacing: 1px;
-    padding: 10px 24px;
-    border: 1px solid rgba(0,255,136,.2);
-    transition: .3s;
-}
-.contact-link:hover {
-    background: rgba(0,255,136,.06);
-    border-color: rgba(0,255,136,.45);
-}
-
-.gradient{
-    position:fixed;
-    width:600px;
-    height:600px;
-    background:radial-gradient(circle,#2a5fff33,transparent 70%);
-    top:-200px;
-    right:-100px;
-    pointer-events:none;
-}
-
-/* ── Marquee ── */
-.marquee-section {
-    padding: 40px 0;
-    overflow: hidden;
-    border-top: 1px solid rgba(255,255,255,.04);
-    border-bottom: 1px solid rgba(255,255,255,.04);
-    position: relative;
-}
-
-.marquee-section .label {
-    text-align: center;
-    font-size: 10px;
-    letter-spacing: 4px;
-    color: #444;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-}
-
-.marquee-track {
-    display: flex;
-    width: max-content;
-    animation: marquee-scroll 60s linear infinite;
-}
-
-.marquee-track span {
-    display: inline-block;
-    font-family: 'JetBrains Mono', 'Courier New', monospace;
-    font-size: 13px;
-    color: #555;
-    padding: 6px 18px;
-    white-space: nowrap;
-    transition: color .4s;
-}
-
-.marquee-track span.high {
-    color: #888;
-}
-
-.marquee-track span.green {
-    color: #00ff88;
-}
-
-.marquee-track span::after {
-    content: "·";
-    margin-left: 18px;
-    color: #333;
-}
-
-@keyframes marquee-scroll {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
-
-/* pause on hover */
-.marquee-section:hover .marquee-track {
-    animation-play-state: paused;
-}
-
 </style>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=[REDACTED-GA-ID]"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', '[REDACTED-GA-ID]');
-</script>
 </head>
+
 <body>
 
-<div class="gradient"></div>
+<canvas id="bg"></canvas>
+<div class="cursor"></div>
 
-<nav>
-    <div class="container">
-        <div class="logo">WAHSUN</div>
-        <div>Minimal • Independent • Internet</div>
-    </div>
-</nav>
+<div class="container">
 
-<section class="hero">
-    <div class="container">
-        <h1>WAHSUN</h1>
-
-        <p>
-            離開喧囂的社交網絡，
-            回歸開放互聯網。
-            熱愛技術、開源與獨立思考。
-            相信內容比流量更重要，
-            相信網站比算法更長久。
-        </p>
-
-        <div class="tag">
-            Building a Quiet Corner on the Internet.
-        </div>
-    </div>
+<!-- Header -->
+<section class="reveal">
+<h1>SYSTEM<span class="highlight">BLUEPRINT</span></h1>
+<p class="sub"><span id="typewriter"></span><span class="cursor-blink">|</span></p>
 </section>
 
-<!-- ═══ MARQUEE ═══ -->
-<section class="marquee-section">
-    <div class="label">Signal Stream</div>
-    <div class="marquee-track">
-        <span class="green">TCP/IP</span>
-        <span>DNS</span>
-        <span class="high">HTTP/3</span>
-        <span>TLS 1.3</span>
-        <span class="green">RSS</span>
-        <span>IPv6</span>
-        <span class="high">SSL</span>
-        <span>SSH</span>
-        <span class="green">P2P</span>
-        <span>WebSocket</span>
-        <span class="high">REST</span>
-        <span>GraphQL</span>
-        <span class="green">Docker</span>
-        <span>Linux</span>
-        <span class="high">Git</span>
-        <span>Open Source</span>
-        <span class="green">Self-Hosting</span>
-        <span>Cloudflare</span>
-        <span class="high">Edge</span>
-        <span>CDN</span>
-        <span class="green">API</span>
-        <span>JSON</span>
-        <span class="high">Markdown</span>
-        <span>YAML</span>
-        <span class="green">CI/CD</span>
-        <span>VPN</span>
-        <span class="high">QUIC</span>
-        <span>UDP</span>
-        <span class="green">BGP</span>
-        <span>SMTP</span>
-        <span class="high">IMAP</span>
-        <span>JWT</span>
-        <span class="green">OAuth</span>
-        <span>WebRTC</span>
-        <span class="high">gRPC</span>
-        <span>MQTT</span>
-        <span class="green">PKI</span>
-        <span>HMAC</span>
-        <span class="high">Recursion</span>
-        <span>Entropy</span>
-        <span class="green">Emergence</span>
-        <span>Signal</span>
-        <span class="high">Noise</span>
-        <span>Feedback&nbsp;Loop</span>
-        <span class="green">Heuristics</span>
-        <span>Abstraction</span>
-        <span class="high">Compression</span>
-        <span>Latency</span>
-        <span class="green">Bandwidth</span>
-        <span>Protocol</span>
-        <span class="high">Handshake</span>
-        <span>Fault&nbsp;Tolerance</span>
-        <span class="green">Redundancy</span>
-        <span>Consensus</span>
-        <span class="high">Encryption</span>
-        <span>Hash</span>
-        <span class="green">Checksum</span>
-        <span>Cache</span>
-        <span class="high">Buffer</span>
-        <span>Stack</span>
-        <span class="green">Heap</span>
-        <span>Kernel</span>
-        <span class="high">Daemon</span>
-        <span>Mutex</span>
-        <span class="green">Semaphore</span>
-        <!-- duplicate for seamless loop -->
-        <span class="green">TCP/IP</span>
-        <span>DNS</span>
-        <span class="high">HTTP/3</span>
-        <span>TLS 1.3</span>
-        <span class="green">RSS</span>
-        <span>IPv6</span>
-        <span class="high">SSL</span>
-        <span>SSH</span>
-        <span class="green">P2P</span>
-        <span>WebSocket</span>
-        <span class="high">REST</span>
-        <span>GraphQL</span>
-        <span class="green">Docker</span>
-        <span>Linux</span>
-        <span class="high">Git</span>
-        <span>Open Source</span>
-        <span class="green">Self-Hosting</span>
-        <span>Cloudflare</span>
-        <span class="high">Edge</span>
-        <span>CDN</span>
-        <span class="green">API</span>
-        <span>JSON</span>
-        <span class="high">Markdown</span>
-        <span>YAML</span>
-        <span class="green">CI/CD</span>
-        <span>VPN</span>
-        <span class="high">QUIC</span>
-        <span>UDP</span>
-        <span class="green">BGP</span>
-        <span>SMTP</span>
-        <span class="high">IMAP</span>
-        <span>JWT</span>
-        <span class="green">OAuth</span>
-        <span>WebRTC</span>
-        <span class="high">gRPC</span>
-        <span>MQTT</span>
-        <span class="green">PKI</span>
-        <span>HMAC</span>
-        <span class="high">Recursion</span>
-        <span>Entropy</span>
-        <span class="green">Emergence</span>
-        <span>Signal</span>
-        <span class="high">Noise</span>
-        <span>Feedback&nbsp;Loop</span>
-        <span class="green">Heuristics</span>
-        <span>Abstraction</span>
-        <span class="high">Compression</span>
-        <span>Latency</span>
-        <span class="green">Bandwidth</span>
-        <span>Protocol</span>
-        <span class="high">Handshake</span>
-        <span>Fault&nbsp;Tolerance</span>
-        <span class="green">Redundancy</span>
-        <span>Consensus</span>
-        <span class="high">Encryption</span>
-        <span>Hash</span>
-        <span class="green">Checksum</span>
-        <span>Cache</span>
-        <span class="high">Buffer</span>
-        <span>Stack</span>
-        <span class="green">Heap</span>
-        <span>Kernel</span>
-        <span class="high">Daemon</span>
-        <span>Mutex</span>
-        <span class="green">Semaphore</span>
-    </div>
+<div class="divider reveal">// INFRASTRUCTURE — SELF HOSTED</div>
+
+<!-- Infrastructure -->
+<section class="arch-section reveal">
+<div class="arch-label">▸ 我能跑就不買 SaaS</div>
+<div class="infra-grid">
+<div class="infra-card">
+<div class="i-name"><span class="i-status"></span>Debian VPS</div>
+<div class="i-role">自己管 · 自己優化</div>
+</div>
+<div class="infra-card">
+<div class="i-name"><span class="i-status"></span>DNS</div>
+<div class="i-role">自己設定 · 自己掌控</div>
+</div>
+<div class="infra-card">
+<div class="i-name"><span class="i-status"></span>HTTPS / SSL</div>
+<div class="i-role">自己配 · 自動更新</div>
+</div>
+<div class="infra-card">
+<div class="i-name"><span class="i-status"></span>Cloudflare Pages</div>
+<div class="i-role">全球邊緣分發</div>
+</div>
+<div class="infra-card">
+<div class="i-name"><span class="i-status"></span>GitHub Pages</div>
+<div class="i-role">靜態鏡像備援</div>
+</div>
+<div class="infra-card">
+<div class="i-name"><span class="i-status"></span>自架郵件</div>
+<div class="i-role">noreply@wahsun.org</div>
+</div>
+<div class="infra-card">
+<div class="i-name"><span class="i-status"></span>Glance Dashboard</div>
+<div class="i-role">自架監控面板</div>
+</div>
+<div class="infra-card">
+<div class="i-name"><span class="i-status"></span>部落格</div>
+<div class="i-role">自己寫 · Astro 驅動</div>
+</div>
+</div>
 </section>
 
-<section>
-    <div class="container">
+<div class="divider reveal">// CLOSED LOOP — 不修單點，只設計閉環</div>
 
-        <h2 class="section-title">Digital Philosophy</h2>
-
-        <div class="grid">
-
-            <div class="card">
-                <h3>Less Social</h3>
-                <p>
-                    不追逐熱點，
-                    不依賴推薦算法，
-                    保持信息攝入的主動權。
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>Open Internet</h3>
-                <p>
-                    偏愛開放協議、
-                    獨立網站、
-                    RSS 與自由網絡文化。
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>Minimal Living</h3>
-                <p>
-                    極簡不僅是設計風格，
-                    更是一種數位生活方式。
-                </p>
-            </div>
-
-        </div>
-
-    </div>
+<!-- System Thinking -->
+<section class="arch-section reveal">
+<div class="arch-label">▸ 系統性思維 — 每一條都是完整閉環</div>
+<ul class="loop-list">
+<li>
+<strong>Git Push 監控</strong> → 整條 pipeline：webhook → parser → collector → visualizer。不是只接一個 hook 就交差。
+</li>
+<li>
+<strong>Cloudflare Pages 部署</strong> → DNS → token → wrangler → 分支策略 → 自動觸發 → curl 驗證。整條鏈摸清才上線。
+</li>
+<li>
+<strong>Ops Log</strong> → 每日自動收集 → 結構化 → commit → push → 可追溯。思考的是系統，不是單次的 log。
+</li>
+<li>
+<strong>功能退役</strong> → 連目錄帶服務帶 cron 全部刪光。不講客氣。乾淨意味著可重現。
+</li>
+</ul>
 </section>
 
-<section>
-    <div class="container">
+<div class="divider reveal">// QUALITY GATE — 做完要像樣</div>
 
-        <h2 class="section-title">Interests</h2>
-
-        <div class="grid">
-
-            <div class="card">
-                <h3>Technology</h3>
-                <p>Linux · Git · Open Source · Self Hosting</p>
-            </div>
-
-            <div class="card">
-                <h3>Music</h3>
-                <p>Lofi音樂與沉浸式聆聽體驗</p>
-            </div>
-
-            <div class="card">
-                <h3>Cats</h3>
-                <p>簡單、安靜、自由</p>
-            </div>
-
-        </div>
-
-    </div>
+<!-- Quality Standards -->
+<section class="arch-section reveal">
+<div class="arch-label">▸ 部署後檢查清單 — 不是做完就好</div>
+<div class="quality-grid">
+<div class="quality-item">
+<span class="q-check">✓</span>
+<div class="q-text"><strong>curl 檢查</strong> — 部署完立刻 curl，確認 HTTP 200 OK</div>
+</div>
+<div class="quality-item">
+<span class="q-check">✓</span>
+<div class="q-text"><strong>vision_analyze</strong> — 看畫面截圖，確認 UI 無破版</div>
+</div>
+<div class="quality-item">
+<span class="q-check">✓</span>
+<div class="q-text"><strong>圖片唯一</strong> — 不重複、不碰撞、有語義命名</div>
+</div>
+<div class="quality-item">
+<span class="q-check">✓</span>
+<div class="q-text"><strong>slug kebab-case</strong> — 網址規則一致，無例外</div>
+</div>
+<div class="quality-item">
+<span class="q-check">✓</span>
+<div class="q-text"><strong>SEO metadata</strong> — 每篇文章都有 title / description / og:image</div>
+</div>
+<div class="quality-item">
+<span class="q-check">✓</span>
+<div class="q-text"><strong>清理殘骸</strong> — clean removal over leaving artifacts</div>
+</div>
+</div>
 </section>
 
-<section>
+<div class="divider reveal">// ADMINISTRATOR — 系統主宰</div>
 
-    <div class="container">
-
-        <div class="quote">
-            「少一些追求，多一些專注與深度。」
-        </div>
-
-    </div>
-
+<section class="arch-section reveal">
+<div class="arch-label">▸ 系統管理員</div>
+<div class="infra-grid">
+<div class="infra-card">
+<div class="i-name"><span class="i-status"></span>WAHSUN</div>
+<div class="i-role">系統架構設計者</div>
+</div>
+<div class="infra-card">
+<div class="i-name"><span class="i-status"></span>noreply@wahsun.org</div>
+<div class="i-role">聯繫信箱</div>
+</div>
+</div>
 </section>
 
-<!-- ═══ CONTACT ═══ -->
-<section>
-    <div class="container" style="text-align:center;">
+<div class="footer reveal">▫️ SYSTEM BLUEPRINT · INFRA: SELF-HOSTED · QUALITY: VERIFIED</div>
 
-        <p style="color:#555;font-size:13px;margin-bottom:8px;">
-            This station is always listening.
-        </p>
-        <p style="color:#777;font-size:15px;max-width:520px;margin:0 auto 28px;line-height:1.7;">
-            Questions, signals, or just a ping —<br>reach out anytime through the open channel below.
-        </p>
+</div>
 
-        <a href="mailto:noreply@wahsun.org" class="contact-link">noreply@wahsun.org</a>
+<script>
 
-    </div>
-</section>
+/* reveal */
+const io=new IntersectionObserver(e=>{
+e.forEach(x=>x.isIntersecting&&x.target.classList.add("active"));
+});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
 
-<footer>
-    © 2026 WAHSUN · All Rights Reserved
-</footer>
+/* cursor */
+const cursor=document.querySelector(".cursor");
+document.addEventListener("mousemove",e=>{
+cursor.style.left=e.clientX+"px";
+cursor.style.top=e.clientY+"px";
+});
+
+/* typewriter */
+const twEl=document.getElementById("typewriter");
+const twText='> cat /etc/blueprint.conf // 系統架構載入中... 8 infra nodes, 4 closed loops.';
+let twIdx=0,twOut='';
+function tick(){if(twIdx<twText.length){twOut+=twText[twIdx];twEl.textContent=twOut;twIdx++;setTimeout(tick,18+Math.random()*40);}}
+tick();
+
+/* ================= NEURAL PARTICLES + CONNECTING WIRE ================= */
+
+const canvas=document.getElementById("bg");
+const ctx=canvas.getContext("2d");
+
+let W,H,particles=[],dpr=1;
+const isMobile=/Mobi|Android/i.test(navigator.userAgent);
+const prefersReduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function createParticles(){
+const raw=W*H/15000;
+const maxP=isMobile?90:200;
+const minP=isMobile?30:60;
+const count=Math.max(minP,Math.min(maxP,Math.floor(raw)));
+particles=Array.from({length:count},()=>({
+x:Math.random()*W,
+y:Math.random()*H,
+vx:(Math.random()-.5)*(prefersReduced?0.04:0.15),
+vy:(Math.random()-.5)*(prefersReduced?0.04:0.15),
+a:Math.random(),
+}));
+}
+
+function resize(){
+dpr=window.devicePixelRatio||1;
+W=innerWidth;
+H=innerHeight;
+canvas.width=W*dpr;
+canvas.height=H*dpr;
+canvas.style.width=W+"px";
+canvas.style.height=H+"px";
+ctx.setTransform(dpr,0,0,dpr,0,0);
+createParticles();
+}
+
+let resizeTimer;
+addEventListener("resize",()=>{
+clearTimeout(resizeTimer);
+resizeTimer=setTimeout(resize,150);
+});
+
+resize();
+
+function drawConnections(){
+const maxDist=Math.min(W,H)*(isMobile?0.08:0.12);
+const maxDistSq=maxDist*maxDist;
+const n=particles.length;
+for(let i=0;i<n;i++){
+const pi=particles[i];
+for(let j=i+1;j<n;j++){
+const pj=particles[j];
+const dx=pi.x-pj.x,dy=pi.y-pj.y;
+const distSq=dx*dx+dy*dy;
+if(distSq<maxDistSq){
+const alpha=1-Math.sqrt(distSq)/maxDist;
+ctx.beginPath();
+ctx.moveTo(pi.x,pi.y);
+ctx.lineTo(pj.x,pj.y);
+ctx.strokeStyle=`rgba(5,250,13,${(alpha*0.3).toFixed(3)})`;
+ctx.lineWidth=0.5;
+ctx.stroke();
+}
+}
+}
+}
+
+function draw(){
+ctx.clearRect(0,0,W,H);
+drawConnections();
+for(const p of particles){
+p.a+=Math.random()*0.02-0.01;
+ctx.globalAlpha=Math.abs(p.a);
+ctx.fillStyle="#05fa0d";
+ctx.beginPath();
+ctx.arc(p.x,p.y,1.2,0,Math.PI*2);
+ctx.fill();
+p.x+=p.vx;
+p.y+=p.vy;
+if(p.x<0||p.x>W)p.vx*=-1;
+if(p.y<0||p.y>H)p.vy*=-1;
+}
+ctx.globalAlpha=1;
+requestAnimationFrame(draw);
+}
+if(!prefersReduced) draw();
+
+</script>
 
 </body>
 </html>
