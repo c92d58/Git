@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>▫️ KERNEL // WAHSUN</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--g:#00ff88;--dim:#003322;--glow:rgba(0,255,136,0.08);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0a0a0f;color:#c0c0d0;font-family:'JetBrains Mono',monospace;overflow-x:hidden;min-height:100vh;}
+canvas{position:fixed;top:0;left:0;z-index:-1;}
+
+.container{max-width:960px;margin:0 auto;padding:clamp(60px,10vw,120px) clamp(20px,4vw,48px);position:relative;}
+.reveal{opacity:0;transform:translateY(40px);transition:0.8s cubic-bezier(0.22,1,0.36,1);}
+.reveal.active{opacity:1;transform:translateY(0);}
+.badge{display:inline-block;border:1px solid var(--g);color:var(--g);font-size:11px;padding:4px 12px;letter-spacing:3px;margin-bottom:24px;opacity:0.6;}
+h1{font-size:clamp(28px,5vw,52px);color:#fff;font-weight:800;line-height:1.1;margin-bottom:8px;}
+h1 .highlight{color:var(--g);}
+.sub{font-size:clamp(14px,2vw,18px);color:#666;margin-bottom:40px;border-left:2px solid var(--g);padding-left:16px;}
+.sub .cursor-blink{animation:blink 1s step-end infinite;}
+@keyframes blink{50%{opacity:0}}
+.grid{margin:60px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
+.card{border:1px solid #1a1a2e;background:rgba(10,10,15,0.8);padding:24px;border-radius:4px;transition:all .3s;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent);transform:translateX(-100%);transition:transform .6s;}
+.card:hover::before{transform:translateX(100%);}
+.card:hover{border-color:var(--g);transform:translateY(-2px);box-shadow:0 8px 40px var(--glow);}
+.card-label{font-size:10px;color:var(--g);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;opacity:0.6;}
+.card-title{color:#fff;font-size:18px;font-weight:600;margin-bottom:6px;}
+.card-desc{color:#666;font-size:13px;line-height:1.6;}
+.card .stat{font-size:28px;color:var(--g);font-weight:800;display:block;margin-bottom:4px;}
+.bio-section{margin:60px 0;padding:32px;border:1px solid #1a1a2e;border-radius:4px;background:rgba(10,10,15,0.5);}
+.bio-section p{line-height:1.8;font-size:14px;color:#888;margin-bottom:12px;}
+.bio-section .tag{display:inline-block;border:1px solid #2a2a3e;color:var(--g);font-size:11px;padding:2px 10px;margin:3px;border-radius:2px;}
+.sysinfo{font-size:11px;color:#444;margin-top:60px;padding-top:20px;border-top:1px solid #1a1a2e;display:flex;flex-wrap:wrap;gap:8px 24px;}
+.sysinfo span{opacity:0;animation:fadeIn .5s forwards;}
+.sysinfo span:nth-child(1){animation-delay:.5s;}
+.sysinfo span:nth-child(2){animation-delay:1s;}
+.sysinfo span:nth-child(3){animation-delay:1.5s;}
+.sysinfo span:nth-child(4){animation-delay:2s;}
+.sysinfo span:nth-child(5){animation-delay:2.5s;}
+.sysinfo a{color:var(--g);text-decoration:none;}
+@keyframes fadeIn{to{opacity:1}}
+.divider{display:flex;align-items:center;margin:60px 0;gap:12px;font-size:10px;color:#333;letter-spacing:4px;}
+.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#1a1a2e,transparent);}
+.scanline{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9998;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,136,0.008) 2px,rgba(0,255,136,0.008) 4px);}
+@media(max-width:600px){.grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div class="scanline"></div>
+
+<div class="container">
+<section class="reveal">
+<div class="badge">◆ WAHSUN ◆</div>
+<h1>HELLO, <span class="highlight">WORLD</span>.</h1>
+<p class="sub"><span id="typewriter"></span><span class="cursor-blink">|</span></p>
+</section>
+<div class="divider reveal">// SYSTEM_MODULES</div>
+<section class="grid reveal">
+<div class="card"><span class="card-label">computing</span><span class="stat">42°</span><div class="card-title">Neural Core Temp</div><div class="card-desc">System running at optimal thermal capacity.</div></div>
+<div class="card"><span class="card-label">network</span><span class="stat">7</span><div class="card-title">Active Nodes</div><div class="card-desc">Distributed mesh topology, all routes healthy.</div></div>
+<div class="card"><span class="card-label">experience</span><span class="stat">8yr</span><div class="card-title">Full-Stack Signal</div><div class="card-desc">Go, Rust, Python, TypeScript — polyglot stack.</div></div>
+<div class="card"><span class="card-label">status</span><span class="stat">99.9%</span><div class="card-title">Uptime</div><div class="card-desc">Always building, always shipping.</div></div>
+<div class="card"><span class="card-label">sync</span><span class="stat">UTC+8</span><div class="card-title">Ground Station</div><div class="card-desc">Signals originating from the Pacific Rim.</div></div>
+<div class="card"><span class="card-label">archive</span><span class="stat">3.4k</span><div class="card-title">Contributions</div><div class="card-desc">Sustained signal across 40+ repositories.</div></div>
+</section>
+<div class="divider reveal">// SIGNATURE</div>
+<section class="bio-section reveal">
+<p>I architect distributed systems and build interfaces at the edge of <span class="tag">performance</span> <span class="tag">simplicity</span> <span class="tag">scale</span>.</p>
+<p>Currently exploring: low-latency data pipelines, neural streaming, and the intersection of hardware-aware software.</p>
+<p class="tag" style="margin-top:8px;">opensource</p>
+<p class="tag">kubernetes</p>
+<p class="tag">wasm</p>
+<p class="tag">ml-ops</p>
+<p class="tag">distributed-systems</p>
+</section>
+<section class="sysinfo">
+<span>◆ UPTIME: 14,672h</span>
+<span>◆ LOAD: 0.23 / 1.0</span>
+<span>◆ MEM: 6.2 / 16 GB</span>
+<span>◆ KERNEL: Linux 6.8.0-arch1-1</span>
+<span>◆ CONTACT: <a href="mailto:noreply@wahsun.org" style="color:var(--g);text-decoration:none;">noreply@wahsun.org</a></span>
+</section>
+</div>
+<script>
+/* Cursor */
+
+/* Reveal */
+const io=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add('active')));
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* Typewriter */
+const el=document.getElementById('typewriter');
+const text='> system.online() // WAHSUN :: ready for incoming signals';
+let i=0,out='';
+function tick(){if(i<text.length){out+=text[i];el.textContent=out;i++;setTimeout(tick,18+Math.random()*40);}}
+tick();
+
+/* Canvas particles */
+const canvas=document.getElementById('bg'),ctx=canvas.getContext('2d');
+let W,H,particles=[];
+function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;createParticles();}
+function createParticles(){particles=Array.from({length:Math.max(40,Math.min(150,Math.floor(W*H/18000)))},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*0.2,vy:(Math.random()-.5)*0.2,phase:Math.random()*Math.PI*2}));}
+resize();addEventListener('resize',resize);
+function draw(){
+ctx.clearRect(0,0,W,H);
+const maxDist=Math.min(W,H)*0.1;
+for(let i=0;i<particles.length;i++){for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<maxDist){const a=1-dist/maxDist;ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(0,255,136,${a*0.15})`;ctx.lineWidth=0.5;ctx.stroke();}}}
+for(const p of particles){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;const pulse=0.6+0.4*Math.sin(Date.now()/1000+p.phase);ctx.beginPath();ctx.arc(p.x,p.y,1.2*pulse,0,Math.PI*2);ctx.fillStyle=`rgba(0,255,136,${0.3+0.3*pulse})`;ctx.fill();}
+requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>
