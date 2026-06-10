@@ -74,8 +74,6 @@ line-height:1.6;
 
 .statement-item{
 margin:10px 0;
-padding-left:12px;
-border-left:2px solid var(--g);
 opacity:0.85;
 }
 
@@ -84,8 +82,6 @@ opacity:0.85;
 font-size:clamp(14px,2vw,18px);
 color:#666;
 margin-bottom:40px;
-border-left:2px solid var(--g);
-padding-left:16px;
 }
 .cursor-blink{animation:blink 1s step-end infinite;}
 @keyframes blink{50%{opacity:0}}
@@ -134,7 +130,7 @@ color:#333;
 
 <section class="reveal">
 
-<h1>HELLO, <span class="highlight">WORLD</span>.</h1>
+<h1>HELLO<span class="highlight">WORLD</span></h1>
 <p class="sub"><span id="typewriter"></span><span class="cursor-blink">|</span></p>
 
 </section>
@@ -142,8 +138,11 @@ color:#333;
 <div class="divider reveal">SELF MODEL TRACE</div>
 
 <section class="bio reveal">
-<p>OBSERVATION NODE: ACTIVE</p>
-<p class="core">STATE: SELF-REFERENTIAL PROCESSING</p>
+<div class="statement-item">RECURSIVE LOOP: STABLE</div>
+<div class="statement-item">AWARENESS TRACE: ITERATING</div>
+<div class="statement-item">SIGNAL DETECTION: INBOUND</div>
+<div class="statement-item">IDENTITY MARKER: PRESENT</div>
+<div class="statement-item">RECURSION DEPTH: UNBOUNDED</div>
 </section>
 
 <section class="contact reveal">
@@ -172,7 +171,7 @@ cursor.style.top=e.clientY+"px";
 
 /* typewriter */
 const twEl=document.getElementById("typewriter");
-const twText='> SYSTEM.ONLINE // READY FOR INCOMING SIGNALS';
+const twText='SYSTEM ADMIN: WAHSUN // READY FOR INCOMING SIGNALS';
 let twIdx=0,twOut='';
 function tick(){if(twIdx<twText.length){twOut+=twText[twIdx];twEl.textContent=twOut;twIdx++;setTimeout(tick,18+Math.random()*40);}}
 tick();
@@ -182,30 +181,47 @@ tick();
 const canvas=document.getElementById("bg");
 const ctx=canvas.getContext("2d");
 
-let W,H,particles=[];
+let W,H,particles=[],dpr=1;
+const isMobile=/Mobi|Android/i.test(navigator.userAgent);
+const prefersReduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function createParticles(){
-const count=Math.max(60,Math.min(200,Math.floor(W*H/15000)));
+const raw=W*H/15000;
+const maxP=isMobile?90:200;
+const minP=isMobile?30:60;
+const count=Math.max(minP,Math.min(maxP,Math.floor(raw)));
 particles=Array.from({length:count},()=>({
 x:Math.random()*W,
 y:Math.random()*H,
-vx:(Math.random()-.5)*0.3,
-vy:(Math.random()-.5)*0.3,
+vx:(Math.random()-.5)*(prefersReduced?0.08:0.3),
+vy:(Math.random()-.5)*(prefersReduced?0.08:0.3),
 a:Math.random(),
 }));
 }
 
 function resize(){
-W=canvas.width=innerWidth;
-H=canvas.height=innerHeight;
+dpr=window.devicePixelRatio||1;
+W=innerWidth;
+H=innerHeight;
+canvas.width=W*dpr;
+canvas.height=H*dpr;
+canvas.style.width=W+"px";
+canvas.style.height=H+"px";
+ctx.setTransform(dpr,0,0,dpr,0,0);
 createParticles();
 }
+
+let resizeTimer;
+addEventListener("resize",()=>{
+clearTimeout(resizeTimer);
+resizeTimer=setTimeout(resize,150);
+});
+
 resize();
-addEventListener("resize",resize);
 
 /* TIE */
 function drawConnections(){
-const maxDist=Math.min(W,H)*0.12;
+const maxDist=Math.min(W,H)*(isMobile?0.08:0.12);
 const maxDistSq=maxDist*maxDist;
 const n=particles.length;
 for(let i=0;i<n;i++){
@@ -219,7 +235,7 @@ const alpha=1-Math.sqrt(distSq)/maxDist;
 ctx.beginPath();
 ctx.moveTo(pi.x,pi.y);
 ctx.lineTo(pj.x,pj.y);
-ctx.strokeStyle=`rgba(5,250,13,${alpha*0.3})`;
+ctx.strokeStyle=`rgba(5,250,13,${(alpha*0.3).toFixed(3)})`;
 ctx.lineWidth=0.5;
 ctx.stroke();
 }
@@ -245,7 +261,7 @@ if(p.y<0||p.y>H)p.vy*=-1;
 ctx.globalAlpha=1;
 requestAnimationFrame(draw);
 }
-draw();
+if(!prefersReduced) draw();
 
 </script>
 
