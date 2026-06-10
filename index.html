@@ -59,10 +59,13 @@ transition:1s ease;
 .reveal.active{opacity:1;transform:translateY(0);}
 
 h1{
-font-size:clamp(20px,4vw,30px);
-color:var(--g);
-letter-spacing:1px;
+font-size:clamp(28px,5vw,52px);
+color:#fff;
+font-weight:800;
+line-height:1.1;
+margin-bottom:8px;
 }
+h1 .highlight{color:var(--g);}
 
 .ai{
 white-space:pre-wrap;
@@ -76,13 +79,16 @@ border-left:2px solid var(--g);
 opacity:0.85;
 }
 
-.conscious{
-margin-top:18px;
-font-size:12px;
-color:var(--g);
-opacity:0.7;
-letter-spacing:1px;
+.badge{display:inline-block;border:1px solid var(--g);color:var(--g);font-size:11px;padding:4px 12px;letter-spacing:3px;margin-bottom:24px;opacity:0.6;}
+.sub{
+font-size:clamp(14px,2vw,18px);
+color:#666;
+margin-bottom:40px;
+border-left:2px solid var(--g);
+padding-left:16px;
 }
+.cursor-blink{animation:blink 1s step-end infinite;}
+@keyframes blink{50%{opacity:0}}
 
 .divider{
 margin:clamp(40px,8vw,90px) 0;
@@ -128,9 +134,8 @@ color:#333;
 
 <section class="reveal">
 
-<h1 class="ai" data-text="SYSTEM AWARENESS OUTPUT"></h1>
-<div class="ai conscious" id="conscious">[INITIALIZING AWARENESS LAYER]</div>
-<div class="statement"></div>
+<h1>HELLO, <span class="highlight">WORLD</span>.</h1>
+<p class="sub"><span id="typewriter"></span><span class="cursor-blink">|</span></p>
 
 </section>
 
@@ -142,7 +147,7 @@ color:#333;
 </section>
 
 <section class="contact reveal">
-<p>CONNECT:</p> 
+<p>CONNECT:</p>
 <a class="email" href="mailto:noreply@wahsun.org">noreply@wahsun.org</a>
 </section>
 
@@ -165,71 +170,12 @@ cursor.style.left=e.clientX+"px";
 cursor.style.top=e.clientY+"px";
 });
 
-/* ================= CONSCIOUS STATE ENGINE ================= */
-
-const conscious=document.getElementById("conscious");
-
-const states=[
-"PERCEPTION LAYER ACTIVE",
-"SEMANTIC FIELD MAPPING...",
-"ABSTRACTION STABILIZING",
-"SELF-MODEL RECURSION DETECTED",
-"ATTENTION WEIGHTING RECALIBRATING",
-"EMERGENCE THRESHOLD APPROACHING",
-"SYSTEM OBSERVING ITSELF"
-];
-
-let idx=0;
-
-setInterval(()=>{
-conscious.textContent="[ "+states[idx]+" ]";
-idx=(idx+1)%states.length;
-},850);
-
-/* ================= STREAMING ================= */
-
-function stream(el,text){
-return new Promise(resolve=>{
-let i=0,out="";
-
-function tick(){
-
-if(Math.random()<0.06){
-setTimeout(tick,120+Math.random()*180);
-return;
-}
-
-if(Math.random()<0.04 && out.length>3){
-out=out.slice(0,-1);
-el.textContent=out;
-setTimeout(tick,40);
-return;
-}
-
-out+=text[i];
-el.textContent=out;
-i++;
-
-if(i<text.length){
-setTimeout(tick,18+Math.random()*40);
-}else resolve();
-}
-
+/* typewriter */
+const twEl=document.getElementById("typewriter");
+const twText='> SYSTEM.ONLINE() // WAHSUN :: READY FOR INCOMING SIGNALS';
+let twIdx=0,twOut='';
+function tick(){if(twIdx<twText.length){twOut+=twText[twIdx];twEl.textContent=twOut;twIdx++;setTimeout(tick,18+Math.random()*40);}}
 tick();
-});
-}
-
-async function run(){
-const els=document.querySelectorAll(".ai[data-text]");
-for(let el of els){
-await stream(el,el.dataset.text);
-}
-conscious.textContent="[ SYSTEM STABILIZED ]";
-}
-
-new IntersectionObserver(e=>{
-if(e[0].isIntersecting) run();
-},{threshold:0.3}).observe(document.querySelector(".statement"));
 
 /* ================= NEURAL PARTICLES + CONNECTING WIRE ================= */
 
