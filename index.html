@@ -172,7 +172,7 @@ cursor.style.top=e.clientY+"px";
 
 /* typewriter */
 const twEl=document.getElementById("typewriter");
-const twText='> SYSTEM.ONLINE() // WAHSUN :: READY FOR INCOMING SIGNALS';
+const twText='> SYSTEM.ONLINE // :: READY FOR INCOMING SIGNALS';
 let twIdx=0,twOut='';
 function tick(){if(twIdx<twText.length){twOut+=twText[twIdx];twEl.textContent=twOut;twIdx++;setTimeout(tick,18+Math.random()*40);}}
 tick();
