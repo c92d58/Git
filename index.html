@@ -43,8 +43,8 @@ body::after {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0,0,0,.03) 2px,
-    rgba(0,0,0,.03) 4px
+    rgba(0,0,0,.021) 2px,
+    rgba(0,0,0,.021) 4px
   );
   pointer-events: none;
   z-index: 9998;
@@ -255,10 +255,9 @@ h2::before {
 
     <div class="status-strip">
       <span class="chip live">● ONLINE</span>
-      <span class="chip">UPTIME: ∞</span>
+      <span class="chip">VERIFICATION: D713B95FC13491F3962AB28EFD8331FD</span>
       <span class="chip">NODE: 01</span>
       <span class="chip">PROTO: HTTPS</span>
-      <span class="chip">ENCRYPT: AES-256</span>
     </div>
   </section>
 
@@ -268,7 +267,6 @@ h2::before {
   <section class="reveal">
     <h2>Who</h2>
     <p style="color:#aaa;max-width:640px;">
-      WAHSUN is a personal signal station on the open internet —
       a quiet node broadcasting independent thought, code, and curiosity.
       No algorithms. No feeds. Just raw signal.
     </p>
@@ -392,8 +390,8 @@ function spawn() {
   particles = Array.from({ length: count }, () => ({
     x: Math.random() * W,
     y: Math.random() * H,
-    vx: (Math.random() - .5) * 0.28,
-    vy: (Math.random() - .5) * 0.28,
+    vx: (Math.random() - .5) * 0.196,
+    vy: (Math.random() - .5) * 0.196,
   }));
 }
 
@@ -431,7 +429,7 @@ function draw() {
         ctx.beginPath();
         ctx.moveTo(pi.x, pi.y);
         ctx.lineTo(pj.x, pj.y);
-        ctx.strokeStyle = `rgba(0,255,136,${(a * 0.25).toFixed(3)})`;
+        ctx.strokeStyle = `rgba(0,255,136,${(a * 0.1225).toFixed(3)})`;
         ctx.lineWidth = 0.5;
         ctx.stroke();
       }
@@ -441,7 +439,7 @@ function draw() {
   // dots
   for (const p of particles) {
     ctx.fillStyle = "#00ff88";
-    ctx.globalAlpha = 0.7;
+    ctx.globalAlpha = 0.49;
     ctx.beginPath();
     ctx.arc(p.x, p.y, 1.1, 0, Math.PI * 2);
     ctx.fill();
