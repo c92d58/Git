@@ -1,307 +1,460 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MWVF02CTCP"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-MWVF02CTCP');
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>▫️量子糾纏核心</title>
+<title>WAHSUN · SIGNAL STATION</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-:root{--g:#05fa0d;}
-
-body{
-margin:0;
-background:#000000;
-color:#fff;
-font-family:Inter,-apple-system;
-overflow:hidden;
-cursor:none;
+:root {
+  --g: #00ff88;
+  --bg: #0a0a0f;
+  --card: #111118;
+  --muted: #777;
+  --text: #c0c0d0;
 }
 
-canvas{
-position:fixed;
-top:0;left:0;
-z-index:-1;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-x: hidden;
 }
 
-.cursor{
-position:fixed;
-width:8px;height:8px;
-border-radius:50%;
-background:var(--g);
-transform:translate(-50%,-50%);
-pointer-events:none;
-mix-blend-mode:screen;
-z-index:9999;
+canvas {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: -1;
+  pointer-events: none;
 }
 
-.container{
-max-width:1000px;
-margin:auto;
-padding:clamp(60px,10vw,120px) clamp(16px,4vw,48px);
+/* scanline overlay */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,.03) 2px,
+    rgba(0,0,0,.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9998;
 }
 
-.reveal{
-opacity:0;
-transform:translateY(30px);
-transition:1s ease;
-}
-.reveal.active{opacity:1;transform:translateY(0);}
-
-h1{
-font-size:clamp(20px,4vw,30px);
-color:var(--g);
-letter-spacing:1px;
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: clamp(50px, 8vw, 100px) clamp(16px, 4vw, 48px);
 }
 
-.ai{
-white-space:pre-wrap;
-line-height:1.6;
+/* ── Reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: .9s ease;
+}
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+/* ── Typography ── */
+h1 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(30px, 6vw, 56px);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+h1 .accent { color: var(--g); }
+
+.sub {
+  font-size: clamp(12px, 2vw, 15px);
+  color: var(--muted);
+  margin-bottom: 50px;
+  font-family: 'JetBrains Mono', monospace;
 }
 
-.statement-item{
-margin:10px 0;
-padding-left:12px;
-border-left:2px solid var(--g);
-opacity:0.85;
+h2 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(16px, 2.5vw, 22px);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 20px;
 }
 
-.conscious{
-margin-top:18px;
-font-size:12px;
-color:var(--g);
-opacity:0.7;
-letter-spacing:1px;
+h2::before {
+  content: "▸ ";
+  color: var(--g);
 }
 
-.divider{
-margin:clamp(40px,8vw,90px) 0;
-font-size:clamp(8px,1.4vw,10px);
-letter-spacing:5px;
-color:#666;
-display:flex;
+/* ── Divider ── */
+.divider {
+  margin: clamp(36px, 6vw, 70px) 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-.divider::after{
-content:"";
-flex:1;height:1px;background:#222;margin-left:12px;
-}
-
-.bio p{color:#bbb;}
-.node{color:var(--g);font-weight:600;}
-.core{color:#fff;font-weight:600;}
-
-.contact{
-margin-top:clamp(30px,6vw,60px);
-border-top:1px solid #111;
-padding-top:clamp(16px,3vw,30px);
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #1a1a22;
 }
 
-.email{
-color:var(--g);
-text-decoration:none;
-font-size:clamp(16px,3vw,22px);
+/* ── Status Strip ── */
+.status-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.status-strip .chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 5px 14px;
+  border: 1px solid #222;
+  color: var(--muted);
+}
+.status-strip .chip.live {
+  border-color: var(--g);
+  color: var(--g);
 }
 
-@keyframes blink{
-0%,49%{opacity:1;}
-50%,100%{opacity:0;}
+/* ── Cards ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
 }
 
-.cursor-blink{
-font-size:clamp(12px,2vw,16px);
-color:#999;
-display:inline;
-margin-left:2px;
-animation:blink 0.7s infinite;
+.card {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.04);
+  padding: 28px;
+  transition: .25s;
+}
+.card:hover {
+  border-color: rgba(0,255,136,.15);
+  transform: translateY(-3px);
+}
+.card h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.card h3 .dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--g);
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.card p {
+  color: #888;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
-.footer{
-margin-top:clamp(40px,8vw,80px);
-font-size:clamp(8px,1.4vw,10px);
-color:#333;
+/* ── Log Table ── */
+.log-table {
+  width: 100%;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  border-collapse: collapse;
+}
+.log-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #111;
+  vertical-align: top;
+}
+.log-table .ts {
+  color: #555;
+  white-space: nowrap;
+  width: 1%;
+}
+.log-table .level {
+  color: var(--g);
+  white-space: nowrap;
+  width: 1%;
+}
+.log-table .msg {
+  color: #aaa;
+}
+
+/* ── Contact ── */
+.contact-block {
+  margin-top: clamp(30px, 6vw, 60px);
+  padding-top: clamp(16px, 3vw, 28px);
+  border-top: 1px solid #1a1a22;
+}
+.contact-block .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #555;
+  margin-bottom: 6px;
+}
+.contact-block a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(15px, 2.5vw, 20px);
+  color: var(--g);
+  text-decoration: none;
+}
+.contact-block a:hover { text-decoration: underline; }
+
+/* ── Footer ── */
+.footer {
+  margin-top: clamp(40px, 8vw, 70px);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #333;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .grid { grid-template-columns: 1fr; }
 }
 </style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=MWVF02CTCP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'MWVF02CTCP');
+</script>
 </head>
 
 <body>
 
 <canvas id="bg"></canvas>
-<div class="cursor"></div>
 
 <div class="container">
 
-<section class="reveal">
+  <!-- ═══ HERO ═══ -->
+  <section class="reveal">
+    <h1>WAHSUN<span class="accent">.sig</span></h1>
+    <p class="sub">STATION ACTIVE · BROADCASTING ON ALL FREQUENCIES</p>
 
-<h1 class="ai" data-text="量子糾纏核心: 活躍中"></h1>
-<div style="display:flex;margin-top:12px;margin-bottom:20px;">
-<div class="ai" style="font-size:clamp(12px,2vw,16px);color:#999;" id="subtitle" data-text="> 相近者糾纏。遙遠者斷連。觀測者導致坍縮。"></div>
-<div id="cursor" class="cursor-blink" style="display:none;">|</div>
-</div>
+    <div class="status-strip">
+      <span class="chip live">● ONLINE</span>
+      <span class="chip">UPTIME: ∞</span>
+      <span class="chip">NODE: 01</span>
+      <span class="chip">PROTO: HTTPS</span>
+      <span class="chip">ENCRYPT: AES-256</span>
+    </div>
+  </section>
 
-</section>
+  <!-- ═══ IDENTITY ═══ -->
+  <div class="divider reveal">// IDENTITY CORE</div>
 
-<div class="divider reveal">SELF MODEL TRACE</div>
+  <section class="reveal">
+    <h2>Who</h2>
+    <p style="color:#aaa;max-width:640px;">
+      WAHSUN is a personal signal station on the open internet —
+      a quiet node broadcasting independent thought, code, and curiosity.
+      No algorithms. No feeds. Just raw signal.
+    </p>
+  </section>
 
-<section class="bio reveal">
-<p class="node">> 量子位元_01: 已糾纏</p>
-<p class="core">每個粒子即節點。相近則糾纏。遠離則斷連。</p>
+  <!-- ═══ NODES ═══ -->
+  <div class="divider reveal">// ACTIVE NODES</div>
 
-<div class="statement-item">> 鄰近粒子相連——資訊流動。超出閾值，鍵結消散。</div>
-<div class="statement-item">> 每個節點處於疊加態。你觀測。波函數坍縮。</div>
-<div class="statement-item">> 隨機漂移阻止平衡。網絡在呼吸。從噪聲中湧現秩序。</div>
-</section>
+  <section class="reveal">
+    <h2>Nodes</h2>
+    <div class="grid">
 
-<section class="contact reveal">
-<p>CONNECT:</p> 
-<a class="email" href="mailto:X@WAHSUN.ORG">X@WAHSUN.ORG</a>
-</section>
+      <div class="card">
+        <h3><span class="dot"></span>Shell</h3>
+        <p>Interactive terminal interface. Execute commands, explore the system, read manuals. A sandbox for curious minds.</p>
+      </div>
 
-<div class="footer reveal">PS: THIS PAGE IS DEPLOYED TO SHIELD VISITORS FROM SERVER ERROR MESSAGES.</div>
+      <div class="card">
+        <h3><span class="dot"></span>Echo</h3>
+        <p>Signal reflections — thoughts, notes, and observations broadcast into the void. No comment section, no likes.</p>
+      </div>
+
+      <div class="card">
+        <h3><span class="dot"></span>Stack</h3>
+        <p>Tools, languages, and infrastructure that power this station. Linux, Git, Cloudflare, and the open-source ecosystem.</p>
+      </div>
+
+      <div class="card">
+        <h3><span class="dot"></span>Nexus</h3>
+        <p>Connection hub linking to other independent sites, RSS feeds, and fellow travelers on the open web.</p>
+      </div>
+
+      <div class="card">
+        <h3><span class="dot"></span>Trace</h3>
+        <p>Minimal log stream — a real-time view of system events, deployments, and signal activity.</p>
+      </div>
+
+      <div class="card">
+        <h3><span class="dot"></span>Transmit</h3>
+        <p>Outbound transmission channel. Send a message, share a frequency, or ping the station directly.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ SIGNAL LOG ═══ -->
+  <div class="divider reveal">// SIGNAL LOG</div>
+
+  <section class="reveal">
+    <h2>Recent Signals</h2>
+
+    <table class="log-table">
+      <tr>
+        <td class="ts">2026-06-10 14:22</td>
+        <td class="level">[INFO]</td>
+        <td class="msg">Station deployed to Cloudflare Pages edge network</td>
+      </tr>
+      <tr>
+        <td class="ts">2026-06-09 09:15</td>
+        <td class="level">[OK]</td>
+        <td class="msg">SSL certificate renewed — all channels encrypted</td>
+      </tr>
+      <tr>
+        <td class="ts">2026-06-08 18:30</td>
+        <td class="level">[SYNC]</td>
+        <td class="msg">Repository synchronized — 13 page nodes active</td>
+      </tr>
+      <tr>
+        <td class="ts">2026-06-07 11:00</td>
+        <td class="level">[INFO]</td>
+        <td class="msg">DNS propagation complete — wahsun.org resolving globally</td>
+      </tr>
+      <tr>
+        <td class="ts">2026-06-06 22:45</td>
+        <td class="level">[OK]</td>
+        <td class="msg">Health check passed — all systems nominal</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- ═══ CONTACT ═══ -->
+  <section class="reveal">
+    <div class="contact-block">
+      <div class="label">INCOMING CHANNEL</div>
+      <a href="mailto:x@wahsun.org">x@wahsun.org</a>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <div class="footer reveal">
+    WAHSUN STATION · EST. 2017 · SIGNAL NEVER STOPS
+  </div>
 
 </div>
 
 <script>
+/* ═══════════════════════════════════════
+   REVEAL OBSERVER
+   ═══════════════════════════════════════ */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add("active");
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
-/* reveal */
-const io=new IntersectionObserver(e=>{
-e.forEach(x=>x.isIntersecting&&x.target.classList.add("active"));
+/* ═══════════════════════════════════════
+   PARTICLE NETWORK
+   ═══════════════════════════════════════ */
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+
+let W, H, particles = [];
+const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+function spawn() {
+  const raw = (W * H) / 14000;
+  const max = isMobile ? 80 : 180;
+  const min = isMobile ? 25 : 55;
+  const count = Math.max(min, Math.min(max, Math.floor(raw)));
+  particles = Array.from({ length: count }, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    vx: (Math.random() - .5) * 0.28,
+    vy: (Math.random() - .5) * 0.28,
+  }));
+}
+
+function resize() {
+  W = innerWidth;
+  H = innerHeight;
+  canvas.width = W;
+  canvas.height = H;
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+  spawn();
+}
+
+let rt;
+addEventListener("resize", () => {
+  clearTimeout(rt);
+  rt = setTimeout(resize, 160);
 });
-document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
-
-/* cursor */
-const cursor=document.querySelector(".cursor");
-document.addEventListener("mousemove",e=>{
-cursor.style.left=e.clientX+"px";
-cursor.style.top=e.clientY+"px";
-});
-
-/* ================= STREAMING ================= */
-
-function stream(el,text){
-return new Promise(resolve=>{
-let i=0,out="";
-
-function tick(){
-
-if(Math.random()<0.06){
-setTimeout(tick,120+Math.random()*180);
-return;
-}
-
-if(Math.random()<0.04 && out.length>3){
-out=out.slice(0,-1);
-el.textContent=out;
-setTimeout(tick,40);
-return;
-}
-
-out+=text[i];
-el.textContent=out;
-i++;
-
-if(i<text.length){
-setTimeout(tick,18+Math.random()*40);
-}else resolve();
-}
-
-tick();
-});
-}
-
-async function run(){
-const els=document.querySelectorAll(".ai[data-text]");
-for(let el of els){
-if(el.tagName==="DIV"&&el.hasAttribute("data-text")&&el.getAttribute("data-text").startsWith(">")){
-await stream(el,el.dataset.text);
-document.getElementById("cursor").style.display="inline";
-}else{
-el.textContent=el.dataset.text;
-}
-}
-}
-
-run();
-
-/* ================= NEURAL PARTICLES + CONNECTING WIRE ================= */
-
-const canvas=document.getElementById("bg");
-const ctx=canvas.getContext("2d");
-
-let W,H,particles=[];
-
-function createParticles(){
-const count=Math.max(60,Math.min(200,Math.floor(W*H/15000)));
-particles=Array.from({length:count},()=>({
-x:Math.random()*W,
-y:Math.random()*H,
-vx:(Math.random()-.5)*0.3,
-vy:(Math.random()-.5)*0.3,
-a:Math.random(),
-}));
-}
-
-function resize(){
-W=canvas.width=innerWidth;
-H=canvas.height=innerHeight;
-createParticles();
-}
 resize();
-addEventListener("resize",resize);
 
-/* TIE */
-function drawConnections(){
-const maxDist=Math.min(W,H)*0.12;
-const maxDistSq=maxDist*maxDist;
-const n=particles.length;
-for(let i=0;i<n;i++){
-const pi=particles[i];
-for(let j=i+1;j<n;j++){
-const pj=particles[j];
-const dx=pi.x-pj.x,dy=pi.y-pj.y;
-const distSq=dx*dx+dy*dy;
-if(distSq<maxDistSq){
-const alpha=1-Math.sqrt(distSq)/maxDist;
-ctx.beginPath();
-ctx.moveTo(pi.x,pi.y);
-ctx.lineTo(pj.x,pj.y);
-ctx.strokeStyle=`rgba(5,250,13,${alpha*0.3})`;
-ctx.lineWidth=0.5;
-ctx.stroke();
-}
-}
-}
-}
+function draw() {
+  ctx.clearRect(0, 0, W, H);
 
-function draw(){
-ctx.clearRect(0,0,W,H);
-drawConnections();
-for(const p of particles){
-p.a+=Math.random()*0.02-0.01;
-ctx.globalAlpha=Math.abs(p.a);
-ctx.fillStyle="#05fa0d";
-ctx.beginPath();
-ctx.arc(p.x,p.y,1.2,0,Math.PI*2);
-ctx.fill();
-p.x+=p.vx;
-p.y+=p.vy;
-if(p.x<0||p.x>W)p.vx*=-1;
-if(p.y<0||p.y>H)p.vy*=-1;
-}
-ctx.globalAlpha=1;
-requestAnimationFrame(draw);
+  // connections
+  const maxDist = Math.min(W, H) * (isMobile ? 0.09 : 0.13);
+  const maxDistSq = maxDist * maxDist;
+  for (let i = 0; i < particles.length; i++) {
+    const pi = particles[i];
+    for (let j = i + 1; j < particles.length; j++) {
+      const pj = particles[j];
+      const dx = pi.x - pj.x, dy = pi.y - pj.y;
+      const ds = dx * dx + dy * dy;
+      if (ds < maxDistSq) {
+        const a = 1 - Math.sqrt(ds) / maxDist;
+        ctx.beginPath();
+        ctx.moveTo(pi.x, pi.y);
+        ctx.lineTo(pj.x, pj.y);
+        ctx.strokeStyle = `rgba(0,255,136,${(a * 0.25).toFixed(3)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+
+  // dots
+  for (const p of particles) {
+    ctx.fillStyle = "#00ff88";
+    ctx.globalAlpha = 0.7;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 1.1, 0, Math.PI * 2);
+    ctx.fill();
+
+    p.x += p.vx;
+    p.y += p.vy;
+    if (p.x < 0 || p.x > W) p.vx *= -1;
+    if (p.y < 0 || p.y > H) p.vy *= -1;
+  }
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(draw);
 }
 draw();
-
 </script>
 
 </body>
