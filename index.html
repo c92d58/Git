@@ -30,8 +30,13 @@ body {
 canvas {
   position: fixed;
   top: 0; left: 0;
-  z-index: -1;
-  pointer-events: none;
+  z-index: 0;
+  pointer-events: auto;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
 }
 
 /* scanline overlay */
@@ -226,6 +231,18 @@ h2::before {
   color: #333;
 }
 
+/* ── Breathing Animation ── */
+@keyframes breathe {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.8);
+    opacity: 0.3;
+  }
+}
+
 /* ── Responsive ── */
 @media (max-width: 600px) {
   .grid { grid-template-columns: 1fr; }
@@ -392,6 +409,9 @@ function spawn() {
     y: Math.random() * H,
     vx: (Math.random() - .5) * 0.196,
     vy: (Math.random() - .5) * 0.196,
+    breathing: false,
+    breathingTime: 0,
+    breathingDuration: 1000,
   }));
 }
 
@@ -437,11 +457,29 @@ function draw() {
   }
 
   // dots
+  const now = Date.now();
   for (const p of particles) {
+    // Update breathing state
+    if (p.breathing) {
+      p.breathingTime += 16; // ~60fps
+      if (p.breathingTime >= p.breathingDuration) {
+        p.breathing = false;
+        p.breathingTime = 0;
+      }
+    }
+
+    // Calculate breathing scale factor
+    let scale = 1;
+    if (p.breathing) {
+      const progress = p.breathingTime / p.breathingDuration;
+      const cycle = Math.sin(progress * Math.PI * 2); // sine wave for smooth breathing
+      scale = 1 + cycle * 0.8; // scale from 0.2 to 1.8
+    }
+
     ctx.fillStyle = "#00ff88";
-    ctx.globalAlpha = 0.49;
+    ctx.globalAlpha = p.breathing ? 0.7 : 0.49;
     ctx.beginPath();
-    ctx.arc(p.x, p.y, 1.1, 0, Math.PI * 2);
+    ctx.arc(p.x, p.y, 1.265 * scale, 0, Math.PI * 2);
     ctx.fill();
 
     p.x += p.vx;
@@ -453,6 +491,45 @@ function draw() {
   requestAnimationFrame(draw);
 }
 draw();
+
+/* ═══════════════════════════════════════
+   MOUSE HOVER INTERACTION
+   ═══════════════════════════════════════ */
+const hoverRadius = 15; // Hover detection radius
+let mouseX = -1000;
+let mouseY = -1000;
+
+canvas.addEventListener("mousemove", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  mouseX = e.clientX - rect.left;
+  mouseY = e.clientY - rect.top;
+
+  // Check which particles are hovered
+  for (const p of particles) {
+    const dx = p.x - mouseX;
+    const dy = p.y - mouseY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    
+    if (dist < hoverRadius) {
+      if (!p.breathing) {
+        p.breathing = true;
+        p.breathingTime = 0;
+      }
+    } else {
+      p.breathing = false;
+      p.breathingTime = 0;
+    }
+  }
+});
+
+canvas.addEventListener("mouseleave", () => {
+  // Stop all breathing when mouse leaves canvas
+  for (const p of particles) {
+    p.breathing = false;
+    p.breathingTime = 0;
+  }
+});
+
 </script>
 
 </body>
