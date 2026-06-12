@@ -71,3 +71,21 @@ blog/
 .local/
 .config/
 tmp/
+
+# Personal directories — never commit
+Desktop/
+Documents/
+Downloads/
+Movies/
+Music/
+Pictures/
+Applications/
+Library/
+Public/
+
+# Except Rime config
+!Library/Rime/easy_en.dict.yaml
+!Library/Rime/easy_en.schema.yaml
+!Library/Rime/default.custom.yaml
+!Library/Rime/luna_pinyin_simp.custom.yaml
+!Library/Rime/squirrel.custom.yaml
