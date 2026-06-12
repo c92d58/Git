@@ -4,3 +4,70 @@
 !.dev.vars.example
 .env*
 !.env.example
+
+# Sensitive dotfiles — never commit
+.ssh/
+.gitconfig
+.zsh_history
+.bash_history
+.zsh_sessions/
+.zshrc
+.zshrc.*
+.zprofile
+.profile
+.npmrc
+.DS_Store
+.CFUserTextEncoding
+.viminfo
+.zcompdump
+.terminfo/
+.thumbnails/
+
+# IDE / editor configs
+.vscode/
+.vscode-oss/
+.vscode-shared/
+.marscode/
+.copilot/
+.redhat/
+.opencode/
+.cagent/
+
+# Package manager caches
+.npm/
+.bun/
+.cache/
+.matplotlib/
+
+# Personal directories — never commit
+Desktop/
+Documents/
+Downloads/
+Movies/
+Music/
+Pictures/
+Applications/
+Library/
+!Library/Rime/
+Public/
+
+# Sub-repos — tracked independently
+linux/
+blog/
+
+# Other tools
+.claude/
+.claude.json
+.claude-mem/
+.mcp.json
+.hermes/
+.laputa/
+.nutstore/
+.rbenv/
+.rubies/
+.swiftpm/
+.swt/
+.unievo/
+.local/
+.config/
+tmp/

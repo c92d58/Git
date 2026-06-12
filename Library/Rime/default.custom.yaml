@@ -1,0 +1,40 @@
+patch:
+  # 输入方案列表
+  schema_list:
+    - schema: luna_pinyin_simp    # 朙月拼音・简化字（主）
+    - schema: luna_pinyin         # 朙月拼音・繁体
+    - schema: luna_quanpin        # 朙月全拼
+    - schema: easy_en             # 英文混输
+
+  # 默认使用简化字拼音
+  switcher:
+    caption: "〔方案〕"
+    hotkeys:
+      - Control+grave
+      - Control+Shift+F4
+    save_options:
+      - full_shape
+      - ascii_punct
+      - traditional
+
+  # 候选词数量
+  menu:
+    page_size: 9
+
+  ascii_composer:
+    good_old_caps_lock: true
+    switch_key:
+      Shift_L: commit_code
+      Shift_R: inline_ascii
+
+  # 按键绑定
+  key_binder:
+    select_first_character: bracketleft
+    select_last_character: bracketright
+    bindings:
+      - { when: composing, accept: ISO_Left_Tab, send: Shift+Left }
+      - { when: composing, accept: Tab, send: Shift+Right }
+      - { when: paging, accept: minus, send: Page_Up }
+      - { when: has_menu, accept: equal, send: Page_Down }
+      - { when: has_menu, accept: comma, send: Page_Up }
+      - { when: has_menu, accept: period, send: Page_Down }

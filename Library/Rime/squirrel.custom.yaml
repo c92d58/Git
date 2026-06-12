@@ -1,0 +1,49 @@
+patch:
+  # 外观设置
+  style:
+    color_scheme: monokai
+    candidate_list_layout: linear
+    text_orientation: horizontal
+    inline_preedit: true
+    corner_radius: 4
+    border_height: 6
+    border_width: 8
+    line_spacing: 2
+    font_point: 16
+    label_font_point: 12
+
+  # 配色方案
+  preset_color_schemes:
+    monokai:
+      name: "Monokai"
+      author: "用户"
+      # 背景/边框
+      back_color: 0x272822
+      border_color: 0x3e3d32
+      # 普通候选
+      text_color: 0xf8f8f2
+      candidate_text_color: 0xf8f8f2
+      label_color: 0x88846f
+      comment_text_color: 0x75715e
+      # 首选高亮 (蓝色强调)
+      hilited_text_color: 0xf8f8f2
+      hilited_back_color: 0x3e3d32
+      hilited_candidate_text_color: 0xffffff
+      hilited_candidate_back_color: 0x0a84ff
+      hilited_label_color: 0xffffff
+      hilited_comment_text_color: 0xc6c6c6
+
+  # 每页候选数
+  app_options:
+    com.microsoft.VSCode:
+      ascii_mode: true
+    com.jetbrains.intellij:
+      ascii_mode: true
+    com.jetbrains.pycharm:
+      ascii_mode: true
+    com.googlecode.iterm2:
+      ascii_mode: true
+    com.apple.Terminal:
+      ascii_mode: true
+    md.obsidian:
+      ascii_mode: true

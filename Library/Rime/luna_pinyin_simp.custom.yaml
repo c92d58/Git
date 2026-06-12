@@ -1,0 +1,15 @@
+patch:
+  engine/translators:
+    - punct_translator
+    - "table_translator@custom_phrase"
+    - reverse_lookup_translator
+    - script_translator
+    - table_translator@easy_en
+  easy_en:
+    dictionary: easy_en
+    enable_completion: true
+    enable_sentence: false
+    initial_quality: -1
+  switches/@0/states:
+    - 中
+    - 英
