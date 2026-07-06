@@ -17,6 +17,7 @@
 .profile
 .npmrc
 .DS_Store
+.Trash/
 .CFUserTextEncoding
 .viminfo
 .zcompdump
@@ -38,6 +39,7 @@
 .bun/
 .cache/
 .matplotlib/
+node_modules/
 
 # Personal directories — never commit
 Desktop/
@@ -54,8 +56,13 @@ Public/
 # Sub-repos — tracked independently
 linux/
 blog/
+src/
 
 # Other tools
+.openclaw/
+.lmstudio/
+.lmstudio-home-pointer
+.homebrew/
 .claude/
 .claude.json
 .claude-mem/
@@ -71,16 +78,6 @@ blog/
 .local/
 .config/
 tmp/
-
-# Personal directories — never commit
-Desktop/
-Documents/
-Downloads/
-Movies/
-Music/
-Pictures/
-Applications/
-Public/
 
 # Library — individual dirs ignored selectively to allow Rime
 Library/*
