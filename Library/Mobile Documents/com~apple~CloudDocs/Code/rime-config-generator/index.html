@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rime 配置產生器</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<style>
+:root {
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', monospace;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --g: #00ff88;
+  --bg: #0a0a0f;
+  --card: #111118;
+  --border: rgba(0, 255, 136, 0.08);
+  --hover: rgba(0, 255, 136, 0.06);
+  --text: #c0c0d0;
+  --text2: #777;
+  --text3: #444;
+  --red: #ff5f56;
+  --w: 82rem;
+  color-scheme: dark;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 15px; background: var(--bg); -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-size: 13px;
+}
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+::selection { background: var(--g); color: var(--bg); }
+
+/* Header */
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 1.5rem; height: 48px; position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10, 10, 15, 0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.header-logo {
+  font-family: var(--font-mono); font-weight: 800; font-size: .78rem;
+  letter-spacing: .08em; color: var(--g); text-transform: uppercase;
+  display: flex; align-items: center; gap: .5rem;
+}
+.header-logo span { color: var(--text3); font-weight: 400; }
+.header-actions { display: flex; gap: .5rem; }
+.btn {
+  font-family: var(--font-mono); font-size: .65rem; padding: .35rem .85rem;
+  border-radius: 2px; border: 1px solid var(--border); background: transparent;
+  color: var(--text2); cursor: pointer; transition: all .2s;
+  text-transform: uppercase; letter-spacing: .04em; white-space: nowrap;
+}
+.btn:hover { border-color: var(--g); color: var(--g); }
+.btn-p { background: var(--g); color: var(--bg); border-color: var(--g); font-weight: 600; }
+.btn-p:hover { opacity: .85; color: var(--bg); }
+.btn-d { border-color: rgba(255,95,86,.3); color: var(--red); }
+.btn-d:hover { border-color: var(--red); background: rgba(255,95,86,.08); }
+
+/* Layout */
+.app { display: flex; padding-top: 48px; min-height: 100vh; position: relative; z-index: 1; }
+.sidebar {
+  width: 200px; min-width: 200px; position: fixed; top: 48px; left: 0; bottom: 28px;
+  background: rgba(10, 10, 15, 0.6); border-right: 1px solid var(--border);
+  overflow-y: auto; padding: .75rem 0;
+}
+.sidebar-group { margin-bottom: .25rem; }
+.sidebar-group-title {
+  font-family: var(--font-mono); font-size: .58rem; color: var(--text3);
+  padding: .5rem 1rem .3rem; text-transform: uppercase; letter-spacing: .1em;
+}
+.sidebar-tab {
+  display: block; width: 100%; text-align: left; padding: .4rem 1rem;
+  font-family: var(--font-mono); font-size: .68rem; color: var(--text2);
+  background: none; border: none; cursor: pointer; transition: all .15s;
+  border-left: 2px solid transparent; letter-spacing: .02em;
+}
+.sidebar-tab:hover { color: var(--text); background: var(--hover); }
+.sidebar-tab.active { color: var(--g); border-left-color: var(--g); background: var(--hover); }
+.main {
+  margin-left: 200px; flex: 1; padding: 1.5rem 2rem; padding-bottom: 3rem;
+  max-width: calc(100% - 200px);
+}
+.section-header {
+  margin-bottom: 1.25rem; padding-bottom: .75rem;
+  border-bottom: 1px solid var(--border);
+}
+.section-title {
+  font-family: var(--font-mono); font-size: .95rem; font-weight: 600; color: var(--g);
+  letter-spacing: .04em; margin-bottom: .2rem;
+}
+.section-desc { font-size: .75rem; color: var(--text3); }
+.section-file {
+  font-family: var(--font-mono); font-size: .6rem; color: var(--text3);
+  background: var(--card); padding: 2px 8px; border-radius: 2px;
+  border: 1px solid var(--border); margin-left: .5rem;
+}
+.section-actions { display: flex; gap: .5rem; margin-top: 1rem; }
+
+/* Footer */
+.footer {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 28px; z-index: 100;
+  background: rgba(10, 10, 15, 0.92); backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border); display: flex; align-items: center;
+  padding: 0 1rem; gap: .75rem;
+}
+.footer-status {
+  font-family: var(--font-mono); font-size: .6rem; color: var(--text3);
+  letter-spacing: .04em;
+}
+.footer-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--g); }
+.footer-dot.dirty { background: #ffbd2e; }
+
+/* Form elements */
+.form-group { margin-bottom: .75rem; }
+.form-label {
+  font-family: var(--font-mono); font-size: .65rem; color: var(--text2);
+  text-transform: uppercase; letter-spacing: .06em; margin-bottom: .3rem; display: block;
+}
+.form-input, .form-select {
+  width: 100%; padding: .45rem .65rem;
+  background: var(--card); border: 1px solid var(--border); border-radius: 2px;
+  color: var(--text); font-family: var(--font-mono); font-size: .72rem;
+  outline: none; transition: border-color .2s;
+}
+.form-input:focus, .form-select:focus { border-color: var(--g); }
+.form-input::placeholder { color: var(--text3); }
+.form-select { cursor: pointer; appearance: none; }
+.form-check {
+  display: flex; align-items: center; gap: .5rem; margin-bottom: .3rem;
+}
+.form-check input[type="checkbox"] { accent-color: var(--g); }
+.form-check label { font-family: var(--font-mono); font-size: .68rem; color: var(--text2); cursor: pointer; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.form-hint { font-family: var(--font-mono); font-size: .58rem; color: var(--text3); margin-top: .2rem; }
+
+/* Tags */
+.tag-list { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .35rem; }
+.tag {
+  display: inline-flex; align-items: center; gap: .3rem;
+  font-family: var(--font-mono); font-size: .62rem; padding: 2px 8px;
+  background: var(--hover); border: 1px solid var(--border); border-radius: 2px;
+  color: var(--g);
+}
+.tag-x { cursor: pointer; color: var(--text3); font-size: .7rem; line-height: 1; }
+.tag-x:hover { color: var(--red); }
+.tag-add { display: flex; gap: .25rem; margin-top: .35rem; }
+.tag-add input {
+  width: 140px; padding: .25rem .5rem; font-size: .62rem;
+  background: var(--card); border: 1px solid var(--border); border-radius: 2px;
+  color: var(--text); font-family: var(--font-mono); outline: none;
+}
+.tag-add input:focus { border-color: var(--g); }
+.tag-add button {
+  font-family: var(--font-mono); font-size: .6rem; padding: .25rem .6rem;
+  border: 1px solid var(--border); border-radius: 2px; background: transparent;
+  color: var(--text2); cursor: pointer; transition: all .15s;
+}
+.tag-add button:hover { border-color: var(--g); color: var(--g); }
+
+/* Sortable list */
+.sort-list { list-style: none; }
+.sort-item {
+  display: flex; align-items: center; gap: .5rem; padding: .45rem .6rem;
+  background: var(--card); border: 1px solid var(--border); border-radius: 2px;
+  margin-bottom: .3rem; transition: border-color .15s;
+}
+.sort-item:hover { border-color: rgba(0,255,136,.2); }
+.sort-item.drag-handle {
+  cursor: grab; color: var(--text3); font-family: var(--font-mono);
+  font-size: .7rem; padding: 0 .2rem; user-select: none;
+}
+.sort-item.drag-handle:active { cursor: grabbing; }
+.sort-item .sort-input {
+  flex: 1; padding: .25rem .4rem; font-size: .68rem;
+  background: transparent; border: 1px solid transparent; border-radius: 2px;
+  color: var(--text); font-family: var(--font-mono); outline: none;
+}
+.sort-item .sort-input:focus { border-color: var(--border); background: var(--bg); }
+.sort-item .btn-sm {
+  font-family: var(--font-mono); font-size: .58rem; padding: .15rem .5rem;
+  border: 1px solid transparent; border-radius: 2px; background: transparent;
+  color: var(--text3); cursor: pointer; transition: all .15s;
+}
+.sort-item .btn-sm:hover { border-color: rgba(255,95,86,.3); color: var(--red); }
+.sort-add {
+  font-family: var(--font-mono); font-size: .62rem; padding: .35rem .75rem;
+  border: 1px dashed var(--border); border-radius: 2px; background: transparent;
+  color: var(--text3); cursor: pointer; width: 100%; text-align: center;
+  transition: all .15s; margin-top: .3rem;
+}
+.sort-add:hover { border-color: var(--g); color: var(--g); }
+
+/* Table */
+.table-wrap { max-height: 55vh; overflow-y: auto; border: 1px solid var(--border); border-radius: 2px; }
+.table-wrap.wide { max-height: 60vh; }
+table { width: 100%; border-collapse: collapse; }
+thead { position: sticky; top: 0; z-index: 2; }
+th {
+  text-align: left; padding: .45rem .6rem;
+  font-family: var(--font-mono); font-size: .6rem; font-weight: 600;
+  color: var(--g); text-transform: uppercase; letter-spacing: .08em;
+  background: var(--card); border-bottom: 1px solid var(--g);
+  cursor: pointer; user-select: none;
+}
+th:hover { color: #fff; }
+td {
+  padding: .35rem .6rem; border-bottom: 1px solid var(--border);
+  color: var(--text2); font-family: var(--font-mono); font-size: .68rem;
+}
+tr:hover td { background: var(--hover); color: var(--text); }
+td input {
+  width: 100%; padding: .2rem .3rem; font-size: .66rem;
+  background: transparent; border: 1px solid transparent; border-radius: 2px;
+  color: var(--text); font-family: var(--font-mono); outline: none;
+}
+td input:focus { border-color: var(--g); background: var(--bg); }
+.table-search {
+  width: 100%; padding: .4rem .6rem; margin-bottom: .5rem;
+  background: var(--card); border: 1px solid var(--border); border-radius: 2px;
+  color: var(--text); font-family: var(--font-mono); font-size: .68rem; outline: none;
+}
+.table-search:focus { border-color: var(--g); }
+.table-search::placeholder { color: var(--text3); }
+.row-del {
+  font-family: var(--font-mono); font-size: .55rem; color: var(--text3);
+  cursor: pointer; background: none; border: none; padding: .1rem .3rem;
+  transition: color .15s;
+}
+.row-del:hover { color: var(--red); }
+
+/* Color swatch */
+.color-wrap { display: flex; align-items: center; gap: .75rem; margin-bottom: .4rem; }
+.color-swatch {
+  width: 24px; height: 24px; border-radius: 2px; border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.color-label {
+  font-family: var(--font-mono); font-size: .62rem; color: var(--text2); width: 160px; flex-shrink: 0;
+}
+.color-input {
+  flex: 1; padding: .25rem .4rem; font-size: .62rem;
+  background: var(--card); border: 1px solid var(--border); border-radius: 2px;
+  color: var(--text); font-family: var(--font-mono); outline: none;
+}
+.color-input:focus { border-color: var(--g); }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,.7);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.modal {
+  background: var(--card); border: 1px solid var(--border); border-radius: 4px;
+  padding: 1.5rem; width: 640px; max-width: 90vw; max-height: 80vh;
+  overflow-y: auto;
+}
+.modal h2 {
+  font-family: var(--font-mono); font-size: .85rem; color: var(--g);
+  margin-bottom: .75rem; letter-spacing: .04em;
+}
+.modal textarea {
+  width: 100%; height: 300px; padding: .75rem;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 2px;
+  color: var(--text); font-family: var(--font-mono); font-size: .65rem;
+  outline: none; resize: vertical;
+}
+.modal textarea:focus { border-color: var(--g); }
+.modal-actions { display: flex; gap: .5rem; margin-top: .75rem; justify-content: flex-end; }
+.modal-error {
+  font-family: var(--font-mono); font-size: .62rem; color: var(--red);
+  margin-top: .5rem; padding: .5rem; background: rgba(255,95,86,.08);
+  border: 1px solid rgba(255,95,86,.2); border-radius: 2px;
+  white-space: pre-wrap; max-height: 120px; overflow-y: auto;
+}
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 40px; right: 1rem; z-index: 300;
+  font-family: var(--font-mono); font-size: .62rem; padding: .4rem .9rem;
+  background: var(--card); border: 1px solid var(--g); border-radius: 2px;
+  color: var(--g); animation: toastIn .3s ease;
+}
+@keyframes toastIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Section panels */
+.section-body { display: none; }
+.section-body.active { display: block; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar { width: 120px; min-width: 120px; }
+  .main { margin-left: 120px; max-width: calc(100% - 120px); padding: 1rem; }
+  .form-row { grid-template-columns: 1fr; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-logo">Rime 配置<span>產生器</span></div>
+  <div class="header-actions">
+    <button class="btn" onclick="openImport()">匯入 YAML</button>
+    <button class="btn btn-p" onclick="downloadAll()">匯出全部</button>
+    <button class="btn btn-d" onclick="resetAll()">重設</button>
+  </div>
+</header>
+
+<div class="app">
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="main" id="main"></main>
+</div>
+
+<footer class="footer">
+  <div class="footer-dot" id="saveDot"></div>
+  <span class="footer-status" id="saveStatus">就緒</span>
+  <span style="margin-left:auto;font-family:var(--font-mono);font-size:.6rem;color:var(--text3);letter-spacing:.04em">&copy; 2026 WAHSUN. All rights reserved.</span>
+</footer>
+
+<!-- Import Modal -->
+<div class="modal-overlay" id="importModal" style="display:none">
+  <div class="modal">
+    <h2>匯入 YAML 配置</h2>
+    <div class="form-group">
+      <label class="form-label">檔案類型</label>
+      <select class="form-select" id="importType" style="width:auto">
+        <option value="auto">自動偵測</option>
+        <option value="default">default.custom.yaml</option>
+        <option value="luna_pinyin_simp">luna_pinyin_simp.custom.yaml</option>
+        <option value="squirrel">squirrel.custom.yaml</option>
+        <option value="dict">*.dict.yaml (dictionary)</option>
+      </select>
+    </div>
+    <textarea id="importYaml" placeholder="在此貼上 YAML 內容..."></textarea>
+    <div class="modal-error" id="importError" style="display:none"></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeImport()">取消</button>
+      <button class="btn btn-p" onclick="doImport()">解析並匯入</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// DEFAULT CONFIG
+// ═══════════════════════════════════════════
+const DEFAULT_CONFIG = {
+  default: {
+    schema_list: [
+      { schema: "luna_pinyin_simp" },
+      { schema: "luna_pinyin" },
+      { schema: "easy_en" },
+      { schema: "luna_quanpin" }
+    ],
+    switcher: {
+      caption: "〔方案〕",
+      hotkeys: ["F4", "Control+grave", "Control+Shift+space"],
+      save_options: ["full_shape", "ascii_punct", "traditional"]
+    },
+    punctuator: {
+      import_preset: "default",
+      full_shape: { " ": { commit: "　" } },
+      half_shape: { " ": { commit: " " } }
+    },
+    menu: { page_size: 6 },
+    ascii_composer: {
+      good_old_caps_lock: true,
+      switch_key: { Shift_L: "inline_ascii", Shift_R: "commit_text" }
+    },
+    key_binder: {
+      select_first_character: "bracketleft",
+      select_last_character: "bracketright",
+      bindings: [
+        { when: "composing", accept: "Tab", send: "Shift+Right" },
+        { when: "composing", accept: "ISO_Left_Tab", send: "Shift+Left" },
+        { when: "paging", accept: "bracketleft", send: "Page_Up" },
+        { when: "has_menu", accept: "bracketright", send: "Page_Down" },
+        { when: "paging", accept: "minus", send: "Page_Up" },
+        { when: "has_menu", accept: "equal", send: "Page_Down" }
+      ]
+    }
+  },
+  luna_pinyin_simp: {
+    translators: [
+      "punct_translator",
+      "table_translator@custom_phrase",
+      "table_translator@easy_en",
+      "reverse_lookup_translator",
+      "script_translator"
+    ],
+    custom_phrase: {
+      dictionary: "",
+      user_dict: "custom_phrase",
+      db_class: "stabledb",
+      enable_completion: false,
+      enable_sentence: false,
+      initial_quality: 1
+    },
+    easy_en: {
+      dictionary: "easy_en",
+      enable_completion: true,
+      enable_sentence: false,
+      initial_quality: -1
+    },
+    switches: [
+      { name: "ascii_mode", states: ["中", "英"] }
+    ]
+  },
+  squirrel: {
+    style: {
+      color_scheme: "matrix",
+      candidate_list_layout: "linear",
+      text_orientation: "horizontal",
+      inline_preedit: true,
+      corner_radius: 6,
+      border_height: 4,
+      border_width: 6,
+      line_spacing: 1,
+      font_point: 14,
+      label_font_point: 11
+    },
+    color_schemes: {
+      matrix: {
+        name: "Matrix",
+        author: "WAHSUN",
+        back_color: "0x0a0f0a",
+        border_color: "0x1a2a1a",
+        text_color: "0x00ff41",
+        candidate_text_color: "0x00cc33",
+        label_color: "0x006620",
+        comment_text_color: "0x004d18",
+        hilited_text_color: "0x00ff41",
+        hilited_back_color: "0x1a2a1a",
+        hilited_candidate_text_color: "0x00ff41",
+        hilited_candidate_back_color: "0x003300",
+        hilited_label_color: "0x00ff41",
+        hilited_comment_text_color: "0x009933"
+      }
+    },
+    app_options: {
+      "com.microsoft.VSCode": { ascii_mode: true },
+      "com.jetbrains.intellij": { ascii_mode: true },
+      "com.jetbrains.pycharm": { ascii_mode: true },
+      "com.googlecode.iterm2": { ascii_mode: true },
+      "com.apple.Terminal": { ascii_mode: true },
+      "md.obsidian": { ascii_mode: true }
+    }
+  },
+  dictionaries: {
+    mix_en: {
+      name: "mix_en",
+      version: "2.0",
+      sort: "by_weight",
+      use_preset_vocabulary: false,
+      entries: [
+        { word: "GitHub", code: "GitHub", weight: 10 },
+        { word: "git", code: "git", weight: 10 },
+        { word: "API", code: "API", weight: 10 },
+        { word: "SSH", code: "SSH", weight: 10 },
+        { word: "DNS", code: "DNS", weight: 10 },
+        { word: "HTTP", code: "HTTP", weight: 10 },
+        { word: "JSON", code: "JSON", weight: 10 },
+        { word: "YAML", code: "YAML", weight: 10 },
+        { word: "HTML", code: "HTML", weight: 10 },
+        { word: "CSS", code: "CSS", weight: 10 }
+      ]
+    },
+    easy_en: {
+      name: "easy_en",
+      version: "1.0",
+      sort: "by_weight",
+      use_preset_vocabulary: false,
+      entries: [
+        { word: "a", code: "a", weight: 1 },
+        { word: "about", code: "about", weight: 1 },
+        { word: "all", code: "all", weight: 1 },
+        { word: "an", code: "an", weight: 1 },
+        { word: "and", code: "and", weight: 1 },
+        { word: "are", code: "are", weight: 1 },
+        { word: "as", code: "as", weight: 1 },
+        { word: "at", code: "at", weight: 1 },
+        { word: "be", code: "be", weight: 1 },
+        { word: "but", code: "but", weight: 1 }
+      ]
+    }
+  }
+};
+
+// ═══════════════════════════════════════════
+// STATE MANAGEMENT
+// ═══════════════════════════════════════════
+let config = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+let currentTab = 'schemas';
+let saveTimeout = null;
+let isDirty = false;
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem('rime-config');
+    if (raw) {
+      const saved = JSON.parse(raw);
+      config = deepMerge(JSON.parse(JSON.stringify(DEFAULT_CONFIG)), saved);
+    }
+  } catch(e) { console.warn('無法載入狀態:', e); }
+}
+
+function saveState() {
+  isDirty = true;
+  updateSaveDot();
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => {
+    try {
+      localStorage.setItem('rime-config', JSON.stringify(config));
+      isDirty = false;
+      updateSaveDot();
+      document.getElementById('saveStatus').textContent = '已自動儲存 ' + new Date().toLocaleTimeString();
+    } catch(e) { console.warn('無法儲存:', e); }
+  }, 500);
+}
+
+function updateSaveDot() {
+  const dot = document.getElementById('saveDot');
+  dot.className = 'footer-dot' + (isDirty ? ' dirty' : '');
+}
+
+function deepMerge(target, source) {
+  const out = {};
+  for (const key of Object.keys(target)) {
+    if (!(key in source)) { out[key] = target[key]; continue; }
+    if (Array.isArray(target[key])) { out[key] = source[key]; continue; }
+    if (target[key] && typeof target[key] === 'object' && source[key] && typeof source[key] === 'object') {
+      out[key] = deepMerge(target[key], source[key]);
+    } else {
+      out[key] = source[key];
+    }
+  }
+  for (const key of Object.keys(source)) {
+    if (!(key in out)) out[key] = source[key];
+  }
+  return out;
+}
+
+function updateConfig(path, value) {
+  const keys = path.split('.');
+  let obj = config;
+  for (let i = 0; i < keys.length - 1; i++) obj = obj[keys[i]];
+  obj[keys[keys.length - 1]] = value;
+  saveState();
+}
+
+// ═══════════════════════════════════════════
+// YAML EXPORT
+// ═══════════════════════════════════════════
+function dumpYaml(data) {
+  return jsyaml.dump(data, { lineWidth: -1, noCompatMode: true, quotingType: '"' })
+    .replace(/'(\d+)'/g, '$1'); // remove quotes around numbers
+}
+
+function exportDefaultYaml() {
+  const d = config.default;
+  const patch = {};
+  patch.schema_list = d.schema_list;
+  patch.switcher = {
+    caption: d.switcher.caption,
+    hotkeys: d.switcher.hotkeys,
+    save_options: d.switcher.save_options
+  };
+  patch.punctuator = d.punctuator;
+  patch.menu = d.menu;
+  patch.ascii_composer = d.ascii_composer;
+  patch.key_binder = d.key_binder;
+  return 'patch:\n' + indentYaml(dumpYaml(patch), 2);
+}
+
+function exportLunaYaml() {
+  const d = config.luna_pinyin_simp;
+  const patch = {};
+  patch['engine/translators'] = d.translators;
+  patch.custom_phrase = d.custom_phrase;
+  patch.easy_en = d.easy_en;
+  patch.switches = d.switches.map((s, i) => ({ ['@' + i]: { options: s.name, states: s.states } }));
+  let yml = 'patch:\n' + indentYaml(dumpYaml(patch), 2);
+  // fix the switches format
+  yml = yml.replace(/ '@(\d+)':/g, '  switches/@$1:');
+  return yml;
+}
+
+function exportSquirrelYaml() {
+  const d = config.squirrel;
+  let yml = 'patch:\n';
+  yml += '  style:\n';
+  for (const [k, v] of Object.entries(d.style)) {
+    if (typeof v === 'boolean') yml += `    ${k}: ${v}\n`;
+    else if (typeof v === 'number') yml += `    ${k}: ${v}\n`;
+    else yml += `    ${k}: ${v}\n`;
+  }
+  yml += '  preset_color_schemes:\n';
+  for (const [name, colors] of Object.entries(d.color_schemes)) {
+    yml += `    ${name}:\n`;
+    yml += `      name: "${colors.name}"\n`;
+    yml += `      author: "${colors.author}"\n`;
+    for (const [ck, cv] of Object.entries(colors)) {
+      if (ck === 'name' || ck === 'author') continue;
+      yml += `      ${ck}: ${cv}\n`;
+    }
+  }
+  yml += '  app_options:\n';
+  for (const [app, opts] of Object.entries(d.app_options)) {
+    yml += `    "${app}":\n`;
+    yml += `      ascii_mode: ${opts.ascii_mode}\n`;
+  }
+  return yml;
+}
+
+function exportDictYaml(dictName) {
+  const d = config.dictionaries[dictName];
+  let out = `# Rime dictionary: ${d.name}\n---\n`;
+  out += `name: ${d.name}\n`;
+  out += `version: "${d.version}"\n`;
+  out += `sort: ${d.sort}\n`;
+  out += `use_preset_vocabulary: ${d.use_preset_vocabulary}\n`;
+  out += '...\n';
+  for (const e of d.entries) {
+    out += `${e.word}\t${e.code}\t${e.weight}\n`;
+  }
+  return out;
+}
+
+function indentYaml(y, spaces) {
+  const pad = ' '.repeat(spaces);
+  return y.split('\n').map(l => l ? pad + l : l).join('\n');
+}
+
+function downloadFile(filename, content) {
+  const blob = new Blob([content], { type: 'text/yaml' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+  toast(`已下載 ${filename}`);
+}
+
+function copyToClipboard(content) {
+  navigator.clipboard.writeText(content).then(() => toast('已複製到剪貼簿'));
+}
+
+// ═══════════════════════════════════════════
+// YAML IMPORT
+// ═══════════════════════════════════════════
+function parseYamlPatch(yamlText) {
+  const data = jsyaml.load(yamlText);
+  return data?.patch || data || {};
+}
+
+function importDefaultYaml(yamlText) {
+  const p = parseYamlPatch(yamlText);
+  if (p.schema_list) config.default.schema_list = p.schema_list;
+  if (p.switcher) config.default.switcher = p.switcher;
+  if (p.punctuator) config.default.punctuator = p.punctuator;
+  if (p.menu) config.default.menu = p.menu;
+  if (p.ascii_composer) config.default.ascii_composer = p.ascii_composer;
+  if (p.key_binder) config.default.key_binder = p.key_binder;
+}
+
+function importLunaYaml(yamlText) {
+  const p = parseYamlPatch(yamlText);
+  if (p['engine/translators']) config.luna_pinyin_simp.translators = p['engine/translators'];
+  if (p.custom_phrase) config.luna_pinyin_simp.custom_phrase = p.custom_phrase;
+  if (p.easy_en) config.luna_pinyin_simp.easy_en = p.easy_en;
+  if (p.switches) {
+    // parse switches array (could be array of {name, states} or indexed objects)
+    const sw = Array.isArray(p.switches) ? p.switches : Object.values(p.switches);
+    config.luna_pinyin_simp.switches = sw.map((s, i) => {
+      if (s.options && s.states) return { name: s.options, states: s.states };
+      if (s.name && s.states) return s;
+      return { name: 'unknown', states: ['?'] };
+    });
+  }
+}
+
+function importSquirrelYaml(yamlText) {
+  const p = parseYamlPatch(yamlText);
+  if (p.style) config.squirrel.style = { ...config.squirrel.style, ...p.style };
+  if (p.preset_color_schemes) config.squirrel.color_schemes = p.preset_color_schemes;
+  if (p.app_options) config.squirrel.app_options = p.app_options;
+}
+
+function importDictYaml(yamlText, dictName) {
+  const lines = yamlText.split('\n');
+  let headerEnd = 0;
+  let inHeader = false;
+  const headerLines = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (line === '---') { inHeader = true; continue; }
+    if (line === '...') { headerEnd = i + 1; break; }
+    if (inHeader) headerLines.push(line);
+  }
+  const headerYaml = headerLines.join('\n');
+  const header = jsyaml.load(headerYaml) || {};
+  const entries = [];
+  for (let i = headerEnd; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line || line.startsWith('#')) continue;
+    const parts = line.split('\t');
+    if (parts.length >= 2) {
+      entries.push({
+        word: parts[0],
+        code: parts[1],
+        weight: parts.length >= 3 ? parseInt(parts[2]) || 0 : 0
+      });
+    }
+  }
+  const name = dictName || header.name || 'imported';
+  config.dictionaries[name] = {
+    name: header.name || name,
+    version: header.version || '1.0',
+    sort: header.sort || 'by_weight',
+    use_preset_vocabulary: header.use_preset_vocabulary || false,
+    entries
+  };
+}
+
+function detectYamlType(yamlText) {
+  if (yamlText.includes('preset_color_schemes') || yamlText.includes('app_options')) return 'squirrel';
+  if (yamlText.includes('engine/translators') || yamlText.includes('custom_phrase')) return 'luna_pinyin_simp';
+  if (yamlText.includes('schema_list') || yamlText.includes('switcher') || yamlText.includes('key_binder')) return 'default';
+  if (yamlText.includes('use_preset_vocabulary') || yamlText.includes('...')) return 'dict';
+  return 'default';
+}
+
+function openImport() {
+  document.getElementById('importModal').style.display = 'flex';
+  document.getElementById('importYaml').value = '';
+  document.getElementById('importError').style.display = 'none';
+}
+
+function closeImport() {
+  document.getElementById('importModal').style.display = 'none';
+}
+
+function doImport() {
+  const yamlText = document.getElementById('importYaml').value.trim();
+  if (!yamlText) { showImportError('請先貼上 YAML 內容。'); return; }
+  let type = document.getElementById('importType').value;
+  if (type === 'auto') type = detectYamlType(yamlText);
+  try {
+    switch (type) {
+      case 'default': importDefaultYaml(yamlText); break;
+      case 'luna_pinyin_simp': importLunaYaml(yamlText); break;
+      case 'squirrel': importSquirrelYaml(yamlText); break;
+      case 'dict': {
+        const name = prompt('詞典名稱（例如：mix_en）:', 'imported');
+        if (name) importDictYaml(yamlText, name);
+        break;
+      }
+    }
+    saveState();
+    renderUI();
+    closeImport();
+    toast('已匯入 ' + type + ' 配置');
+  } catch(e) {
+    showImportError('解析錯誤: ' + e.message);
+  }
+}
+
+function showImportError(msg) {
+  const el = document.getElementById('importError');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
+function toast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; }, 1500);
+  setTimeout(() => t.remove(), 1800);
+}
+
+// ═══════════════════════════════════════════
+// SIDEBAR
+// ═══════════════════════════════════════════
+const TABS = [
+  { group: '預設配置', tabs: [
+    { id: 'schemas', label: '輸入方案', icon: '☰' },
+    { id: 'switcher', label: '方案切換', icon: '⇄' },
+    { id: 'punctuation', label: '標點符號', icon: '¶' },
+    { id: 'menu', label: '選單', icon: '≡' },
+    { id: 'ascii', label: 'Shift 鍵', icon: '⇧' },
+    { id: 'bindings', label: '按鍵綁定', icon: '⌨' },
+  ]},
+  { group: '方案配置', tabs: [
+    { id: 'translators', label: '翻譯器管線', icon: '↗' },
+    { id: 'custom_phrase', label: '自訂短語', icon: '📝' },
+    { id: 'easy_en_cfg', label: '簡易英文', icon: 'EN' },
+    { id: 'switches', label: '狀態開關', icon: '◎' },
+  ]},
+  { group: '詞典', tabs: [
+    { id: 'dict_mix_en', label: 'Dictionary: mix_en', icon: '📖' },
+    { id: 'dict_easy_en', label: 'Dictionary: easy_en', icon: '📗' },
+  ]},
+  { group: 'Squirrel 外觀', tabs: [
+    { id: 'squirrel_style', label: '樣式', icon: '🎨' },
+    { id: 'squirrel_colors', label: '配色方案', icon: '🌈' },
+    { id: 'squirrel_apps', label: '應用選項', icon: '📱' },
+  ]},
+];
+
+function renderSidebar() {
+  const nav = document.getElementById('sidebar');
+  let html = '';
+  for (const group of TABS) {
+    html += '<div class="sidebar-group">';
+    html += '<div class="sidebar-group-title">' + group.group + '</div>';
+    for (const tab of group.tabs) {
+      const cls = tab.id === currentTab ? ' active' : '';
+      html += `<button class="sidebar-tab${cls}" onclick="switchTab('${tab.id}')">${tab.icon} ${tab.label}</button>`;
+    }
+    html += '</div>';
+  }
+  nav.innerHTML = html;
+}
+
+function switchTab(id) {
+  currentTab = id;
+  renderSidebar();
+  renderMain();
+}
+
+// ═══════════════════════════════════════════
+// MAIN CONTENT RENDERER
+// ═══════════════════════════════════════════
+function renderMain() {
+  const main = document.getElementById('main');
+  const fn = renderers[currentTab];
+  if (fn) {
+    main.innerHTML = fn();
+    const initFn = initFns[currentTab];
+    if (initFn) initFn();
+  } else {
+    main.innerHTML = '<p style="color:var(--text3)">Select a section from the sidebar.</p>';
+  }
+}
+
+function renderUI() {
+  renderSidebar();
+  renderMain();
+}
+
+function sectionHeader(title, desc, file) {
+  return `<div class="section-header">
+    <div class="section-title">${title}<span class="section-file">${file}</span></div>
+    <div class="section-desc">${desc}</div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════
+// RENDER FUNCTIONS
+// ═══════════════════════════════════════════
+const renderers = {
+  schemas() {
+    const d = config.default;
+    let html = sectionHeader('輸入方案列表', '拖曳排序輸入方案。', 'default.custom.yaml');
+    html += '<ul class="sort-list" id="sort-schemas">';
+    d.schema_list.forEach((s, i) => {
+      html += `<li class="sort-item">
+        <span class="drag-handle">⠿</span>
+        <input class="sort-input" value="${esc(s.schema)}" onchange="updateConfig('default.schema_list[${i}].schema', this.value)" placeholder="方案名稱">
+        <button class="btn-sm" onclick="removeSchemaItem(${i})">✕</button>
+      </li>`;
+    });
+    html += '</ul>';
+    html += '<button class="sort-add" onclick="addSchemaItem()">+ 新增方案</button>';
+    html += '<div class="section-actions"><button class="btn btn-p" onclick="copyToClipboard(exportDefaultYaml())">複製 YAML</button><button class="btn" onclick="downloadFile(\'default.custom.yaml\', exportDefaultYaml())">下載 .yaml</button></div>';
+    return html;
+  },
+
+  switcher() {
+    const d = config.default.switcher;
+    let html = sectionHeader('方案切換', '設定輸入法切換快捷鍵與選項。', 'default.custom.yaml');
+    html += '<div class="form-row"><div class="form-group">';
+    html += '<label class="form-label">標題</label>';
+    html += `<input class="form-input" value="${esc(d.caption)}" onchange="updateConfig(\'default.switcher.caption\', this.value)">`;
+    html += '</div></div>';
+    html += '<div class="form-group"><label class="form-label">快捷鍵</label>';
+    html += '<div class="tag-list" id="tag-hotkeys">';
+    d.hotkeys.forEach((h, i) => {
+      html += `<span class="tag">${esc(h)}<span class="tag-x" onclick="removeHotkey(${i})">×</span></span>`;
+    });
+    html += '</div>';
+    html += '<div class="tag-add"><input id="newHotkey" placeholder="例如：Control+space" onkeydown="if(event.key===\'Enter\')addHotkey()"><button onclick="addHotkey()">新增</button></div>';
+    html += '</div>';
+    html += '<div class="form-group"><label class="form-label">儲存選項</label>';
+    for (const opt of ['full_shape', 'ascii_punct', 'traditional']) {
+      const checked = d.save_options.includes(opt) ? ' checked' : '';
+      html += `<div class="form-check"><input type="checkbox" id="so_${opt}"${checked} onchange="toggleSaveOption('${opt}', this.checked)"><label for="so_${opt}">${opt}</label></div>`;
+    }
+    html += '</div>';
+    html += '<div class="section-actions"><button class="btn btn-p" onclick="copyToClipboard(exportDefaultYaml())">複製 YAML</button><button class="btn" onclick="downloadFile(\'default.custom.yaml\', exportDefaultYaml())">下載 .yaml</button></div>';
+    return html;
+  },
+
+  punctuation() {
+    const d = config.default.punctuator;
+    let html = sectionHeader('標點符號', '設定全形與半形標點對應。', 'default.custom.yaml');
+    html += '<div class="form-group"><label class="form-label">匯入預設</label>';
+    html += `<input class="form-input" value="${esc(d.import_preset || 'default')}" onchange="updateConfig(\'default.punctuator.import_preset\', this.value)" style="max-width:200px">`;
+    html += '</div>';
+    html += '<h3 style="font-family:var(--font-mono);font-size:.7rem;color:var(--g);margin:1rem 0 .5rem">Full Shape 對應</h3>';
+    html += '<div class="table-wrap" style="max-height:200px"><table><thead><tr><th>Key</th><th>Commit</th><th></th></tr></thead><tbody>';
+    const fs = d.full_shape || {};
+    Object.entries(fs).forEach(([k, v]) => {
+      html += `<tr><td><input value="${esc(k)}" onchange="updatePunctKey('full_shape', '${esc(k)}', this.value, 'key')"></td><td><input value="${esc(v.commit||v)}" onchange="updatePunctKey('full_shape', '${esc(k)}', this.value, 'val')"></td><td><button class="row-del" onclick="deletePunct('full_shape', '${esc(k)}')">✕</button></td></tr>`;
+    });
+    html += '</tbody></table></div>';
+    html += '<button class="sort-add" onclick="addPunct(\'full_shape\')">+ 新增對應</button>';
+    html += '<h3 style="font-family:var(--font-mono);font-size:.7rem;color:var(--g);margin:1rem 0 .5rem">Half Shape 對應</h3>';
+    html += '<div class="table-wrap" style="max-height:200px"><table><thead><tr><th>Key</th><th>Commit</th><th></th></tr></thead><tbody>';
+    const hs = d.half_shape || {};
+    Object.entries(hs).forEach(([k, v]) => {
+      html += `<tr><td><input value="${esc(k)}" onchange="updatePunctKey('half_shape', '${esc(k)}', this.value, 'key')"></td><td><input value="${esc(v.commit||v)}" onchange="updatePunctKey('half_shape', '${esc(k)}', this.value, 'val')"></td><td><button class="row-del" onclick="deletePunct('half_shape', '${esc(k)}')">✕</button></td></tr>`;
+    });
+    html += '</tbody></table></div>';
+    html += '<button class="sort-add" onclick="addPunct(\'half_shape\')">+ 新增對應</button>';
+    html += '<div class="section-actions"><button class="btn btn-p" onclick="copyToClipboard(exportDefaultYaml())">複製 YAML</button><button class="btn" onclick="downloadFile(\'default.custom.yaml\', exportDefaultYaml())">下載 .yaml</button></div>';
+    return html;
+  },
+
+  menu() {
+    const d = config.default.menu;
+    let html = sectionHeader('選單', '設定候選選單外觀。', 'default.custom.yaml');
+    html += '<div class="form-group"><label class="form-label">每頁候選數 (1-20)</label>';
+    html += `<input class="form-input" type="number" min="1" max="20" value="${d.page_size}" onchange="updateConfig(\'default.menu.page_size\', parseInt(this.value)||6)" style="max-width:120px">`;
+    html += '</div>';
+    html += '<div class="section-actions"><button class="btn btn-p" onclick="copyToClipboard(exportDefaultYaml())">複製 YAML</button><button class="btn" onclick="downloadFile(\'default.custom.yaml\', exportDefaultYaml())">下載 .yaml</button></div>';
+    return html;
+  },
+
+  ascii() {
+    const d = config.default.ascii_composer;
+    let html = sectionHeader('Shift 鍵行為', '設定 Caps Lock 與 Shift 鍵行為。', 'default.custom.yaml');
+    html += '<div class="form-group">';
+    html += `<div class="form-check"><input type="checkbox" id="caps" ${d.good_old_caps_lock ? 'checked' : ''} onchange="updateConfig(\'default.ascii_composer.good_old_caps_lock\', this.checked)"><label for="caps">傳統 Caps Lock 模式</label></div>`;
+    html += '</div>';
+    html += '<div class="form-row">';
+    for (const key of ['Shift_L', 'Shift_R']) {
+      const behaviors = ['inline_ascii', 'commit_text', 'commit_code', 'noop'];
+      html += '<div class="form-group"><label class="form-label">' + key + '</label>';
+      html += '<select class="form-select" onchange="updateConfig(\'default.ascii_composer.switch_key.' + key + '\', this.value)">';
+      behaviors.forEach(b => {
+        const sel = (d.switch_key && d.switch_key[key]) === b ? ' selected' : '';
+        html += `<option value="${b}"${sel}>${b}</option>`;
+      });
+      html += '</select></div>';
+    }
+    html += '</div>';
+    html += '<div class="section-actions"><button class="btn btn-p" onclick="copyToClipboard(exportDefaultYaml())">複製 YAML</button><button class="btn" onclick="downloadFile(\'default.custom.yaml\', exportDefaultYaml())">下載 .yaml</button></div>';
+    return html;
+  },
+
+  bindings() {
+    const d = config.default.key_binder;
+    let html = sectionHeader('按鍵綁定', '拖曳排序。設定翻頁、編輯等按鍵綁定。', 'default.custom.yaml');
+    html += '<div class="form-row"><div class="form-group"><label class="form-label">選取首字鍵</label>';
+    html += `<input class="form-input" value="${esc(d.select_first_character)}" onchange="updateConfig(\'default.key_binder.select_first_character\', this.value)">`;
+    html += '</div><div class="form-group"><label class="form-label">選取末字鍵</label>';
+    html += `<input class="form-input" value="${esc(d.select_last_character)}" onchange="updateConfig(\'default.key_binder.select_last_character\', this.value)">`;
+    html += '</div></div>';
+    html += '<div class="table-wrap"><table><thead><tr><th>觸發時機</th><th>接受鍵</th><th>發送鍵</th><th></th></tr></thead><tbody id="sort-bindings">';
+    d.bindings.forEach((b, i) => {
+      const whenOpts = ['composing', 'paging', 'has_menu', 'always'];
+      html += '<tr>';
+      html += '<td><select class="form-select" onchange="updateConfig(\'default.key_binder.bindings[' + i + '].when\', this.value)" style="min-width:110px">';
+      whenOpts.forEach(w => {
+        html += `<option value="${w}"${b.when === w ? ' selected' : ''}>${w}</option>`;
+      });
+      html += '</select></td>';
+      html += `<td><input value="${esc(b.accept)}" onchange="updateConfig(\'default.key_binder.bindings[${i}].accept\', this.value)"></td>`;
+      html += `<td><input value="${esc(b.send)}" onchange="updateConfig(\'default.key_binder.bindings[${i}].send\', this.value)"></td>`;
+      html += `<td><button class="row-del" onclick="removeBinding(${i})">✕</button></td>`;
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    html += '<button class="sort-add" onclick="addBinding()">+ 新增綁定</button>';
+    html += '<div class="section-actions"><button class="btn btn-p" onclick="copyToClipboard(exportDefaultYaml())">複製 YAML</button><button class="btn" onclick="downloadFile(\'default.custom.yaml\', exportDefaultYaml())">下載 .yaml</button></div>';
+    return html;
+  },
+
+  translators() {
+    const d = config.luna_pinyin_simp;
+    let html = sectionHeader('翻譯器管線', '拖曳排序翻譯器處理順序。', 'luna_pinyin_simp.custom.yaml');
+    html += '<ul class="sort-list" id="sort-translators">';
+    d.translators.forEach((t, i) => {
+      html += `<li class="sort-item">
+        <span class="drag-handle">⠿</span>
+        <input class="sort-input" value="${esc(t)}" onchange="updateConfig(\'luna_pinyin_simp.translators[${i}]\', this.value)">
+        <button class="btn-sm" onclick="removeTranslator(${i})">✕</button>
+      </li>`;
+    });
+    html += '</ul>';
+    html += '<button class="sort-add" onclick="addTranslator()">+ 新增翻譯器</button>';
+    html += '<div class="section-actions"><button class="btn btn-p" onclick="copyToClipboard(exportLunaYaml())">複製 YAML</button><button class="btn" onclick="downloadFile(\'luna_pinyin_simp.custom.yaml\', exportLunaYaml())">下載 .yaml</button></div>';
+    return html;
+  },
+
+  custom_phrase() {
+    const d = config.luna_pinyin_simp.custom_phrase;
+    let html = sectionHeader('自訂短語', '設定自訂短語詞典。', 'luna_pinyin_simp.custom.yaml');
+    html += '<div class="form-row">';
+    html += `<div class="form-group"><label class="form-label">詞典</label><input class="form-input" value="${esc(d.dictionary)}" onchange="updateConfig('luna_pinyin_simp.custom_phrase.dictionary', this.value)"></div>`;
+    html += `<div class="form-group"><label class="form-label">用戶詞典</label><input class="form-input" value="${esc(d.user_dict)}" onchange="updateConfig('luna_pinyin_simp.custom_phrase.user_dict', this.value)"></div>`;
+    html += '</div><div class="form-row">';
+    html += `<div class="form-group"><label class="form-label">資料庫類別</label><input class="form-input" value="${esc(d.db_class)}" onchange="updateConfig('luna_pinyin_simp.custom_phrase.db_class', this.value)"></div>`;
+    html += `<div class="form-group"><label class="form-label">初始權重</label><input class="form-input" type="number" value="${d.initial_quality}" onchange="updateConfig('luna_pinyin_simp.custom_phrase.initial_quality', parseInt(this.value)||1)" style="max-width:100px"></div>`;
+    html += '</div>';
+    html += `<div class="form-check"><input type="checkbox" id="cp_ec" ${d.enable_completion ? 'checked' : ''} onchange="updateConfig('luna_pinyin_simp.custom_phrase.enable_completion', this.checked)"><label for="cp_ec">啟用自動完成</label></div>`;
+    html += `<div class="form-check"><input type="checkbox" id="cp_es" ${d.enable_sentence ? 'checked' : ''} onchange="updateConfig('luna_pinyin_simp.custom_phrase.enable_sentence', this.checked)"><label for="cp_es">啟用句輸入</label></div>`;
+    html += '<div class="section-actions"><button class="btn btn-p" onclick="copyToClipboard(exportLunaYaml())">複製 YAML</button><button class="btn" onclick="downloadFile(\'luna_pinyin_simp.custom.yaml\', exportLunaYaml())">下載 .yaml</button></div>';
+    return html;
+  },
+
+  easy_en_cfg() {
+    const d = config.luna_pinyin_simp.easy_en;
+    let html = sectionHeader('簡易英文', '設定簡易英文輸入。', 'luna_pinyin_simp.custom.yaml');
+    html += '<div class="form-row">';
+    html += `<div class="form-group"><label class="form-label">詞典</label><input class="form-input" value="${esc(d.dictionary)}" onchange="updateConfig('luna_pinyin_simp.easy_en.dictionary', this.value)"></div>`;
+    html += `<div class="form-group"><label class="form-label">初始權重</label><input class="form-input" type="number" value="${d.initial_quality}" onchange="updateConfig('luna_pinyin_simp.easy_en.initial_quality', parseInt(this.value)||-1)" style="max-width:100px"></div>`;
+    html += '</div>';
+    html += `<div class="form-check"><input type="checkbox" id="ee_ec" ${d.enable_completion ? 'checked' : ''} onchange="updateConfig('luna_pinyin_simp.easy_en.enable_completion', this.checked)"><label for="ee_ec">啟用自動完成</label></div>`;
+    html += `<div class="form-check"><input type="checkbox" id="ee_es" ${d.enable_sentence ? 'checked' : ''} onchange="updateConfig('luna_pinyin_simp.easy_en.enable_sentence', this.checked)"><label for="ee_es">啟用句輸入</label></div>`;
+    html += '<div class="section-actions"><button class="btn btn-p" onclick="copyToClipboard(exportLunaYaml())">複製 YAML</button><button class="btn" onclick="downloadFile(\'luna_pinyin_simp.custom.yaml\', exportLunaYaml())">下載 .yaml</button></div>';
+    return html;
+  },
+
+  switches() {
+    const d = config.luna_pinyin_simp.switches;
+    let html = sectionHeader('狀態開關', '設定狀態開關（例如中/英模式切換）。', 'luna_pinyin_simp.custom.yaml');
+    d.forEach((sw, i) => {
+      html += '<div class="form-row" style="margin-bottom:.75rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)">';
+      html += `<div class="form-group"><label class="form-label">名稱</label><input class="form-input" value="${esc(sw.name)}" onchange="updateConfig('luna_pinyin_simp.switches[${i}].name', this.value)"></div>`;
+      html += '<div class="form-group"><label class="form-label">狀態（逗號分隔）</label>';
+      html += `<input class="form-input" value="${esc((sw.states||[]).join(', '))}" onchange="updateConfig('luna_pinyin_simp.switches[${i}].states', this.value.split(',').map(s=>s.trim()))">`;
+      html += '</div></div>';
+    });
+    html += '<button class="sort-add" onclick="addSwitch()">+ 新增開關</button>';
+    html += '<div class="section-actions"><button class="btn btn-p" onclick="copyToClipboard(exportLunaYaml())">複製 YAML</button><button class="btn" onclick="downloadFile(\'luna_pinyin_simp.custom.yaml\', exportLunaYaml())">下載 .yaml</button></div>';
+    return html;
+  },
+
+  dict_mix_en() { return dictRenderer('mix_en'); },
+  dict_easy_en() { return dictRenderer('easy_en'); },
+
+  squirrel_style() {
+    const d = config.squirrel.style;
+    let html = sectionHeader('Squirrel 樣式', '設定 Squirrel 外觀。', 'squirrel.custom.yaml');
+    const fields = [
+      ['color_scheme', '配色名稱', 'text'],
+      ['candidate_list_layout', '候選排列', 'select', 'linear,stacked'],
+      ['text_orientation', '文字方向', 'select', 'horizontal,vertical'],
+      ['inline_preedit', '內嵌編輯', 'checkbox'],
+      ['corner_radius', '圓角半徑', 'number'],
+      ['border_height', '邊框高度', 'number'],
+      ['border_width', '邊框寬度', 'number'],
+      ['line_spacing', '行距', 'number'],
+      ['font_point', '字型大小', 'number'],
+      ['label_font_point', '標籤字型大小', 'number'],
+    ];
+    html += '<div class="form-row">';
+    fields.forEach(f => {
+      html += '<div class="form-group">';
+      html += `<label class="form-label">${f[1]}</label>`;
+      if (f[2] === 'checkbox') {
+        html += `<div class="form-check"><input type="checkbox" id="st_${f[0]}" ${d[f[0]] ? 'checked' : ''} onchange="updateConfig('squirrel.style.${f[0]}', this.checked)"><label for="st_${f[0]}">啟用</label></div>`;
+      } else if (f[2] === 'select') {
+        html += `<select class="form-select" onchange="updateConfig('squirrel.style.${f[0]}', this.value)">`;
+        f[3].split(',').forEach(o => {
+          html += `<option value="${o}"${d[f[0]] == o ? ' selected' : ''}>${o}</option>`;
+        });
+        html += '</select>';
+      } else if (f[2] === 'number') {
+        html += `<input class="form-input" type="number" value="${d[f[0]]}" onchange="updateConfig('squirrel.style.${f[0]}', parseInt(this.value)||0)" style="max-width:100px">`;
+      } else {
+        html += `<input class="form-input" value="${esc(String(d[f[0]]))}" onchange="updateConfig('squirrel.style.${f[0]}', this.value)">`;
+      }
+      html += '</div>';
+    });
+    html += '</div>';
+    html += '<div class="section-actions"><button class="btn btn-p" onclick="copyToClipboard(exportSquirrelYaml())">複製 YAML</button><button class="btn" onclick="downloadFile(\'squirrel.custom.yaml\', exportSquirrelYaml())">下載 .yaml</button></div>';
+    return html;
+  },
+
+  squirrel_colors() {
+    const d = config.squirrel.color_schemes;
+    let html = sectionHeader('配色方案', '編輯 Squirrel 預設配色。顏色使用 0xRRGGBB 格式。', 'squirrel.custom.yaml');
+    for (const [name, colors] of Object.entries(d)) {
+      html += `<h3 style="font-family:var(--font-mono);font-size:.7rem;color:var(--g);margin-bottom:.5rem">${name}</h3>`;
+      html += '<div class="form-row"><div class="form-group"><label class="form-label">名稱</label>';
+      html += `<input class="form-input" value="${esc(colors.name)}" onchange="updateConfig('squirrel.color_schemes.${name}.name', this.value)">`;
+      html += '</div><div class="form-group"><label class="form-label">作者</label>';
+      html += `<input class="form-input" value="${esc(colors.author)}" onchange="updateConfig('squirrel.color_schemes.${name}.author', this.value)">`;
+      html += '</div></div>';
+      for (const [ck, cv] of Object.entries(colors)) {
+        if (ck === 'name' || ck === 'author') continue;
+        const hex = '#' + String(cv).replace('0x', '').padStart(6, '0');
+        html += '<div class="color-wrap">';
+        html += `<div class="color-swatch" style="background:${hex}"></div>`;
+        html += `<span class="color-label">${ck.replace(/_/g, ' ')}</span>`;
+        html += `<input class="color-input" value="${cv}" onchange="updateConfig('squirrel.color_schemes.${name}.${ck}', this.value)">`;
+        html += '</div>';
+      }
+    }
+    html += '<div class="section-actions"><button class="btn btn-p" onclick="copyToClipboard(exportSquirrelYaml())">複製 YAML</button><button class="btn" onclick="downloadFile(\'squirrel.custom.yaml\', exportSquirrelYaml())">下載 .yaml</button></div>';
+    return html;
+  },
+
+  squirrel_apps() {
+    const d = config.squirrel.app_options;
+    let html = sectionHeader('應用選項', '各應用程式的 ASCII 模式設定。', 'squirrel.custom.yaml');
+    html += '<div class="table-wrap"><table><thead><tr><th>應用程式 ID</th><th>ASCII 模式</th><th></th></tr></thead><tbody id="app-options-body">';
+    const entries = Object.entries(d);
+    entries.forEach(([app, opts]) => {
+      html += '<tr>';
+      html += `<td><input value="${esc(app)}" onchange="updateAppOptionKey('${esc(app)}', this.value)"></td>`;
+      html += `<td><div class="form-check" style="margin:0"><input type="checkbox" ${opts.ascii_mode ? 'checked' : ''} onchange="updateAppOption('${esc(app)}', this.checked)"><label>${opts.ascii_mode ? 'Yes' : 'No'}</label></div></td>`;
+      html += `<td><button class="row-del" onclick="removeAppOption('${esc(app)}')">✕</button></td>`;
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    html += '<button class="sort-add" onclick="addAppOption()">+ 新增應用</button>';
+    html += '<div class="section-actions"><button class="btn btn-p" onclick="copyToClipboard(exportSquirrelYaml())">複製 YAML</button><button class="btn" onclick="downloadFile(\'squirrel.custom.yaml\', exportSquirrelYaml())">下載 .yaml</button></div>';
+    return html;
+  }
+};
+
+// ═══════════════════════════════════════════
+// DICTIONARY RENDERER (shared)
+// ═══════════════════════════════════════════
+function dictRenderer(dictName) {
+  const d = config.dictionaries[dictName] || { name: dictName, version: '1.0', sort: 'by_weight', use_preset_vocabulary: false, entries: [] };
+  let html = sectionHeader('詞典: ' + dictName, `${d.entries.length} 筆條目。點擊儲存格編輯，使用搜尋篩選。`, dictName + '.dict.yaml');
+  html += '<div class="form-row"><div class="form-group"><label class="form-label">名稱</label>';
+  html += `<input class="form-input" value="${esc(d.name)}" onchange="config.dictionaries['${dictName}'].name = this.value; saveState()">`;
+  html += '</div><div class="form-group"><label class="form-label">版本</label>';
+  html += `<input class="form-input" value="${esc(d.version)}" onchange="config.dictionaries['${dictName}'].version = this.value; saveState()">`;
+  html += '</div><div class="form-group"><label class="form-label">排序方式</label>';
+  html += `<select class="form-select" onchange="config.dictionaries['${dictName}'].sort = this.value; saveState()"><option value="by_weight"${d.sort==='by_weight'?' selected':''}>by_weight</option><option value="original"${d.sort==='original'?' selected':''}>original</option></select>`;
+  html += '</div><div class="form-group"><label class="form-label">預設詞彙</label>';
+  html += `<div class="form-check"><input type="checkbox" id="dict_pv" ${d.use_preset_vocabulary ? 'checked' : ''} onchange="config.dictionaries['${dictName}'].use_preset_vocabulary = this.checked; saveState()"><label for="dict_pv">啟用</label></div>`;
+  html += '</div></div>';
+  // search + table
+  html += `<input class="table-search" placeholder="搜尋 ${dictName} 條目..." oninput="filterDictTable('${dictName}', this.value)">`;
+  html += `<div class="table-wrap wide" id="dict-table-${dictName}"><table><thead><tr><th style="width:40%">單詞</th><th style="width:35%">編碼</th><th style="width:15%">權重</th><th style="width:10%"></th></tr></thead><tbody>`;
+  d.entries.forEach((e, i) => {
+    html += `<tr data-dict-row="${i}">`;
+    html += `<td><input value="${esc(e.word)}" onchange="config.dictionaries['${dictName}'].entries[${i}].word = this.value; saveState()"></td>`;
+    html += `<td><input value="${esc(e.code)}" onchange="config.dictionaries['${dictName}'].entries[${i}].code = this.value; saveState()"></td>`;
+    html += `<td><input type="number" value="${e.weight}" onchange="config.dictionaries['${dictName}'].entries[${i}].weight = parseInt(this.value)||0; saveState()" style="width:60px"></td>`;
+    html += `<td><button class="row-del" onclick="removeDictEntry('${dictName}', ${i})">✕</button></td>`;
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  html += `<button class="sort-add" onclick="addDictEntry('${dictName}')">+ 新增條目</button>`;
+  html += `<button class="sort-add" onclick="promptBulkImport('${dictName}')" style="margin-top:.25rem">📋 貼上 TSV 批量匯入</button>`;
+  html += '<div class="section-actions">';
+  html += `<button class="btn btn-p" onclick="copyToClipboard(exportDictYaml('${dictName}'))">複製 YAML</button>`;
+  html += `<button class="btn" onclick="downloadFile('${dictName}.dict.yaml', exportDictYaml('${dictName}'))">下載 .dict.yaml</button>`;
+  html += '</div>';
+  return html;
+}
+
+// ═══════════════════════════════════════════
+// INIT FUNCTIONS (for SortableJS, etc.)
+// ═══════════════════════════════════════════
+const initFns = {
+  schemas() {
+    initSortable('sort-schemas', (from, to) => {
+      const arr = config.default.schema_list;
+      const [item] = arr.splice(from, 1);
+      arr.splice(to, 0, item);
+      saveState();
+    });
+  },
+  translators() {
+    initSortable('sort-translators', (from, to) => {
+      const arr = config.luna_pinyin_simp.translators;
+      const [item] = arr.splice(from, 1);
+      arr.splice(to, 0, item);
+      saveState();
+    });
+  },
+  bindings() {
+    initSortable('sort-bindings', (from, to) => {
+      const arr = config.default.key_binder.bindings;
+      const [item] = arr.splice(from, 1);
+      arr.splice(to, 0, item);
+      saveState();
+    });
+  }
+};
+
+function initSortable(elId, onMove) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const opts = elId === 'sort-bindings' ? { handle: undefined } : { handle: '.drag-handle' };
+  new Sortable(el, {
+    animation: 150,
+    ...opts,
+    onEnd(evt) {
+      onMove(evt.oldIndex, evt.newIndex);
+      renderMain();
+    }
+  });
+}
+
+// ═══════════════════════════════════════════
+// ACTION HELPERS
+// ═══════════════════════════════════════════
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/\\/g,'&#92;'); }
+
+function addSchemaItem() {
+  config.default.schema_list.push({ schema: '' });
+  saveState(); renderMain();
+}
+function removeSchemaItem(i) {
+  config.default.schema_list.splice(i, 1);
+  saveState(); renderMain();
+}
+
+function addHotkey() {
+  const inp = document.getElementById('newHotkey');
+  const val = inp.value.trim();
+  if (val && !config.default.switcher.hotkeys.includes(val)) {
+    config.default.switcher.hotkeys.push(val);
+    saveState(); renderMain();
+  }
+  inp.value = '';
+}
+function removeHotkey(i) {
+  config.default.switcher.hotkeys.splice(i, 1);
+  saveState(); renderMain();
+}
+function toggleSaveOption(opt, on) {
+  const arr = config.default.switcher.save_options;
+  if (on && !arr.includes(opt)) arr.push(opt);
+  else if (!on) {
+    const idx = arr.indexOf(opt);
+    if (idx >= 0) arr.splice(idx, 1);
+  }
+  saveState();
+}
+
+function addBinding() {
+  config.default.key_binder.bindings.push({ when: 'composing', accept: '', send: '' });
+  saveState(); renderMain();
+}
+function removeBinding(i) {
+  config.default.key_binder.bindings.splice(i, 1);
+  saveState(); renderMain();
+}
+
+function addTranslator() {
+  config.luna_pinyin_simp.translators.push('');
+  saveState(); renderMain();
+}
+function removeTranslator(i) {
+  config.luna_pinyin_simp.translators.splice(i, 1);
+  saveState(); renderMain();
+}
+
+function addSwitch() {
+  config.luna_pinyin_simp.switches.push({ name: '', states: ['', ''] });
+  saveState(); renderMain();
+}
+
+function updatePunctKey(section, oldKey, newVal, field) {
+  const obj = config.default.punctuator[section] || {};
+  if (field === 'key') {
+    const entry = obj[oldKey];
+    delete obj[oldKey];
+    obj[newVal] = entry || { commit: '' };
+  } else {
+    if (obj[oldKey]) obj[oldKey] = { commit: newVal };
+  }
+  saveState();
+}
+function deletePunct(section, key) {
+  delete config.default.punctuator[section][key];
+  saveState(); renderMain();
+}
+function addPunct(section) {
+  if (!config.default.punctuator[section]) config.default.punctuator[section] = {};
+  config.default.punctuator[section]['new_key'] = { commit: '' };
+  saveState(); renderMain();
+}
+
+function addDictEntry(dictName) {
+  config.dictionaries[dictName].entries.push({ word: '', code: '', weight: 0 });
+  saveState(); renderMain();
+}
+function removeDictEntry(dictName, i) {
+  config.dictionaries[dictName].entries.splice(i, 1);
+  saveState(); renderMain();
+}
+function filterDictTable(dictName, q) {
+  const rows = document.querySelectorAll(`#dict-table-${dictName} [data-dict-row]`);
+  const lq = q.toLowerCase();
+  rows.forEach(r => {
+    const cells = r.querySelectorAll('input');
+    const txt = Array.from(cells).map(c => c.value.toLowerCase()).join(' ');
+    r.style.display = lq && !txt.includes(lq) ? 'none' : '';
+  });
+}
+
+function promptBulkImport(dictName) {
+  const raw = prompt('貼上 Tab 分隔的條目（單詞<TAB>編碼<TAB>權重，每行一筆）:');
+  if (!raw) return;
+  const lines = raw.trim().split('\n');
+  let added = 0;
+  for (const line of lines) {
+    const parts = line.split('\t');
+    if (parts.length >= 2) {
+      config.dictionaries[dictName].entries.push({
+        word: parts[0].trim(),
+        code: parts[1].trim(),
+        weight: parts.length >= 3 ? parseInt(parts[2]) || 0 : 0
+      });
+      added++;
+    }
+  }
+  saveState(); renderMain();
+  toast(`已新增 ${added} 筆條目至 ${dictName}`);
+}
+
+function updateAppOptionKey(oldApp, newApp) {
+  const opts = config.squirrel.app_options;
+  if (oldApp === newApp) return;
+  opts[newApp] = opts[oldApp];
+  delete opts[oldApp];
+  saveState(); renderMain();
+}
+function updateAppOption(app, val) {
+  config.squirrel.app_options[app].ascii_mode = val;
+  saveState();
+}
+function removeAppOption(app) {
+  delete config.squirrel.app_options[app];
+  saveState(); renderMain();
+}
+function addAppOption() {
+  config.squirrel.app_options['com.example.App'] = { ascii_mode: true };
+  saveState(); renderMain();
+}
+
+function downloadAll() {
+  const zip = new JSZip();
+  zip.file('default.custom.yaml', exportDefaultYaml());
+  zip.file('luna_pinyin_simp.custom.yaml', exportLunaYaml());
+  zip.file('squirrel.custom.yaml', exportSquirrelYaml());
+  zip.file('mix_en.dict.yaml', exportDictYaml('mix_en'));
+  zip.file('easy_en.dict.yaml', exportDictYaml('easy_en'));
+  zip.generateAsync({ type: 'blob' }).then(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'rime-config.zip'; a.click();
+    URL.revokeObjectURL(url);
+    toast('已下載 rime-config.zip');
+  });
+}
+
+function resetAll() {
+  if (confirm('重設所有配置為預設值？此操作無法復原。')) {
+    config = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+    saveState();
+    renderUI();
+    toast('已重設為預設值');
+  }
+}
+
+// ═══════════════════════════════════════════
+// CLOSE MODAL ON OVERLAY CLICK
+// ═══════════════════════════════════════════
+document.addEventListener('click', function(e) {
+  if (e.target.id === 'importModal') closeImport();
+});
+
+// ═══════════════════════════════════════════
+// BOOTSTRAP
+// ═══════════════════════════════════════════
+loadState();
+renderUI();
+document.getElementById('saveStatus').textContent = '就緒 — ' + new Date().toLocaleTimeString();
+</script>
+</body>
+</html>
