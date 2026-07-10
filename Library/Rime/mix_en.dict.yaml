@@ -1,0 +1,74 @@
+# Rime mixed EN dictionary
+---
+name: mix_en
+version: "1.0"
+sort: by_weight
+use_preset_vocabulary: false
+...
+GitHub	GitHub	1
+git	git	1
+API	API	1
+SSH	SSH	1
+VPS	VPS	1
+DNS	DNS	1
+HTTP	HTTP	1
+HTTPS	HTTPS	1
+TCP	TCP	1
+UDP	UDP	1
+JSON	JSON	1
+YAML	YAML	1
+Docker	Docker	1
+Linux	Linux	1
+macOS	macOS	1
+iOS	iOS	1
+MySQL	MySQL	1
+Redis	Redis	1
+Nginx	Nginx	1
+Python	Python	1
+bash	bash	1
+curl	curl	1
+npm	npm	1
+WiFi	Wi-Fi	1
+URL	URL	1
+HTML	HTML	1
+CSS	CSS	1
+JS	JavaScript	1
+SQL	SQL	1
+Go	Golang	1
+K8s	Kubernetes	1
+VPN	VPN	1
+SOCKS5	SOCKS5	1
+NextDNS	NextDNS	1
+REALITY	REALITY	1
+TUIC	TUIC	1
+Hysteria2	Hysteria2	1
+Ubuntu	Ubuntu	1
+Debian	Debian	1
+Alpine	Alpine	1
+BBR	BBR	1
+TLS	TLS	1
+Caddy	Caddy	1
+ufw	ufw	1
+systemd	systemd	1
+ok	OK	1
+yes	yes	1
+no	no	1
+hi	hi	1
+bye	bye	1
+thanks	thanks	1
+okay	OK	1
+email	email	1
+app	app	1
+web	web	1
+pdf	PDF	1
+jpg	JPG	1
+png	PNG	1
+zip	ZIP	1
+tar	tar	1
+gz	gz	1
+log	log	1
+config	config	1
+test	test	1
+debug	debug	1
+fix	fix	1
+bug	bug	1

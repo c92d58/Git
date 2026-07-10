@@ -1,0 +1,12 @@
+schema:
+  schema_id: mix_en
+  name: "中英混输"
+  version: "1.0"
+  author: WAHSUN
+  description: Mixed CN-EN dictionary
+
+translator:
+  dictionary: mix_en
+  enable_completion: true
+  enable_sentence: false
+  initial_quality: 0

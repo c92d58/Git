@@ -1,0 +1,12 @@
+# Rime custom phrases — WAHSUN
+# 快捷短語 (shortcut phrases)
+
+# 日期時間
+date	$year-$month_mm-$day_dd	日期快捷
+time	$hour:$minute:$second	時間快捷
+now	$year-$month_mm-$day_dd $hour:$minute	完整時間
+
+# 快捷符號
+shrug	¯\_(ツ)_/¯	聳肩
+flip	(╯°□°)╯︵ ┻━┻	翻桌
+lenny	( ͡° ͜ʖ ͡°)	表情

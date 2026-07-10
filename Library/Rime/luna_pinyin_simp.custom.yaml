@@ -2,11 +2,18 @@ patch:
   engine/translators:
     - punct_translator
     - "table_translator@custom_phrase"
+    - "table_translator@mix_en"
     - reverse_lookup_translator
     - script_translator
-    - table_translator@easy_en
-  easy_en:
-    dictionary: easy_en
+  custom_phrase:
+    dictionary: ""
+    user_dict: custom_phrase
+    db_class: stabledb
+    enable_completion: false
+    enable_sentence: false
+    initial_quality: 1
+  mix_en:
+    dictionary: mix_en
     enable_completion: true
     enable_sentence: false
     initial_quality: -1
