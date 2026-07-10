@@ -72,6 +72,18 @@ blog/
 .config/
 tmp/
 
+# AI / agent tools
+.agents/
+.osaurus/
+
+# Cloudflare
+.cloudflared/
+
+# Package junk
+.homebrew/
+node_modules/
+src/
+
 # Personal directories — never commit
 Desktop/
 Documents/
