@@ -1,21 +1,20 @@
 patch:
-  # 输入方案列表（繁为主，简为辅）
+  # 输入方案（繁體為主）
   schema_list:
-    - schema: luna_pinyin         # 朙月拼音・繁体（主）
-    - schema: luna_pinyin_simp    # 朙月拼音・简化字
-    - schema: luna_quanpin        # 朙月全拼
+    - schema: luna_pinyin
+    - schema: luna_pinyin_simp
 
-  # 默认使用繁体拼音
+  # 中英切换 — 仅 F4
   switcher:
     caption: "〔方案〕"
     hotkeys:
-      - Control+grave
+      - F4
     save_options:
       - full_shape
       - ascii_punct
       - traditional
 
-  # 中文标点始终全角
+  # 中文标点全角
   punctuator:
     import_preset: default
     full_shape:
@@ -23,25 +22,24 @@ patch:
     half_shape:
       " " : { commit: " " }
 
-  # 候选词数量
+  # 候选词
   menu:
     page_size: 6
 
-  # Shift 键行为
+  # Shift — 左Shift切中英，右Shift无操作
   ascii_composer:
     good_old_caps_lock: true
     switch_key:
       Shift_L: inline_ascii
-      Shift_R: commit_text    # 右Shift：清除当前拼音，保留已选文字
+      Shift_R: noop
 
-  # 按键绑定 — 翻页用 [ ]
+  # 按键绑定
   key_binder:
     select_first_character: bracketleft
     select_last_character: bracketright
     bindings:
-      - { when: composing, accept: Tab, send: Shift+Right }
-      - { when: composing, accept: ISO_Left_Tab, send: Shift+Left }
-      - { when: paging, accept: bracketleft, send: Page_Up }
+      - { when: composing, accept: Shift+Return, send: Return }
+      - { when: composing, accept: bracketleft, send: Page_Up }
       - { when: has_menu, accept: bracketright, send: Page_Down }
       - { when: paging, accept: minus, send: Page_Up }
       - { when: has_menu, accept: equal, send: Page_Down }
