@@ -4,42 +4,40 @@ patch:
     - schema: luna_pinyin
     - schema: luna_pinyin_simp
 
-  # 中英切换 — 仅 F4
+  # 方案切换
   switcher:
     caption: "〔方案〕"
     hotkeys:
       - F4
-    save_options:
-      - full_shape
-      - ascii_punct
-      - traditional
 
-  # 中文标点全角
+  # 中文时也用半角标点
   punctuator:
     import_preset: default
-    full_shape:
-      " " : { commit: "　" }
-    half_shape:
-      " " : { commit: " " }
+    half_shape: {}
 
   # 候选词
   menu:
     page_size: 6
 
-  # Shift — 左Shift切中英，右Shift无操作
+  # 左 Shift 切换中/英，不保留已输入的内容
+  # 关掉 Caps Lock 中英切换，避免误触
   ascii_composer:
     good_old_caps_lock: true
     switch_key:
-      Shift_L: inline_ascii
-      Shift_R: noop
+      Shift_L: clear
 
-  # 按键绑定
+  # 按键绑定 — 极简：只有翻页
   key_binder:
     select_first_character: bracketleft
     select_last_character: bracketright
     bindings:
-      - { when: composing, accept: Shift+Return, send: Return }
       - { when: composing, accept: bracketleft, send: Page_Up }
       - { when: has_menu, accept: bracketright, send: Page_Down }
       - { when: paging, accept: minus, send: Page_Up }
       - { when: has_menu, accept: equal, send: Page_Down }
+
+  # 引擎 — 保持候选窗口开启，无需重复选字
+  engine:
+    translators:
+      - table_translator
+      - script_translator
