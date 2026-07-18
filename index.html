@@ -402,6 +402,16 @@ const ctx = canvas.getContext("2d");
 
 let W, H, particles = [];
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+let mouseX = -9999, mouseY = -9999;
+
+document.addEventListener("mousemove", function(e){
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+document.addEventListener("mouseleave", function(){
+  mouseX = -9999;
+  mouseY = -9999;
+});
 
 function spawn() {
   const raw = (W * H) / 14000;
@@ -413,9 +423,6 @@ function spawn() {
     y: Math.random() * H,
     vx: (Math.random() - .5) * 0.196,
     vy: (Math.random() - .5) * 0.196,
-    breathing: false,
-    breathingTime: 0,
-    breathingDuration: 1000,
   }));
 }
 
@@ -460,30 +467,24 @@ function draw() {
     }
   }
 
-  // dots
+  // dots with mouse proximity breathing
   const now = Date.now();
   for (const p of particles) {
-    // Update breathing state
-    if (p.breathing) {
-      p.breathingTime += 16; // ~60fps
-      if (p.breathingTime >= p.breathingDuration) {
-        p.breathing = false;
-        p.breathingTime = 0;
-      }
-    }
+    // Distance from mouse to particle
+    const dx = p.x - mouseX, dy = p.y - mouseY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const radius = 150;
+    const proximity = Math.max(0, 1 - dist / radius);
 
-    // Calculate breathing scale factor
-    let scale = 1;
-    if (p.breathing) {
-      const progress = p.breathingTime / p.breathingDuration;
-      const cycle = Math.sin(progress * Math.PI * 2); // sine wave for smooth breathing
-      scale = 1 + cycle * 0.8; // scale from 0.2 to 1.8
-    }
+    // Continuous sine-wave breathing, amplitude modulated by mouse proximity
+    const breathe = Math.sin(now * 0.004 + dist * 0.02) * proximity;
+    const scale = 1 + breathe * 1.2;
+    const alpha = 0.49 + breathe * 0.4;
 
     ctx.fillStyle = "#00ff88";
-    ctx.globalAlpha = p.breathing ? 0.7 : 0.49;
+    ctx.globalAlpha = Math.max(0.2, alpha);
     ctx.beginPath();
-    ctx.arc(p.x, p.y, 1.265 * scale, 0, Math.PI * 2);
+    ctx.arc(p.x, p.y, 1.3 * scale, 0, Math.PI * 2);
     ctx.fill();
 
     p.x += p.vx;
