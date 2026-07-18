@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WAHSUN · SIGNAL STATION</title>
+<title>WAHSUN · 信號站</title>
 
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
@@ -145,13 +145,16 @@ h2::before {
   gap: 16px;
 }
 
-.card {
+a.card, .card {
+  display: block;
   background: var(--card);
   border: 1px solid rgba(255,255,255,.04);
   padding: 28px;
   transition: .25s;
+  text-decoration: none;
+  color: inherit;
 }
-.card:hover {
+a.card:hover, .card:hover {
   border-color: rgba(0,255,136,.15);
   transform: translateY(-3px);
 }
@@ -170,12 +173,6 @@ h2::before {
   margin-right: 8px;
   vertical-align: middle;
 }
-.card h3 a {
-  color: #fff;
-  text-decoration: none;
-  transition: color .25s;
-}
-.card h3 a:hover { color: var(--g); }
 .card p {
   color: #888;
   font-size: 13px;
@@ -235,6 +232,7 @@ h2::before {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
   color: #333;
+  line-height: 1.8;
 }
 
 /* ── Breathing Animation ── */
@@ -274,98 +272,98 @@ h2::before {
   <!-- ═══ HERO ═══ -->
   <section class="reveal">
     <h1>WAHSUN<span class="accent"> </span></h1>
-    <p class="sub">STATION ACTIVE · BROADCASTING ON ALL FREQUENCIES</p>
+    <p class="sub">信號站運行中 · 全頻段廣播</p>
 
     <div class="status-strip">
-      <span class="chip live">● ONLINE</span>
-      <span class="chip">VERIFICATION: D713B95FC13491F3962AB28EFD8331FD</span>
-      <span class="chip">NODE: 01</span>
-      <span class="chip">PROTO: HTTPS</span>
+      <span class="chip live">● 在線</span>
+      <span class="chip">驗證碼：D713B95FC13491F3962AB28EFD8331FD</span>
+      <span class="chip">節點：01</span>
+      <span class="chip">協議：HTTPS</span>
     </div>
   </section>
 
   <!-- ═══ IDENTITY ═══ -->
-  <div class="divider reveal">// IDENTITY CORE</div>
+  <div class="divider reveal">// 身份核心</div>
 
   <section class="reveal">
-    <h2>Who</h2>
+    <h2>關於</h2>
     <p style="color:#aaa;max-width:640px;">
-      a quiet node broadcasting independent thought, code, and curiosity.
-      No algorithms. No feeds. Just raw signal.
+      一個安靜的節點，廣播獨立思考、程式碼與好奇心。
+      沒有演算法，沒有資訊流，只有純粹的信號。
     </p>
   </section>
 
   <!-- ═══ NODES ═══ -->
-  <div class="divider reveal">// ACTIVE NODES</div>
+  <div class="divider reveal">// 活躍節點</div>
 
   <section class="reveal">
-    <h2>Nodes</h2>
+    <h2>節點</h2>
     <div class="grid">
 
-      <div class="card">
-        <h3><span class="dot"></span><a href="https://blog.wahsun.org" target="_blank" rel="noopener">Blog</a></h3>
-        <p>Long-form writing, technical deep-dives, and personal reflections. No comments, no likes — just words broadcast from a quiet server corner.</p>
-      </div>
+      <a href="https://blog.wahsun.org" target="_blank" rel="noopener" class="card">
+        <h3><span class="dot"></span>Blog</h3>
+        <p>長文寫作、技術深入探討與個人反思。沒有留言區、沒有讚數——只有從安靜伺服器角落廣播出去的文字。</p>
+      </a>
 
-      <div class="card">
-        <h3><span class="dot"></span><a href="https://api.wahsun.org" target="_blank" rel="noopener">Api</a></h3>
-        <p>Open API gateway — collection of micro-services and automation endpoints. Tools, data transformation, and integration bridges for the connected station.</p>
-      </div>
+      <a href="https://api.wahsun.org" target="_blank" rel="noopener" class="card">
+        <h3><span class="dot"></span>Api</h3>
+        <p>開放 API 閘道——微服務與自動化端點的集合。工具、資料轉換，以及連接信號站的整合橋樑。</p>
+      </a>
 
-      <div class="card">
-        <h3><span class="dot"></span><a href="https://teleshield.wahsun.org" target="_blank" rel="noopener">TeleShield</a></h3>
-        <p>Telegram spam firewall — private DM blocking and group moderation. OCR image detection, learning mode, and real-time listening. Your personal account's first line of defense.</p>
-      </div>
+      <a href="https://teleshield.wahsun.org" target="_blank" rel="noopener" class="card">
+        <h3><span class="dot"></span>TeleShield</h3>
+        <p>Telegram 廣告防火牆——私訊封鎖與群組管理。內建 OCR 圖片辨識、學習模式與即時監聽。你個人帳號的第一道防線。</p>
+      </a>
 
-      <div class="card">
-        <h3><span class="dot"></span><a href="https://rimeccfg.wahsun.org" target="_blank" rel="noopener">RimecCfg</a></h3>
-        <p>RIME input method configuration toolkit. Modular, customizable Chinese IME layouts — from phonetic to shape-based, tuned for efficiency and personal style.</p>
-      </div>
+      <a href="https://rimeccfg.wahsun.org" target="_blank" rel="noopener" class="card">
+        <h3><span class="dot"></span>RimecCfg</h3>
+        <p>RIME 輸入法配置工具包。模組化、可自訂的中文輸入法佈局——從拼音到形碼，追求效率與個人風格。</p>
+      </a>
 
       <div class="card">
         <h3><span class="dot"></span>Shell</h3>
-        <p>Interactive terminal interface. Execute commands, explore the system, read manuals. A sandbox for curious minds.</p>
+        <p>互動式終端介面。執行指令、探索系統、閱讀手冊。為好奇的心靈準備的遊樂場。</p>
       </div>
 
       <div class="card">
         <h3><span class="dot"></span>Stack</h3>
-        <p>Tools, languages, and infrastructure that power this station. Linux, Git, Cloudflare, and the open-source ecosystem.</p>
+        <p>驅動信號站的工具、語言與基礎設施。Linux、Git、Cloudflare，以及開源生態系。</p>
       </div>
 
     </div>
   </section>
 
   <!-- ═══ SIGNAL LOG ═══ -->
-  <div class="divider reveal">// SIGNAL LOG</div>
+  <div class="divider reveal">// 信號日誌</div>
 
   <section class="reveal">
-    <h2>Recent Signals</h2>
+    <h2>最近信號</h2>
 
     <table class="log-table">
       <tr>
         <td class="ts">2026-06-10 14:22</td>
         <td class="level">[INFO]</td>
-        <td class="msg">Station deployed to Cloudflare Pages edge network</td>
+        <td class="msg">信號站部署至 Cloudflare Pages 邊緣網路</td>
       </tr>
       <tr>
         <td class="ts">2026-06-09 09:15</td>
         <td class="level">[OK]</td>
-        <td class="msg">SSL certificate renewed — all channels encrypted</td>
+        <td class="msg">SSL 憑證更新——所有頻道已加密</td>
       </tr>
       <tr>
         <td class="ts">2026-06-08 18:30</td>
         <td class="level">[SYNC]</td>
-        <td class="msg">Repository synchronized — 13 page nodes active</td>
+        <td class="msg">倉庫同步完成——13 個頁面節點活躍中</td>
       </tr>
       <tr>
         <td class="ts">2026-06-07 11:00</td>
         <td class="level">[INFO]</td>
-        <td class="msg">DNS propagation complete — wahsun.org resolving globally</td>
+        <td class="msg">DNS 傳播完成——wahsun.org 全球解析正常</td>
       </tr>
       <tr>
         <td class="ts">2026-06-06 22:45</td>
         <td class="level">[OK]</td>
-        <td class="msg">Health check passed — all systems nominal</td>
+        <td class="msg">健康檢查通過——所有系統正常運行</td>
       </tr>
     </table>
   </section>
@@ -373,14 +371,15 @@ h2::before {
   <!-- ═══ CONTACT ═══ -->
   <section class="reveal">
     <div class="contact-block">
-      <div class="label">INCOMING CHANNEL</div>
+      <div class="label">聯絡通道</div>
       <a href="mailto:x@wahsun.org">x@wahsun.org</a>
     </div>
   </section>
 
   <!-- ═══ FOOTER ═══ -->
   <div class="footer reveal">
-    WAHSUN STATION · EST. 2017 · SIGNAL NEVER STOPS
+    WAHSUN 信號站 · 創立於 2017 · 信號永不中斷<br>
+    EST. 2017 · SIGNAL NEVER STOPS
   </div>
 
 </div>
@@ -498,45 +497,6 @@ function draw() {
 }
 draw();
 
-/* ═══════════════════════════════════════
-   MOUSE HOVER INTERACTION
-   ═══════════════════════════════════════ */
-const hoverRadius = 15; // Hover detection radius
-let mouseX = -1000;
-let mouseY = -1000;
-
-canvas.addEventListener("mousemove", (e) => {
-  const rect = canvas.getBoundingClientRect();
-  mouseX = e.clientX - rect.left;
-  mouseY = e.clientY - rect.top;
-
-  // Check which particles are hovered
-  for (const p of particles) {
-    const dx = p.x - mouseX;
-    const dy = p.y - mouseY;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    
-    if (dist < hoverRadius) {
-      if (!p.breathing) {
-        p.breathing = true;
-        p.breathingTime = 0;
-      }
-    } else {
-      p.breathing = false;
-      p.breathingTime = 0;
-    }
-  }
-});
-
-canvas.addEventListener("mouseleave", () => {
-  // Stop all breathing when mouse leaves canvas
-  for (const p of particles) {
-    p.breathing = false;
-    p.breathingTime = 0;
-  }
-});
-
 </script>
-
 </body>
 </html>
