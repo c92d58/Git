@@ -413,7 +413,9 @@ function spawn() {
     y: Math.random() * H,
     vx: (Math.random() - .5) * 0.196,
     vy: (Math.random() - .5) * 0.196,
-    phase: Math.random() * Math.PI * 2,
+    breathing: false,
+    breathingTime: 0,
+    breathingDuration: 1000,
   }));
 }
 
@@ -458,18 +460,30 @@ function draw() {
     }
   }
 
-  // dots with continuous breathing
+  // dots
   const now = Date.now();
   for (const p of particles) {
-    // Continuous sine-wave breathing with per-particle phase offset
-    const breathe = Math.sin(now * 0.002 + p.phase);
-    const scale = 1 + breathe * 0.6;     // 0.4 ~ 1.6
-    const alpha = 0.35 + breathe * 0.18; // 0.17 ~ 0.53
+    // Update breathing state
+    if (p.breathing) {
+      p.breathingTime += 16; // ~60fps
+      if (p.breathingTime >= p.breathingDuration) {
+        p.breathing = false;
+        p.breathingTime = 0;
+      }
+    }
+
+    // Calculate breathing scale factor
+    let scale = 1;
+    if (p.breathing) {
+      const progress = p.breathingTime / p.breathingDuration;
+      const cycle = Math.sin(progress * Math.PI * 2); // sine wave for smooth breathing
+      scale = 1 + cycle * 0.8; // scale from 0.2 to 1.8
+    }
 
     ctx.fillStyle = "#00ff88";
-    ctx.globalAlpha = alpha;
+    ctx.globalAlpha = p.breathing ? 0.7 : 0.49;
     ctx.beginPath();
-    ctx.arc(p.x, p.y, 1.3 * scale, 0, Math.PI * 2);
+    ctx.arc(p.x, p.y, 1.265 * scale, 0, Math.PI * 2);
     ctx.fill();
 
     p.x += p.vx;
